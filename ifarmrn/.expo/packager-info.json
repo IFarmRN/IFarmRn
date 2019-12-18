@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 3220,
-  "expoServerNgrokUrl": "https://5x-hbt.deividreinke.ifarmrn.exp.direct",
-  "packagerNgrokUrl": "https://packager.5x-hbt.deividreinke.ifarmrn.exp.direct",
-  "ngrokPid": 14284,
+  "packagerPid": 18232,
+  "expoServerNgrokUrl": "https://nw-4nq.deividreinke.ifarmrn.exp.direct",
+  "packagerNgrokUrl": "https://packager.nw-4nq.deividreinke.ifarmrn.exp.direct",
+  "ngrokPid": 8200,
   "webpackServerPort": 19006
 }

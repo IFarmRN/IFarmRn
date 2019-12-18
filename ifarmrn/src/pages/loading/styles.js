@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { Color } from "../../constants/routes";
 
 const styles = StyleSheet.create({
@@ -7,6 +7,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Color.green
+  },
+  text: {
+    paddingTop: Dimensions.get("screen").height * 0.2,
+    color: "#fff"
   }
 });
 

@@ -1,45 +1,50 @@
 import React from "react";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import { Fumi } from "react-native-textinput-effects";
 import styles from "./styles";
 import { Color } from "../../constants/routes";
 import EntypoIcon from "@expo/vector-icons/Entypo";
 
 function Input(
-  props,
+  props /*
   name = "default",
   iconName = "home",
-  numeric = false,
-  TextInputValue = ""
+  keyboardType = "email-address",
+  editable = true,
+  TextInputValue = "",
+  more */
 ) {
-  const name1 = name.replace(/_/g, " ");
+  const name1 = props.name.replace(/_/g, " ");
   return (
-    <>
+    <View pointerEvents={props.editable ? "none" : "auto"}>
       <Fumi
+        {...props}
         passiveIconColor={Color.greenLight}
         labelStyle={styles.label}
         style={styles.styleGeneral}
         inputStyle={styles.inputStyle}
         onChangeText={text => {
-          props.setFieldValue(name, text);
+          props.props.setFieldValue(props.name, text);
         }}
-        keyboardType={numeric ? "numeric" : "email-address"}
+        value={
+          props.name == "Foto"
+            ? ""
+            : props.value || props.props.values[props.name]
+        }
         autoCompleteType={"off"}
         label={name1}
-        value={TextInputValue || props.values[`${name}`]}
         autoCorrect={false}
         iconClass={EntypoIcon}
-        iconName={iconName}
         iconColor={Color.green}
         iconSize={25}
         iconWidth={40}
-        editable={name == "Localização" ? false : true}
         inputPadding={16}
       />
+
       <Text style={styles.textError}>
-        {props.touched[`${name}`] && props.errors[`${name}`]}{" "}
+        {props.props.touched[props.name] && props.props.errors[props.name]}
       </Text>
-    </>
+    </View>
   );
 }
 export default Input;

@@ -10,7 +10,7 @@ import {
 import "./src/configs/statusBarConfig";
 import Router from "./src/routes";
 import * as Font from "expo-font";
-import { SplashScreen } from "expo";
+import { AppLoading, SplashScreen } from "expo";
 import { Asset } from "expo-asset";
 import { Color } from "./src/constants/routes";
 import Loading from "./src/pages/loading/loading";
@@ -24,6 +24,7 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
+    SplashScreen.preventAutoHide(); // Instruct SplashScreen not to hide yet
     this.fontLoad();
   }
 
@@ -34,25 +35,19 @@ export default class App extends React.Component {
     this.setState({ fontLoaded: true });
   }
 
-  greenScreen = () => (
-    <View style={[styles.container, { backgroundColor: "#4CAF50" }]}></View>
-  );
-
   render() {
-    if (this.state.fontLoaded) {
-      return (
-        <>
-          <DropdownAlert
-            panResponderEnabled
-            closeInterval={1500}
-            ref={ref => (global.dropDownAlertRef = ref)}
-          />
-          <Router />
-        </>
-      );
-    } else {
-      return this.greenScreen();
-    }
+    if (!this.state.fontLoaded) return <Loading />;
+    return (
+      <>
+        <DropdownAlert
+          panResponderEnabled
+          closeInterval={1500}
+          ref={ref => (global.dropDownAlertRef = ref)}
+        />
+        <Router />
+        {SplashScreen.hide()}
+      </>
+    );
   }
 }
 

@@ -4,17 +4,15 @@ import { withFormik } from "formik";
 import * as Yup from "yup";
 import styles from "./styles";
 import Input from "../../components/Input/Input";
-import DropdownAlert from "react-native-dropdownalert";
-import ImagerPicker from "./Image/ImagerPicker";
 import Loading from "../loading/loading";
+import Modal from "./Modal/Modal";
 
 function Register(props) {
+  const [modalVisible, setModalVisible] = useState(false);
   const [locatization, setLocalization] = useState({
     latitude: 0,
     altitude: 0
   });
-
-  useEffect(() => {}, []);
 
   getLocale = async () => {
     await navigator.geolocation.getCurrentPosition(
@@ -35,49 +33,88 @@ function Register(props) {
     );
   };
 
+  changeModal = () => {
+    setModalVisible(!modalVisible);
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={{ marginTop: 40 }} />
-      {Input(props, "Nome_da_Propriedade")}
-      {Input(props, "Proprietario", "user")}
-      <TouchableOpacity onPress={() => getLocale()} activeOpacity={1}>
-        {Input(
-          props,
-          "Localização",
-          "user",
-          false,
-          locatization.altitude == 0
-            ? ""
-            : `alt.: ${parseFloat(
-                JSON.stringify(locatization.altitude)
-              ).toFixed(2)}     lat.: ${parseFloat(
-                JSON.stringify(locatization.latitude)
-              ).toFixed(2)}`
-        )}
-      </TouchableOpacity>
-      {Input(props, "Hectares", "map", true)}
-      {Input(props, "Contato", "mobile", true)}
 
-      <ImagerPicker />
+      <Input name="Proprietario" iconName="user" props={props} />
+
+      <TouchableOpacity onPress={() => getLocale()} activeOpacity={1}>
+        <Input
+          name="Localização"
+          iconName="location"
+          props={props}
+          editable={false}
+          value={
+            locatization.altitude == 0
+              ? ""
+              : `alt.: ${parseFloat(
+                  JSON.stringify(locatization.altitude)
+                ).toFixed(4)}...     lat.: ${parseFloat(
+                  JSON.stringify(locatization.latitude)
+                ).toFixed(4)}...`
+          }
+        />
+      </TouchableOpacity>
+
+      <Input
+        name="Hectares"
+        iconName="map"
+        keyboardType="numeric"
+        props={props}
+      />
+
+      <Input
+        name="Contato"
+        iconName="mobile"
+        keyboardType="numeric"
+        props={props}
+      />
+
+      <Input name="Nome_da_Propriedade" iconName="home" props={props} />
+
+      <TouchableOpacity onPress={() => changeModal()} activeOpacity={1}>
+        <Input
+          props={props}
+          name="Foto"
+          iconName="camera"
+          keyboardType="numeric"
+          editable={false}
+        />
+      </TouchableOpacity>
+
       <View style={styles.buttonView}>
         <TouchableOpacity onPress={props.handleSubmit} style={styles.button}>
           <Text style={styles.buttonText}>Salvar</Text>
         </TouchableOpacity>
       </View>
+
+      <Modal
+        changeModal={changeModal}
+        props={props}
+        modalVisible={modalVisible}
+      />
     </ScrollView>
   );
 }
 
 export default withFormik({
   mapPropsToValues: () => ({
-    Nome_da_Propriedade: "",
     Proprietario: "",
+    Nome_da_Propriedade: "",
     Localização: "",
     Hectares: "",
-    Contato: ""
+    Contato: "",
+    Foto: ""
   }),
-  /*
+
   validationSchema: Yup.object().shape({
+    /*     Proprietario: Yup.string(
+      "O seu nome deve ser expressado apenas em letras"
+    ).required("Não esqueça de preencher"),
     Contato: Yup.number("o contato deve possuir apenas números").required(
       "Não esqueça de preencher"
     ),
@@ -87,13 +124,13 @@ export default withFormik({
     Nome_da_Propriedade: Yup.string(
       "O nome de sua propriedade deve ser expressado apenas em letras"
     ).required("Não esqueça de preencher"),
-    Proprietario: Yup.string(
-      "O seu nome deve ser expressado apenas em letras"
-    ).required("Não esqueça de preencher"),
     Localização: Yup.object().required(
       "Aberte o botao de localizacao e aceite os termos"
-    )
-  }), */
+    ), */
+    Foto: Yup.string()
+      .required("Escolha uma imagem ")
+      .nullable("Escolha uma imagem ")
+  }),
 
   handleSubmit: values => {
     console.log(values);

@@ -28,11 +28,11 @@ export default class loading extends Component {
   render() {
     const textSize = this.textValue.interpolate({
       inputRange: [0.3, 1],
-      outputRange: [18, 80]
+      outputRange: [80, 80]
     });
     return (
       <View style={styles.container}>
-        <Animated.Text style={[StylesGeneral.text, { fontSize: textSize }]}>
+        <Animated.Text style={[styles.text, { fontSize: textSize }]}>
           IFarm
         </Animated.Text>
         <PacmanIndicator color={"#fff"} size={75} />
