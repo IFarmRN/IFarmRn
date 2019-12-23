@@ -1,20 +1,17 @@
-import React, { PureComponent } from "react";
-import { View, Text } from "react-native";
-import styles from "./styles";
+import React, { useEffect } from "react";
+import { Text, View, Button } from "react-native";
 
-class Property extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const property = () => {
+  /*   let data = useSelector(state => state);
+  console.log(data); */
 
-  render() {
-    return (
-      <View>
-        <Text> Property </Text>
-      </View>
-    );
-  }
-}
+  return (
+    <View>
+      <Button title="AUMENTA" onPress={() => {}} />
+      <Text></Text>
+      <Button title="DIMINUI" onPress={() => {}} />
+    </View>
+  );
+};
 
-export default Property;
+export default property;

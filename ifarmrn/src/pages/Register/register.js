@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { View, ScrollView, TouchableOpacity, Text } from "react-native";
+
+import { useSelector, useDispatch, useStore } from "react-redux";
 import { withFormik } from "formik";
 import * as Yup from "yup";
+
 import styles from "./styles";
 import Input from "../../components/Input/Input";
 import Loading from "../loading/loading";
 import Modal from "./Modal/Modal";
+import AddUser from "../../store/actions/userActions";
 
 function Register(props) {
+  const { setFieldValue, values, handleSubmit } = props;
+
   const [modalVisible, setModalVisible] = useState(false);
   const [locatization, setLocalization] = useState({
     latitude: 0,
@@ -21,7 +27,7 @@ function Register(props) {
           latitude: position.coords.latitude,
           altitude: position.coords.longitude
         });
-        props.setFieldValue("Localização", {
+        setFieldValue("Localização", {
           latitude: position.coords.latitude,
           altitude: position.coords.longitude
         });
@@ -33,9 +39,20 @@ function Register(props) {
     );
   };
 
+  const dispatch = useDispatch();
+  const data = useSelector(state => state);
+
+  buttonSubmitted = async () => {
+    const user = AddUser(values);
+    dispatch(user);
+    console.log(data);
+
+    handleSubmit;
+  };
   changeModal = () => {
     setModalVisible(!modalVisible);
   };
+
   return (
     <ScrollView style={styles.container}>
       <View style={{ marginTop: 40 }} />
@@ -87,7 +104,12 @@ function Register(props) {
       </TouchableOpacity>
 
       <View style={styles.buttonView}>
-        <TouchableOpacity onPress={props.handleSubmit} style={styles.button}>
+        <TouchableOpacity
+          onPress={() => {
+            buttonSubmitted();
+          }}
+          style={styles.button}
+        >
           <Text style={styles.buttonText}>Salvar</Text>
         </TouchableOpacity>
       </View>
@@ -112,7 +134,7 @@ export default withFormik({
   }),
 
   validationSchema: Yup.object().shape({
-    /*     Proprietario: Yup.string(
+    Proprietario: Yup.string(
       "O seu nome deve ser expressado apenas em letras"
     ).required("Não esqueça de preencher"),
     Contato: Yup.number("o contato deve possuir apenas números").required(
@@ -126,18 +148,21 @@ export default withFormik({
     ).required("Não esqueça de preencher"),
     Localização: Yup.object().required(
       "Aberte o botao de localizacao e aceite os termos"
-    ), */
+    ),
     Foto: Yup.string()
       .required("Escolha uma imagem ")
       .nullable("Escolha uma imagem ")
   }),
 
-  handleSubmit: values => {
-    console.log(values);
+  handleSubmit: (values, { setSubmitting }) => {
     global.dropDownAlertRef.alertWithType(
       "success",
       "Success",
       "Dados cadastrados"
     );
+
+    setTimeout(() => {
+      setSubmitting(false);
+    }, 3000);
   }
 })(Register);

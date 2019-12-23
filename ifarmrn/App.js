@@ -1,21 +1,16 @@
 import React from "react";
-import {
-  StyleSheet,
-  View,
-  SafeAreaView,
-  Text,
-  Platform,
-  StatusBar
-} from "react-native";
-import "./src/configs/statusBarConfig";
-import Router from "./src/routes";
+import { StyleSheet } from "react-native";
+
 import * as Font from "expo-font";
-import { AppLoading, SplashScreen } from "expo";
-import { Asset } from "expo-asset";
-import { Color } from "./src/constants/routes";
-import Loading from "./src/pages/loading/loading";
-import Constants from "expo-constants";
+import { SplashScreen } from "expo";
 import DropdownAlert from "react-native-dropdownalert";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/es/integration/react";
+
+import Router from "./src/routes";
+import Loading from "./src/pages/loading/loading";
+import { store, persistor } from "./src/store";
+import "./src/configs/statusBarConfig";
 
 export default class App extends React.Component {
   constructor() {
@@ -24,8 +19,13 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
+    persistor.purge();
     SplashScreen.preventAutoHide(); // Instruct SplashScreen not to hide yet
     this.fontLoad();
+
+    await setTimeout(() => {
+      this.setState({ isReady: true });
+    }, 1);
   }
 
   async fontLoad() {
@@ -36,7 +36,10 @@ export default class App extends React.Component {
   }
 
   render() {
-    if (!this.state.fontLoaded) return <Loading />;
+    const { fontLoaded, isReady } = this.state;
+
+    if (!fontLoaded || !isReady) return <Loading />;
+
     return (
       <>
         <DropdownAlert
@@ -44,15 +47,13 @@ export default class App extends React.Component {
           closeInterval={1500}
           ref={ref => (global.dropDownAlertRef = ref)}
         />
-        <Router />
+        <Provider store={store}>
+          <PersistGate loading={<Loading />} persistor={persistor}>
+            <Router />
+          </PersistGate>
+        </Provider>
         {SplashScreen.hide()}
       </>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});

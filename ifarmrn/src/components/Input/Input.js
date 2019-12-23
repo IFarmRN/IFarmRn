@@ -5,15 +5,7 @@ import styles from "./styles";
 import { Color } from "../../constants/routes";
 import EntypoIcon from "@expo/vector-icons/Entypo";
 
-function Input(
-  props /*
-  name = "default",
-  iconName = "home",
-  keyboardType = "email-address",
-  editable = true,
-  TextInputValue = "",
-  more */
-) {
+function Input(props) {
   const name1 = props.name.replace(/_/g, " ");
   return (
     <View pointerEvents={props.editable ? "none" : "auto"}>
