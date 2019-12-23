@@ -31,7 +31,7 @@ const stackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "Register"
+    /*     initialRouteName: "Register" */
   }
 );
 
