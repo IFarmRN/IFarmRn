@@ -28,7 +28,7 @@ export default class loading extends Component {
   render() {
     const textSize = this.textValue.interpolate({
       inputRange: [0.3, 1],
-      outputRange: [0, 80]
+      outputRange: [80, 80]
     });
     return (
       <View style={styles.container}>

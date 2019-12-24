@@ -24,11 +24,12 @@ export default function InputImage(props) {
   selectPicture = async () => {
     await Permissions.askAsync(Permissions.CAMERA_ROLL);
     const responseImage = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      base64: true
+      base64: true,
+      aspect: [10, 10]
     });
 
     const { uri, cancelled } = responseImage;
+
     if (!cancelled) {
       setImage(uri);
     }
@@ -88,6 +89,7 @@ export default function InputImage(props) {
             <TouchableOpacity
               onPress={() => {
                 props.changeModal();
+                console.log(image);
                 props.props.setFieldValue("Foto", image);
               }}
               style={[styles.buttonSave]}

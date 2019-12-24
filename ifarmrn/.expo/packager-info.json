@@ -2,9 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 14572,
-  "expoServerNgrokUrl": "https://c8-bjk.anonymous.ifarmrn.exp.direct",
-  "packagerNgrokUrl": "https://packager.c8-bjk.anonymous.ifarmrn.exp.direct",
-  "ngrokPid": 14860,
-  "webpackServerPort": 19006
+  "packagerPid": 20692,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
+  "webpackServerPort": null
 }

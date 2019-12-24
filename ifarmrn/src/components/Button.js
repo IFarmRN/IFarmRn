@@ -16,12 +16,7 @@ export default class Button extends Component {
         onPress={this.props.onPress}
         {...this.props}
       >
-        <Text
-          style={[
-            styles.textButton,
-            { textAlign: this.props.left ? "left" : "center" }
-          ]}
-        >
+        <Text style={[styles.textButton, { textAlign: "center" }]}>
           {this.props.name}
         </Text>
       </TouchableOpacity>
@@ -32,9 +27,9 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#fff",
     alignSelf: "center",
-    padding: 12,
+    padding: 15,
     width: Dimensions.get("screen").width * 0.85,
-    marginVertical: 12,
+    marginVertical: 15,
     borderRadius: 20,
     //SHADOW
     shadowColor: "#000",

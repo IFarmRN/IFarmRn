@@ -19,7 +19,6 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-    persistor.purge();
     SplashScreen.preventAutoHide(); // Instruct SplashScreen not to hide yet
     this.fontLoad();
 

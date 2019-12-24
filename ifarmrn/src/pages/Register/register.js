@@ -49,6 +49,7 @@ function Register(props) {
 
     handleSubmit;
   };
+
   changeModal = () => {
     setModalVisible(!modalVisible);
   };

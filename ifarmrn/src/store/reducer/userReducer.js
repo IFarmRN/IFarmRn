@@ -11,6 +11,7 @@ const userReducer = (state = [], actions) => {
   switch (actions.type) {
     case "ADD_USER_DATA": {
       const newState = [...state, actions.payload];
+
       return newState;
     }
     default:
