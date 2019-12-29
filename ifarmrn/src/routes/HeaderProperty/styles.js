@@ -1,5 +1,6 @@
 import { Color } from "../../constants/routes";
 import { StyleSheet } from "react-native";
+import Constants from "expo-constants";
 
 const styles = StyleSheet.create({
   button: {
@@ -11,7 +12,7 @@ const styles = StyleSheet.create({
     backgroundColor: Color.green
   },
   text: {
-    marginTop: 20,
+    marginVertical: 20,
     marginRight: 32,
     flex: 1,
     color: "#fff",
@@ -22,7 +23,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "center"
   },
-  row: { flexDirection: "row", backgroundColor: Color.greenDark }
+  row: { flexDirection: "row", backgroundColor: Color.green },
+  statusBar: {}
 });
 
 export default styles;

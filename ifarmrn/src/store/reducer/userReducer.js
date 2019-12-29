@@ -14,6 +14,13 @@ const userReducer = (state = [], actions) => {
 
       return newState;
     }
+    case "REMOVE_DATA": {
+      const newState = state.filter(item => {
+        return item.id != actions.id;
+      });
+
+      return newState;
+    }
     default:
       return state;
   }

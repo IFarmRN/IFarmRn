@@ -8,19 +8,19 @@ const styles = StyleSheet.create({
     width,
     height,
     position: "absolute",
-    backgroundColor: Color.greenDark,
-    zIndex: 0
+    backgroundColor: Color.green
   },
   topView: {
     width,
     height,
-    marginTop: 50,
-    backgroundColor: Color.gray
-  },
-  container: {
-    flex: 1,
+    marginTop: 120,
+    backgroundColor: Color.gray,
     position: "absolute",
-    marginTop: 15
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20
+  },
+  scrollView: {
+    flex: 1
   },
   title: {
     fontFamily: "Comfortaa",
@@ -28,11 +28,11 @@ const styles = StyleSheet.create({
   },
   userContainer: {
     alignSelf: "center",
-    borderRadius: 10,
-    width: width * 0.8,
-    height: height * 0.5,
-    marginLeft: (width * 0.2) / 2,
-    marginBottom: 20,
+    borderRadius: 20,
+    flex: 1,
+    /*   width: width * 0.8,
+    height: height * 0.4, */
+    marginVertical: 20,
     backgroundColor: "#fff",
 
     shadowColor: "#000",
@@ -44,12 +44,35 @@ const styles = StyleSheet.create({
     shadowRadius: 2.22,
     elevation: 3
   },
-
-  image: {
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10
+  viewImage: {
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: "rgba(0,0,0,0.2)",
+    width: width * 0.8,
+    height: height * 0.2
   },
-  text: {},
+  icon: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    paddingRight: 10,
+    paddingTop: 10,
+    padding: 40
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20
+  },
+  text: {
+    marginHorizontal: 10,
+    fontSize: 14,
+    opacity: 0.5
+  },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
   title: {
     justifyContent: "center",
     alignSelf: "center",
@@ -57,7 +80,29 @@ const styles = StyleSheet.create({
     fontFamily: "Comfortaa",
     color: "#222",
     marginVertical: 12
-  }
+  },
+
+  button: {
+    padding: 10,
+    margin: 10,
+    borderRadius: 20,
+    borderWidth: 2,
+    borderColor: Color.green,
+    alignItems: "center"
+  },
+  buttonText: {
+    color: Color.green
+  },
+
+  textNoData: {
+    textAlign: "center",
+    color: "rgba(0,0,0,0.5)",
+    marginTop: 70,
+    fontSize: 23,
+    marginHorizontal: 40,
+    fontFamily: "Serif"
+  },
+  viewNoData: { alignItems: "center", justifyContent: "center", flex: 1 }
 });
 
 export default styles;

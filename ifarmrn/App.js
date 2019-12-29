@@ -21,23 +21,23 @@ export default class App extends React.Component {
   async componentDidMount() {
     SplashScreen.preventAutoHide(); // Instruct SplashScreen not to hide yet
     this.fontLoad();
-
-    await setTimeout(() => {
-      this.setState({ isReady: true });
-    }, 1);
   }
 
   async fontLoad() {
     await Font.loadAsync({
-      Comfortaa: require("./assets/fonts/Comfortaa-Medium.ttf")
+      Comfortaa: require("./assets/fonts/Comfortaa-Medium.ttf"),
+      Serif: require("./assets/fonts/InriaSerif-Regular.ttf")
     });
-    this.setState({ fontLoaded: true });
+
+    setTimeout(() => {
+      this.setState({ fontLoaded: true });
+    }, 200);
   }
 
   render() {
-    const { fontLoaded, isReady } = this.state;
+    const { fontLoaded } = this.state;
 
-    if (!fontLoaded || !isReady) return <Loading />;
+    if (!fontLoaded) return <Loading />;
 
     return (
       <>

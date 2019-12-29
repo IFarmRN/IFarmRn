@@ -10,6 +10,7 @@
   "dependencies": {
     "core-util-is": "^1.0.2",
     "expo": "^36.0.0",
+    "expo-constants": "^8.0.0",
     "expo-image-picker": "^8.0.1",
     "expo-linear-gradient": "^8.0.0",
     "expo-permissions": "^8.0.0",
@@ -23,6 +24,7 @@
     "react-native-indicators": "^0.17.0",
     "react-native-modals": "^0.19.9",
     "react-native-reanimated": "~1.4.0",
+    "react-native-scl-alert": "^1.2.1",
     "react-native-textinput-effects": "^0.5.1",
     "react-native-web": "^0.11.7",
     "react-navigation": "^4.0.10",

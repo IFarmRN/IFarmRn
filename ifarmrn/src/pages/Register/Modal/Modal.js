@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   View,
   Modal,
-  Image
+  Image,
+  Dimensions
 } from "react-native";
 import { Color } from "../../../constants/routes";
 
@@ -23,24 +24,27 @@ export default function InputImage(props) {
 
   selectPicture = async () => {
     await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    const { width, height } = Dimensions.get("screen");
+
     const responseImage = await ImagePicker.launchImageLibraryAsync({
       base64: true,
-      aspect: [10, 10]
+      aspect: [width * 0.8, height * 0.2]
     });
 
-    const { uri, cancelled } = responseImage;
+    const { uri, cancelled, base64 } = responseImage;
 
     if (!cancelled) {
-      setImage(uri);
+      setImage(`data:image/jpeg;base64,${base64}`);
     }
   };
 
   takePicture = async () => {
     await Permissions.askAsync(Permissions.CAMERA);
-    const { cancelled, uri } = await ImagePicker.launchCameraAsync();
+    const { cancelled, uri, base64 } = await ImagePicker.launchCameraAsync();
 
     if (!cancelled) {
-      setImage(uri);
+      setImage(`data:image/jpeg;base64,${base64}`);
     }
   };
 
@@ -89,7 +93,6 @@ export default function InputImage(props) {
             <TouchableOpacity
               onPress={() => {
                 props.changeModal();
-                console.log(image);
                 props.props.setFieldValue("Foto", image);
               }}
               style={[styles.buttonSave]}

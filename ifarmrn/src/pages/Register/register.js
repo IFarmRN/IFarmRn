@@ -40,14 +40,20 @@ function Register(props) {
   };
 
   const dispatch = useDispatch();
-  const data = useSelector(state => state);
 
   buttonSubmitted = async () => {
-    const user = AddUser(values);
-    dispatch(user);
-    console.log(data);
+    handleSubmit();
 
-    handleSubmit;
+    const boll = Object.entries(values).find(([item, value]) => {
+      return value == "";
+    });
+
+    if (boll == undefined) {
+      const user = AddUser(values);
+      dispatch(user);
+
+      props.navigation.navigate("Home");
+    }
   };
 
   changeModal = () => {
@@ -88,7 +94,7 @@ function Register(props) {
       <Input
         name="Contato"
         iconName="mobile"
-        keyboardType="numeric"
+        keyboardType="phone"
         props={props}
       />
 
@@ -155,15 +161,11 @@ export default withFormik({
       .nullable("Escolha uma imagem ")
   }),
 
-  handleSubmit: (values, { setSubmitting }) => {
+  handleSubmit: (values, { props }) => {
     global.dropDownAlertRef.alertWithType(
       "success",
       "Success",
       "Dados cadastrados"
     );
-
-    setTimeout(() => {
-      setSubmitting(false);
-    }, 3000);
   }
 })(Register);
