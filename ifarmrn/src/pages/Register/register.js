@@ -1,3 +1,5 @@
+//Comi o cu de quem  ta lendo
+
 import React, { useState, useEffect } from "react";
 import { View, ScrollView, TouchableOpacity, Text } from "react-native";
 
