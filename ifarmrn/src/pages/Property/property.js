@@ -50,7 +50,7 @@ export default function property() {
         <ScrollView style={styles.scrollView}>
 
           <SCLAlert
-            onRequestClose={() => { }}
+            onRequestClose={() => changeDelete()}
             show={confirmDelete}
             title="Excluir Propriedade"
             theme="danger"
