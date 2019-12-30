@@ -18,11 +18,17 @@ export default function property() {
   const usersData = useSelector(state => state.userData);
 
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [nomeDaPropriedade, setNomeDaPropriedade] = useState(null);
+  const [id, setId] = useState(null);
 
-  changeDelete = () => setConfirmDelete(!confirmDelete);
+  changeDelete = (nomeDaPropriedade = null, id = null) => {
+    setConfirmDelete(!confirmDelete);
+    setNomeDaPropriedade(nomeDaPropriedade);
+    setId(id);
+  };
 
   buttonPressed = () => {
-    setConfirmDelete(!confirmDelete);
+    changeDelete();
   };
 
   const dispatch = useDispatch();
@@ -39,6 +45,31 @@ export default function property() {
         <View style={styles.main} />
         <View style={styles.topView} />
         <ScrollView style={styles.scrollView}>
+
+          <SCLAlert
+            onRequestClose={() => { }}
+            show={confirmDelete}
+            title="Excluir Propriedade"
+            theme="danger"
+            subtitle="Tem certeza que deseja excluir a propriedade?"
+            headerIconComponent={
+              <Icon name="trash-can-outline" size={32} color="#fff" />
+            }
+          >
+            <SCLAlertButton
+              theme="danger"
+              onPress={() => doneButton(id)}
+            >
+              {`Excluir ${nomeDaPropriedade}`}
+            </SCLAlertButton>
+
+            <SCLAlertButton
+              theme="default"
+              onPress={() => changeDelete()}
+            >
+              Cancelar
+                  </SCLAlertButton>
+          </SCLAlert>
           {usersData.map((data, index) => {
             const {
               Contato,
@@ -51,30 +82,7 @@ export default function property() {
 
             return (
               <View key={index} style={styles.userContainer}>
-                <SCLAlert
-                  onRequestClose={() => {}}
-                  show={confirmDelete}
-                  title="Excluir Propriedade"
-                  theme="danger"
-                  subtitle="Tem certeza que deseja excluir a propriedade?"
-                  headerIconComponent={
-                    <Icon name="trash-can-outline" size={32} color="#fff" />
-                  }
-                >
-                  <SCLAlertButton
-                    theme="danger"
-                    onPress={() => doneButton(data.id)}
-                  >
-                    Concluir
-                  </SCLAlertButton>
 
-                  <SCLAlertButton
-                    theme="default"
-                    onPress={() => changeDelete()}
-                  >
-                    Cancelar
-                  </SCLAlertButton>
-                </SCLAlert>
 
                 <View style={styles.viewImage}>
                   <Image
@@ -87,7 +95,7 @@ export default function property() {
                     color={"#F34336"}
                     size={35}
                     style={styles.icon}
-                    onPress={() => changeDelete()}
+                    onPress={() => changeDelete(Nome_da_Propriedade, data.id)}
                   />
                 </View>
                 <Text style={styles.title}>{Nome_da_Propriedade}</Text>
