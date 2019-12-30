@@ -1,8 +1,8 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 13584,
+  "packagerPort": null,
+  "packagerPid": null,
   "expoServerNgrokUrl": "https://3k-cjs.deividreinke.ifarmrn.exp.direct",
   "packagerNgrokUrl": "https://packager.3k-cjs.deividreinke.ifarmrn.exp.direct",
   "ngrokPid": 21576,

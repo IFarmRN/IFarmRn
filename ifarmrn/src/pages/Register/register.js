@@ -94,7 +94,7 @@ function Register(props) {
       <Input
         name="Contato"
         iconName="mobile"
-        keyboardType="phone"
+        keyboardType="phone-pad"
         props={props}
       />
 
