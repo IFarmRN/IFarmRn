@@ -1,3 +1,5 @@
+//comment by Allan Toledo
+
 import React, { Component, useEffect, useState } from "react";
 import {
   View,
@@ -29,6 +31,7 @@ export default function property() {
 
   buttonPressed = () => {
     changeDelete();
+
   };
 
   const dispatch = useDispatch();
@@ -47,7 +50,7 @@ export default function property() {
         <ScrollView style={styles.scrollView}>
 
           <SCLAlert
-            onRequestClose={() => { }}
+            onRequestClose={() => changeDelete()}
             show={confirmDelete}
             title="Excluir Propriedade"
             theme="danger"
