@@ -102,6 +102,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
     fontFamily: "Serif"
   },
+  iconNoPhoto: {
+    alignSelf: "center",
+    marginTop: height * 0.1 - 35 / 2
+  },
   viewNoData: { alignItems: "center", justifyContent: "center", flex: 1 }
 });
 

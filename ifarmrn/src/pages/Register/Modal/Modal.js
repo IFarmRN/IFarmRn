@@ -19,6 +19,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function InputImage(props) {
   const [image, setImage] = useState(null);
+  const [imageLoading, setImageLoading] = useState(null);
 
   useEffect(() => {}, []);
 
@@ -29,22 +30,31 @@ export default function InputImage(props) {
 
     const responseImage = await ImagePicker.launchImageLibraryAsync({
       base64: true,
-      aspect: [width * 0.8, height * 0.2]
+      aspect: [width * 0.8, height * 0.2],
+      quality: 0.5
     });
 
     const { uri, cancelled, base64 } = responseImage;
 
     if (!cancelled) {
-      setImage(`data:image/jpeg;base64,${base64}`);
+      await setImage(null);
+      await setImage(`data:image/jpeg;base64,${base64}`);
     }
   };
 
   takePicture = async () => {
     await Permissions.askAsync(Permissions.CAMERA);
-    const { cancelled, uri, base64 } = await ImagePicker.launchCameraAsync();
+    const { width, height } = Dimensions.get("screen");
+
+    const { cancelled, uri, base64 } = await ImagePicker.launchCameraAsync({
+      base64: true,
+      aspect: [width * 0.8, height * 0.2],
+      quality: 0.1
+    });
 
     if (!cancelled) {
-      setImage(`data:image/jpeg;base64,${base64}`);
+      await setImage(null);
+      await setImage(`data:image/jpeg;base64,${base64}`);
     }
   };
 
@@ -62,7 +72,12 @@ export default function InputImage(props) {
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
             <View style={styles.imageBorder}>
-              <Image style={styles.image} source={{ uri: image }} />
+              <Image
+                style={styles.image}
+                source={{ uri: image || props.userImage }}
+                onLoadStart={() => setImageLoading(true)}
+                onLoad={() => setImageLoading(false)}
+              />
               {image != null && (
                 <Icon
                   name="close-circle-outline"
@@ -71,6 +86,17 @@ export default function InputImage(props) {
                   style={styles.icon}
                   onPress={() => setImage(null)}
                 />
+              )}
+              {imageLoading == true && (
+                <Text
+                  style={{
+                    justifyContent: "center",
+                    textAlign: "center",
+                    flex: 1
+                  }}
+                >
+                  Carregando...
+                </Text>
               )}
             </View>
 

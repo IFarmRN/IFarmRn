@@ -16,4 +16,17 @@ const AddUser = usersData => {
   };
 };
 
-export default AddUser;
+const updateUser = (usersData, user) => {
+  const { id, Date } = user;
+  return {
+    type: "UPDATE_DATA",
+    payload: {
+      usersData,
+      id,
+      Date
+    },
+    id
+  };
+};
+
+export { AddUser, updateUser };
