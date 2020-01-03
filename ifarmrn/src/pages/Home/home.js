@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, ImageBackground, TouchableOpacity } from "react-native";
+import { View, Text, ImageBackground, ScrollView } from "react-native";
 
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -35,7 +35,7 @@ export default class home extends Component {
         colors={[Color.greenDark, Color.green, Color.greenLight]}
         style={{ flex: 1 }}
       >
-        <ImageBackground style={styles.container}>
+        <ScrollView style={{ flex: 1 }}>
           <Text style={[StylesGeneral.text, styles.text]}>IFarm</Text>
           <View style={{ marginBottom: 50 }} />
 
@@ -49,7 +49,7 @@ export default class home extends Component {
           />
           <Button name="Confinamento" onPress={this.livestock} />
           <Button name="Agricultura" onPress={this.agriculture} />
-        </ImageBackground>
+        </ScrollView>
       </LinearGradient>
     );
   }

@@ -1,5 +1,3 @@
-//comment by Allan Toledo
-
 import React, { Component, useEffect, useState } from "react";
 import {
   View,
@@ -16,8 +14,9 @@ import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 
 import styles from "./styles";
 
-export default function property() {
+export default function property(props) {
   const usersData = useSelector(state => state.userData);
+  const dispatch = useDispatch();
 
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [nomeDaPropriedade, setNomeDaPropriedade] = useState(null);
@@ -31,10 +30,7 @@ export default function property() {
 
   buttonPressed = () => {
     changeDelete();
-
   };
-
-  const dispatch = useDispatch();
 
   doneButton = async id => {
     dispatch({ type: "REMOVE_DATA", id });
@@ -48,7 +44,6 @@ export default function property() {
         <View style={styles.main} />
         <View style={styles.topView} />
         <ScrollView style={styles.scrollView}>
-
           <SCLAlert
             onRequestClose={() => changeDelete()}
             show={confirmDelete}
@@ -59,19 +54,13 @@ export default function property() {
               <Icon name="trash-can-outline" size={32} color="#fff" />
             }
           >
-            <SCLAlertButton
-              theme="danger"
-              onPress={() => doneButton(id)}
-            >
+            <SCLAlertButton theme="danger" onPress={() => doneButton(id)}>
               {`Excluir ${nomeDaPropriedade}`}
             </SCLAlertButton>
 
-            <SCLAlertButton
-              theme="default"
-              onPress={() => changeDelete()}
-            >
+            <SCLAlertButton theme="default" onPress={() => changeDelete()}>
               Cancelar
-                  </SCLAlertButton>
+            </SCLAlertButton>
           </SCLAlert>
           {usersData.map((data, index) => {
             const {
@@ -85,21 +74,43 @@ export default function property() {
 
             return (
               <View key={index} style={styles.userContainer}>
-
-
                 <View style={styles.viewImage}>
-                  <Image
-                    source={{ uri: Foto }}
-                    style={styles.image}
-                    resizeMode="cover"
-                  />
-                  <Icon
-                    name="close-circle-outline"
-                    color={"#F34336"}
-                    size={35}
-                    style={styles.icon}
-                    onPress={() => changeDelete(Nome_da_Propriedade, data.id)}
-                  />
+                  {Foto != "" ? (
+                    <>
+                      <Image
+                        source={{ uri: Foto }}
+                        style={styles.image}
+                        resizeMode="cover"
+                      />
+                      <Icon
+                        name="close-circle-outline"
+                        color={"#F34336"}
+                        size={35}
+                        style={styles.icon}
+                        onPress={() =>
+                          changeDelete(Nome_da_Propriedade, data.id)
+                        }
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Icon
+                        name="close-circle-outline"
+                        color={"#F34336"}
+                        size={35}
+                        style={styles.icon}
+                        onPress={() =>
+                          changeDelete(Nome_da_Propriedade, data.id)
+                        }
+                      />
+                      <Icon
+                        name="image-off"
+                        color={"rgba(0,0,0,0.4)"}
+                        size={35}
+                        style={styles.iconNoPhoto}
+                      />
+                    </>
+                  )}
                 </View>
                 <Text style={styles.title}>{Nome_da_Propriedade}</Text>
                 <Text style={styles.text}>{Proprietario}</Text>
@@ -113,7 +124,9 @@ export default function property() {
 
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={() => buttonPressed()}
+                  onPress={() =>
+                    props.navigation.navigate("Register", { id: data.id })
+                  }
                 >
                   <Text style={styles.buttonText}>INFORMAÇÕES</Text>
                 </TouchableOpacity>

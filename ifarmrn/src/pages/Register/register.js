@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, ScrollView, TouchableOpacity, Text } from "react-native";
 
-import { useSelector, useDispatch, useStore } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { withFormik } from "formik";
 import * as Yup from "yup";
 
@@ -9,28 +9,65 @@ import styles from "./styles";
 import Input from "../../components/Input/Input";
 import Loading from "../loading/loading";
 import Modal from "./Modal/Modal";
-import AddUser from "../../store/actions/userActions";
+import { AddUser, updateUser } from "../../store/actions/userActions";
+
+var id = null;
 
 function Register(props) {
   const { setFieldValue, values, handleSubmit } = props;
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [userData, setUserData] = useState({});
+  const [allUser, setAllUser] = useState({});
+
   const [locatization, setLocalization] = useState({
     latitude: 0,
     altitude: 0
   });
 
-  getLocale = async () => {
-    await navigator.geolocation.getCurrentPosition(
+  let state = useSelector(state => state.userData);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    id = props.navigation.getParam("id") || null;
+
+    if (id != null) {
+      (async () => {
+        await setData();
+        await getLocale();
+        await setAllFieldValue();
+      })();
+    }
+  }, []);
+
+  useEffect(() => { }, []);
+
+  setData = () => {
+    const New = state.filter(value => {
+      return value.id == id;
+    });
+
+    setUserData(New[0].usersData);
+    setAllUser(New[0]);
+  };
+
+  setAllFieldValue = () => {
+    setFieldValue("Foto", userData.Foto);
+    setFieldValue("Hectares", userData.Hectares);
+    setFieldValue("Contato", userData.Contato);
+    setFieldValue("Proprietario", userData.Proprietario);
+    setFieldValue("Nome_da_Propriedade", userData.Nome_da_Propriedade);
+    setFieldValue("Localização", userData.Localização);
+  };
+
+  getLocale = () => {
+    navigator.geolocation.getCurrentPosition(
       position => {
         setLocalization({
           latitude: position.coords.latitude,
-          altitude: position.coords.longitude
+          longitude: position.coords.longitude
         });
-        setFieldValue("Localização", {
-          latitude: position.coords.latitude,
-          altitude: position.coords.longitude
-        });
+        setFieldValue("Localização", userData.Localização);
       },
       error => {
         console.log(error);
@@ -39,20 +76,31 @@ function Register(props) {
     );
   };
 
-  const dispatch = useDispatch();
-
-  buttonSubmitted = async () => {
+  buttonSubmitted = () => {
     handleSubmit();
 
     const boll = Object.entries(values).find(([item, value]) => {
       return value == "";
     });
 
-    if (boll == undefined) {
-      const user = AddUser(values);
-      dispatch(user);
+    if (boll == undefined || boll[0] == "Foto") {
+      if (id != null) {
+        const ACTION_UPDATE = updateUser(values, allUser);
 
-      props.navigation.navigate("Home");
+        dispatch(ACTION_UPDATE);
+      } else {
+        const user = AddUser(values);
+        dispatch(user);
+        props.navigation.goBack();
+      }
+
+      global.dropDownAlertRef.alertWithType(
+        "success",
+        "Success",
+        "Dados Salvos"
+      );
+
+      props.navigation.navigate("Property");
     }
   };
 
@@ -63,9 +111,14 @@ function Register(props) {
   return (
     <ScrollView style={styles.container}>
       <View style={{ marginTop: 40 }} />
-
-      <Input name="Proprietario" iconName="user" props={props} />
-
+      <Text style={styles.textAviso}>Obrigatório</Text>
+      <Input
+        value={userData.Proprietario || ""}
+        name="Proprietario"
+        iconName="user"
+        props={props}
+      />
+      <Text style={styles.textAviso}>Obrigatório</Text>
       <TouchableOpacity onPress={() => getLocale()} activeOpacity={1}>
         <Input
           name="Localização"
@@ -83,23 +136,30 @@ function Register(props) {
           }
         />
       </TouchableOpacity>
-
+      <Text style={styles.textAviso}>Obrigatório</Text>
       <Input
+        value={userData.Hectares}
         name="Hectares"
         iconName="map"
         keyboardType="numeric"
         props={props}
       />
-
+      <Text style={styles.textAviso}>Obrigatório</Text>
       <Input
+        value={userData.Contato || ""}
         name="Contato"
         iconName="mobile"
         keyboardType="phone-pad"
         props={props}
       />
-
-      <Input name="Nome_da_Propriedade" iconName="home" props={props} />
-
+      <Text style={styles.textAviso}>Obrigatório</Text>
+      <Input
+        name="Nome_da_Propriedade"
+        iconName="home"
+        props={props}
+        value={userData.Nome_da_Propriedade || ""}
+      />
+      <Text style={styles.textAviso}>Opcional</Text>
       <TouchableOpacity onPress={() => changeModal()} activeOpacity={1}>
         <Input
           props={props}
@@ -122,6 +182,7 @@ function Register(props) {
       </View>
 
       <Modal
+        userImage={userData.Foto}
         changeModal={changeModal}
         props={props}
         modalVisible={modalVisible}
@@ -156,16 +217,8 @@ export default withFormik({
     Localização: Yup.object().required(
       "Aberte o botao de localizacao e aceite os termos"
     ),
-    Foto: Yup.string()
-      .required("Escolha uma imagem ")
-      .nullable("Escolha uma imagem ")
+    Foto: Yup.string().nullable("Escolha uma imagem ")
   }),
 
-  handleSubmit: (values, { props }) => {
-    global.dropDownAlertRef.alertWithType(
-      "success",
-      "Success",
-      "Dados cadastrados"
-    );
-  }
+  handleSubmit: values => { }
 })(Register);

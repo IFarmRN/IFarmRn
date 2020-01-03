@@ -38,6 +38,25 @@ const styles = StyleSheet.create({
     color: Color.green,
     marginBottom: 10,
     fontSize: 16,
+  },
+  picker: {
+    paddingHorizontal: 20,
+    backgroundColor: "#ffffff",
+    borderRadius: 20,
+    padding: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 3
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 3,
+    elevation: 3
+  },
+  itemPicker: {
+    backgroundColor: "#ffffff",
+    borderRadius: 20,
+    padding: 5,
   }
 });
 

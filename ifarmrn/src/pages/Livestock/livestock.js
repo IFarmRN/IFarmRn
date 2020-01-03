@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
-import { View, ScrollView, TouchableOpacity, Text } from "react-native";
+import { View, ScrollView, TouchableOpacity, Text, Picker, Dimensions } from "react-native";
 import Input from "../../components/Input/Input";
+import { Dropdown } from 'react-native-material-dropdown';
+import { Color } from "../../constants/routes";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -24,11 +26,7 @@ function livestock(props) {
     }
   };
 
-  useEffect(() => {
-    var Nc = values["Numero_de_cabeças"] !== null ? 0 : values["Numero_de_cabeças"];
-    var Nd = values["Numero_de_dias_para_tratar"] !== null ? 0 : values["Numero_de_dias_para_tratar"];
-    values["total"] = Nc + Nd;
-  }, [values]);
+
 
 
   return (
@@ -36,19 +34,42 @@ function livestock(props) {
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
           <Text style={styles.title}>Caracteristica da cultura</Text>
+
+          <Text style={styles.text}>Numero de cabeças de gado que irá tratar</Text>
           <Input
             name="Numero_de_cabeças"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
+          <Text style={styles.text}>Numero de cabeças que irá tratar</Text>
           <Input
             name="Numero_de_dias_para_tratar"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
-          <Text style={styles.text}>{`Soma : ${values["total"]}`}</Text>
+          <View style={{ marginBottom: 20, width: Dimensions.get("screen").width, alignItems: "center", justifyContent: "center" }}>
+            <View style={styles.picker}>
+              <Dropdown
+                pickerStyle={styles.itemPicker}
+                containerStyle={{ width: (Dimensions.get("screen").width * 0.85) - 40 }}
+                textColor={Color.green}
+                label='Favorite Fruit'
+                data={[{
+                  value: 'Banana',
+                }, {
+                  value: 'Mango',
+                }, {
+                  value: 'Pear',
+                }]}
+                onChangeText={(value) =>
+                  setFieldValue("animal", value)
+                }
+              />
+            </View>
+          </View>
+          <Text style={styles.text}>{`Animal : ${values["animal"]}`}</Text>
           <Text style={styles.text}>{JSON.stringify(values)}</Text>
         </ScrollView>
       </View>

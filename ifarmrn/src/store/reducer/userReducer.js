@@ -1,12 +1,3 @@
-const initialState = {
-  Proprietario: "",
-  Nome_da_Propriedade: "",
-  Localização: "",
-  Hectares: "",
-  Contato: "",
-  Foto: ""
-};
-
 const userReducer = (state = [], actions) => {
   switch (actions.type) {
     case "ADD_USER_DATA": {
@@ -21,6 +12,15 @@ const userReducer = (state = [], actions) => {
 
       return newState;
     }
+
+    case "UPDATE_DATA": {
+      const newState = state.filter(item => {
+        return item.id != actions.id;
+      });
+
+      return [...newState, actions.payload];
+    }
+
     default:
       return state;
   }
