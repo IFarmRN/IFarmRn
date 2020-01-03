@@ -7,6 +7,8 @@ import EntypoIcon from "@expo/vector-icons/Entypo";
 
 function Input(props) {
   const name1 = props.name.replace(/_/g, " ");
+
+
   return (
     <View pointerEvents={props.editable ? "none" : "auto"}>
       <Fumi
@@ -18,10 +20,7 @@ function Input(props) {
         onChangeText={text => {
           props.props.setFieldValue(props.name, text);
         }}
-        value={
-          props.name == "Foto"
-            ? ""
-            : props.value || props.props.values[props.name]
+        value={props.value || props.props.values[props.name]
         }
         autoCompleteType={"off"}
         label={name1}

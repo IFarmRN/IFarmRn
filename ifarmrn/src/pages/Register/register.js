@@ -76,10 +76,10 @@ function Register(props) {
             locatization.altitude == 0
               ? ""
               : `alt.: ${parseFloat(
-                  JSON.stringify(locatization.altitude)
-                ).toFixed(4)}...     lat.: ${parseFloat(
-                  JSON.stringify(locatization.latitude)
-                ).toFixed(4)}...`
+                JSON.stringify(locatization.altitude)
+              ).toFixed(4)}...     lat.: ${parseFloat(
+                JSON.stringify(locatization.latitude)
+              ).toFixed(4)}...`
           }
         />
       </TouchableOpacity>

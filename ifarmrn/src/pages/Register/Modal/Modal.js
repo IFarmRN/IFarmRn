@@ -20,7 +20,7 @@ import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 export default function InputImage(props) {
   const [image, setImage] = useState(null);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   selectPicture = async () => {
     await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -93,7 +93,7 @@ export default function InputImage(props) {
             <TouchableOpacity
               onPress={() => {
                 props.changeModal();
-                props.props.setFieldValue("Foto", image);
+                props.props.setFieldValue("Foto", "Imagem escolhida");
               }}
               style={[styles.buttonSave]}
             >

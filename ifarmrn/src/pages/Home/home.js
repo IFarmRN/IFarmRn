@@ -22,7 +22,7 @@ export default class home extends Component {
   };
 
   livestock = () => {
-    alert("a");
+    this.props.navigation.navigate("Livestock", {id: null});
   };
 
   agriculture = () => {
@@ -47,7 +47,7 @@ export default class home extends Component {
             name="Lista de Propriedades"
             onPress={this.listOfPropertyes}
           />
-          <Button name="Pecuaria" onPress={this.livestock} />
+          <Button name="Confinamento" onPress={this.livestock} />
           <Button name="Agricultura" onPress={this.agriculture} />
         </ImageBackground>
       </LinearGradient>
