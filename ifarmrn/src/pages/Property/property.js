@@ -93,24 +93,24 @@ export default function property(props) {
                       />
                     </>
                   ) : (
-                    <>
-                      <Icon
-                        name="close-circle-outline"
-                        color={"#F34336"}
-                        size={35}
-                        style={styles.icon}
-                        onPress={() =>
-                          changeDelete(Nome_da_Propriedade, data.id)
-                        }
-                      />
-                      <Icon
-                        name="image-off"
-                        color={"rgba(0,0,0,0.4)"}
-                        size={35}
-                        style={styles.iconNoPhoto}
-                      />
-                    </>
-                  )}
+                      <>
+                        <Icon
+                          name="close-circle-outline"
+                          color={"#F34336"}
+                          size={35}
+                          style={styles.icon}
+                          onPress={() =>
+                            changeDelete(Nome_da_Propriedade, data.id)
+                          }
+                        />
+                        <Icon
+                          name="image-off"
+                          color={"rgba(0,0,0,0.4)"}
+                          size={35}
+                          style={styles.iconNoPhoto}
+                        />
+                      </>
+                    )}
                 </View>
                 <Text style={styles.title}>{Nome_da_Propriedade}</Text>
                 <Text style={styles.text}>{Proprietario}</Text>
@@ -128,7 +128,7 @@ export default function property(props) {
                     props.navigation.navigate("Register", { id: data.id })
                   }
                 >
-                  <Text style={styles.buttonText}>INFORMAÇÕES</Text>
+                  <Text style={styles.buttonText}>EDITAR</Text>
                 </TouchableOpacity>
               </View>
             );

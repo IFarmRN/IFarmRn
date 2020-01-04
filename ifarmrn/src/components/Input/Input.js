@@ -7,8 +7,7 @@ import EntypoIcon from "@expo/vector-icons/Entypo";
 
 function Input(props) {
   const [textValue, setTextValue] = useState("");
-  const name1 = props.name.replace(/_/g, " ");
-
+  const name1 = typeof props.title !== "undefined" ? props.title : props.name.replace(/_/g, " ");
 
   return (
     <View pointerEvents={props.editable ? "none" : "auto"}>

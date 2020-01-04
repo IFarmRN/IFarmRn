@@ -57,7 +57,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     borderRadius: 20,
     padding: 5,
-  }
+  },
+  buttonText: {
+    fontSize: 20,
+    fontFamily: "Comfortaa",
+    color: "#fff",
+    textAlign: "center",
+    justifyContent: "center"
+  },
+  button: {
+    padding: 10,
+    backgroundColor: Color.green,
+    borderRadius: 30,
+    width: 150,
+    marginRight: 26,
+    marginBottom: 20
+  },
+  buttonView: {
+    flexDirection: "row-reverse",
+    width: "100%"
+  },
 });
 
 export default styles;
