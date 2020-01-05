@@ -83,7 +83,7 @@ function Register(props) {
       return value == "";
     });
 
-    if (boll == undefined || boll[0] == "Foto") {
+    if (boll == undefined || boll[0] == "Foto" || boll[0] == "Localização") {
       if (id != null) {
         const ACTION_UPDATE = updateUser(values, allUser);
 
@@ -111,12 +111,14 @@ function Register(props) {
   return (
     <ScrollView style={styles.container}>
       <View style={{ marginTop: 40 }} />
+
       <Input
         value={userData.Proprietario || ""}
         name="Proprietario"
         iconName="user"
         props={props}
       />
+
       <TouchableOpacity onPress={() => getLocale()} activeOpacity={1}>
         <Input
           name="Localização"
@@ -126,14 +128,15 @@ function Register(props) {
           value={
             locatization.altitude == 0
               ? ""
-              : `alt.: ${parseFloat(
-                  JSON.stringify(locatization.altitude)
-                ).toFixed(4)}...     lat.: ${parseFloat(
+              : `lat.: ${parseFloat(
                   JSON.stringify(locatization.latitude)
+                ).toFixed(4)}...     lon.: ${parseFloat(
+                  JSON.stringify(locatization.longitude)
                 ).toFixed(4)}...`
           }
         />
       </TouchableOpacity>
+
       <Input
         value={userData.Hectares}
         name="Hectares"
@@ -141,6 +144,7 @@ function Register(props) {
         keyboardType="numeric"
         props={props}
       />
+
       <Input
         value={userData.Contato || ""}
         name="Contato"
@@ -148,12 +152,14 @@ function Register(props) {
         keyboardType="phone-pad"
         props={props}
       />
+
       <Input
         name="Nome_da_Propriedade"
         iconName="home"
         props={props}
         value={userData.Nome_da_Propriedade || ""}
       />
+
       <TouchableOpacity onPress={() => changeModal()} activeOpacity={1}>
         <Input
           props={props}
@@ -185,7 +191,6 @@ function Register(props) {
     </ScrollView>
   );
 }
-
 export default withFormik({
   mapPropsToValues: () => ({
     Proprietario: "",
@@ -203,7 +208,7 @@ export default withFormik({
     Contato: Yup.number("o contato deve possuir apenas números").required(
       "Não esqueça de preencher"
     ),
-    Hectares: Yup.number("Preencha somento com números").required(
+    Hectares: Yup.number("preencha somento com números").required(
       "Não esqueça de preencher"
     ),
     Nome_da_Propriedade: Yup.string("Preencha somente com caracteres").required(

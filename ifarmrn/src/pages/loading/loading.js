@@ -8,7 +8,6 @@ export default class loading extends Component {
   constructor(props) {
     super(props);
 
-    this.spinValue = new Animated.Value(0);
     this.textValue = new Animated.Value(0.3);
   }
 

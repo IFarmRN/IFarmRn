@@ -21,7 +21,7 @@ export default function InputImage(props) {
   const [image, setImage] = useState(null);
   const [imageLoading, setImageLoading] = useState(null);
 
-  useEffect(() => { }, []);
+  useEffect(() => {}, []);
 
   selectPicture = async () => {
     await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -72,20 +72,22 @@ export default function InputImage(props) {
         <View style={styles.modalContainer}>
           <View style={styles.modalView}>
             <View style={styles.imageBorder}>
-              <Image
-                style={styles.image}
-                source={{ uri: image || props.userImage }}
-                onLoadStart={() => setImageLoading(true)}
-                onLoad={() => setImageLoading(false)}
-              />
               {image != null && (
-                <Icon
-                  name="close-circle-outline"
-                  color={Color.greenDark}
-                  size={35}
-                  style={styles.icon}
-                  onPress={() => setImage(null)}
-                />
+                <>
+                  <Icon
+                    name="close-circle-outline"
+                    color={Color.greenDark}
+                    size={35}
+                    style={styles.icon}
+                    onPress={() => setImage(null)}
+                  />
+                  <Image
+                    style={styles.image}
+                    source={{ uri: image || props.userImage }}
+                    onLoadStart={() => setImageLoading(true)}
+                    onLoad={() => setImageLoading(false)}
+                  />
+                </>
               )}
               {imageLoading == true && (
                 <Text
@@ -119,7 +121,7 @@ export default function InputImage(props) {
             <TouchableOpacity
               onPress={() => {
                 props.changeModal();
-                props.props.setFieldValue("Foto", "Imagem escolhida");
+                props.props.setFieldValue("Foto", image);
               }}
               style={[styles.buttonSave]}
             >

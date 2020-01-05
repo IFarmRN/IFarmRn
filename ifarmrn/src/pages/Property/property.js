@@ -5,7 +5,9 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  Animated,
+  Easing
 } from "react-native";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -21,6 +23,7 @@ export default function property(props) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [nomeDaPropriedade, setNomeDaPropriedade] = useState(null);
   const [id, setId] = useState(null);
+  const [scrollY] = useState(new Animated.Value(0));
 
   changeDelete = (nomeDaPropriedade = null, id = null) => {
     setConfirmDelete(!confirmDelete);
@@ -41,9 +44,26 @@ export default function property(props) {
   if (usersData.length > 0)
     return (
       <>
-        <View style={styles.main} />
-        <View style={styles.topView} />
-        <ScrollView style={styles.scrollView}>
+        <View style={[styles.main]} />
+        <Animated.View
+          style={[
+            styles.topView,
+            {
+              marginTop: scrollY.interpolate({
+                inputRange: [0, 80],
+                outputRange: [80, 0],
+                extrapolate: "clamp"
+              })
+            }
+          ]}
+        />
+        <ScrollView
+          scrollEventThrottle={20}
+          style={styles.scrollView}
+          onScroll={Animated.event([
+            { nativeEvent: { contentOffset: { y: scrollY } } }
+          ])}
+        >
           <SCLAlert
             onRequestClose={() => changeDelete()}
             show={confirmDelete}
