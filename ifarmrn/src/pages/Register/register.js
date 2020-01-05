@@ -167,6 +167,7 @@ function Register(props) {
           iconName="camera"
           keyboardType="numeric"
           editable={false}
+          optional
         />
       </TouchableOpacity>
 
