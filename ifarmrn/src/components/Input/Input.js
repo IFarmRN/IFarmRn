@@ -7,13 +7,7 @@ import EntypoIcon from "@expo/vector-icons/Entypo";
 
 function Input(props) {
   const [textValue, setTextValue] = useState("");
-  const name1 = props.name.replace(/_/g, " ");
-
-  useEffect(() => {
-    setTextValue(props.value);
-  }, [props.value]);
-
-  setValue = async () => setTextValue(props.value);
+  const name1 = typeof props.title !== "undefined" ? props.title : props.name.replace(/_/g, " ");
 
   return (
     <View pointerEvents={props.editable ? "none" : "auto"}>
@@ -27,7 +21,8 @@ function Input(props) {
           setTextValue(text);
           await props.props.setFieldValue(props.name, text);
         }}
-        value={textValue}
+        value={props.value || props.props.values[props.name]
+        }
         autoCompleteType={"off"}
         label={name1}
         autoCorrect={false}
