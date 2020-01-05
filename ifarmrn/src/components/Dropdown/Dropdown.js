@@ -13,6 +13,7 @@ function DropdownList(props) {
       <View style={{ alignItems: "center", justifyContent: "center", width: Dimensions.get("screen").width }}>
         <View style={styles.picker}>
           <Dropdown
+            value={props.value}
             itemTextStyle={{ fontWeight: 'bold', }}
             baseColor={Color.greenLight}
             pickerStyle={styles.itemPicker}

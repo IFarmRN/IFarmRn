@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import { Color } from "../../constants/routes";
 
 const styles = StyleSheet.create({
@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     flexDirection: "row-reverse",
-    width: "100%"
+    width: Dimensions.get("screen").width * 0.85,
+    justifyContent: "space-between"
   },
 });
 

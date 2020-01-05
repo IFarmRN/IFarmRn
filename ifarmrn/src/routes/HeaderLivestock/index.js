@@ -10,7 +10,9 @@ class livestockOptions extends React.Component {
       <View style={styles.container}>
         <View style={styles.row}>
           <TouchableOpacity
-            onPress={() => this.props.navigation.goBack()}
+            onPress={() => {
+              this.props.navigation.goBack();
+            }}
             style={styles.button}
           >
             <Ionicons name="left" size={32} color="green" />

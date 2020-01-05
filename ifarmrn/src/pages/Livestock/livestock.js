@@ -1,5 +1,5 @@
-import React from "react";
-import { View, ScrollView, TouchableOpacity, Text } from "react-native";
+import React, { useEffect } from "react";
+import { View, ScrollView, TouchableOpacity, Text, Dimensions } from "react-native";
 import Input from "../../components/Input/Input";
 
 import { withFormik } from "formik";
@@ -8,9 +8,35 @@ import * as Yup from "yup";
 import styles from "./styles";
 
 function livestock(props) {
+  const { setFieldValue, values, handleSubmit } = props;
+
   buttonSubmitted = async () => {
     props.handleSubmit();
+
+    const boll = Object.entries(values).find(([item, value]) => {
+      return value == "";
+    });
+
+    if (boll == undefined) {
+      props.navigation.dispatch({
+        key: 'Livestock1',
+        type: 'ReplaceCurrentScreen',
+        routeName: 'Livestock1',
+        params: { values: values },
+      });
+    }
   };
+
+  useEffect(() => {
+    fromValues = props.navigation.getParam("values") || null;
+    if (fromValues != null) {
+      Object.keys(fromValues).map(function (key, index) {
+        setFieldValue(key, fromValues[key]);
+      });
+    }
+  }, []);
+
+
 
   return (
     <>
@@ -50,15 +76,17 @@ function livestock(props) {
             keyboardType="numeric"
             props={props}
           />
-          <View style={styles.buttonView}>
-            <TouchableOpacity
-              onPress={() => {
-                buttonSubmitted();
-              }}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>Próximo</Text>
-            </TouchableOpacity>
+          <View style={{ alignItems: "center", justifyContent: "center", width: Dimensions.get("screen").width }}>
+            <View style={styles.buttonView}>
+              <TouchableOpacity
+                onPress={() => {
+                  buttonSubmitted();
+                }}
+                style={[styles.button, { marginRight: 0 }]}
+              >
+                <Text style={styles.buttonText}>Próximo</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -94,6 +122,5 @@ export default withFormik({
   }),
 
   handleSubmit: (values, { props }) => {
-    props.navigation.navigate("Livestock1", { values });
   }
 })(livestock);

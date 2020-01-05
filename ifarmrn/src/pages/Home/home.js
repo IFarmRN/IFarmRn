@@ -22,11 +22,11 @@ export default class home extends Component {
   };
 
   livestock = () => {
-    this.props.navigation.navigate("Livestock", {id: null});
+    this.props.navigation.navigate("Livestock", { id: null });
   };
 
   agriculture = () => {
-    alert("a");
+    alert("Em desenvolvimento");
   };
 
   render() {
