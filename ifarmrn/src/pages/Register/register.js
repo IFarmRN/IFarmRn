@@ -83,7 +83,7 @@ function Register(props) {
       return value == "";
     });
 
-    if (boll == undefined || boll[0] == "Foto") {
+    if (boll == undefined || boll[0] == "Foto" || boll[0] == "Localização") {
       if (id != null) {
         const ACTION_UPDATE = updateUser(values, allUser);
 

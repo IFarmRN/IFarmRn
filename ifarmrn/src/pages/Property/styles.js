@@ -8,12 +8,16 @@ const styles = StyleSheet.create({
     width,
     height,
     position: "absolute",
-    backgroundColor: Color.green
+    backgroundColor: Color.green,
+    left: 0,
+    right: 0,
+    bottom: 0
   },
   topView: {
     width,
     height,
-    marginTop: 120,
+    left: 0,
+    right: 0,
     backgroundColor: Color.gray,
     position: "absolute",
     borderTopLeftRadius: 20,
