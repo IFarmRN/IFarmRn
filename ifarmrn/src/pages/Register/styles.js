@@ -24,14 +24,6 @@ const styles = StyleSheet.create({
   buttonView: {
     flexDirection: "row-reverse",
     width: "100%"
-  },
-  textAviso: {
-    justifyContent: "center",
-    textAlignVertical: "bottom",
-    textAlign: "center",
-    color: Color.greenLight,
-    fontSize: 16,
-
   }
 });
 

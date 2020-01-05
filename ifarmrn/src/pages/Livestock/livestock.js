@@ -1,29 +1,16 @@
-import React, { useEffect } from "react";
-import { View, ScrollView, TouchableOpacity, Text, Picker, Dimensions } from "react-native";
+import React from "react";
+import { View, ScrollView, TouchableOpacity, Text } from "react-native";
 import Input from "../../components/Input/Input";
-import { Dropdown } from 'react-native-material-dropdown';
-import { Color } from "../../constants/routes";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
 
 import styles from "./styles";
+
 function livestock(props) {
-  const { setFieldValue, values, handleSubmit } = props;
-
   buttonSubmitted = async () => {
-    handleSubmit();
-
-    const boll = Object.entries(values).find(([item, value]) => {
-      return value == "";
-    });
-    if (boll == undefined) {
-      props.navigation.navigate("Livestock1", { values: values });
-    }
+    props.handleSubmit();
   };
-
-
-
 
   return (
     <>
@@ -77,7 +64,6 @@ function livestock(props) {
       </View>
     </>
   );
-
 }
 
 export default withFormik({
@@ -86,31 +72,28 @@ export default withFormik({
     Numero_de_dias_para_tratar: "",
     Peso_vivo: "",
     Ganho_de_peso: "",
-    Consumo_diario_porcentagem: "",
-
+    Consumo_diario_porcentagem: ""
   }),
 
-  validationSchema: Yup.object().shape(
-    {
+  validationSchema: Yup.object().shape({
+    Numero_de_cabeças: Yup.number("Precisa conter apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Numero_de_dias_para_tratar: Yup.number(
+      "Precisa conter apenas numeros"
+    ).required("Não esqueça de preencher"),
+    Peso_vivo: Yup.number("Precisa conter apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Ganho_de_peso: Yup.number("Precisa conter apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Consumo_diario_porcentagem: Yup.number(
+      "Precisa conter apenas numeros"
+    ).required("Não esqueça de preencher")
+  }),
 
-      Numero_de_cabeças: Yup.number(
-        "Precisa conter apenas numeros"
-      ).required("Não esqueça de preencher"),
-      Numero_de_dias_para_tratar: Yup.number(
-        "Precisa conter apenas numeros"
-      ).required("Não esqueça de preencher"),
-      Peso_vivo: Yup.number(
-        "Precisa conter apenas numeros"
-      ).required("Não esqueça de preencher"),
-      Ganho_de_peso: Yup.number(
-        "Precisa conter apenas numeros"
-      ).required("Não esqueça de preencher"),
-      Consumo_diario_porcentagem: Yup.number(
-        "Precisa conter apenas numeros"
-      ).required("Não esqueça de preencher"),
-
-    }
-  ),
-
-  handleSubmit: (values, { props }) => { }
+  handleSubmit: (values, { props }) => {
+    props.navigation.navigate("Livestock1", { values });
+  }
 })(livestock);

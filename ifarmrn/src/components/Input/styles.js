@@ -10,9 +10,7 @@ const styles = StyleSheet.create({
   },
   textError: {
     color: "red",
-    marginHorizontal: width * 0.09,
-    fontSize: 13,
-    marginBottom: 10
+    fontSize: 13
   },
   styleGeneral: {
     color: "red",
@@ -29,10 +27,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignSelf: "center"
   },
-  
+
   label: {
     color: Color.greenLight,
     marginLeft: 7
+  },
+  textAviso: {
+    color: Color.greenLight,
+    fontSize: 13
+  },
+  textView: {
+    flexDirection: "row-reverse",
+    marginHorizontal: width * 0.09,
+    marginBottom: 10,
+    justifyContent: "space-between"
   }
 });
 

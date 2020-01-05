@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { View, ScrollView, TouchableOpacity, Text, Picker, Dimensions } from "react-native";
+import { View, ScrollView, TouchableOpacity, Text } from "react-native";
 import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
 import { Color } from "../../constants/routes";
@@ -14,7 +14,7 @@ function livestock(props) {
   useEffect(() => {
     fromValues = props.navigation.getParam("values") || null;
     if (fromValues != null) {
-      Object.keys(fromValues).map(function (key, index) {
+      Object.keys(fromValues).map(function(key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
@@ -27,7 +27,6 @@ function livestock(props) {
       return value == "";
     });
 
-
     if (boll == undefined) {
       console.log("novo values: ");
       console.log(values);
@@ -35,21 +34,19 @@ function livestock(props) {
     }
   };
 
-
-
-
   return (
     <>
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
           <Text style={styles.title}>Dados da cultura forrageira</Text>
+
           <DropdownList
             title="Cultura forrageira"
             name="Cultura_forrageira"
             data={[
               { value: "Milho" },
               { value: "Sorgo Forrageiro" },
-              { value: "Capim Elefante" },
+              { value: "Capim Elefante" }
             ]}
             props={props}
           />
@@ -88,7 +85,6 @@ function livestock(props) {
       </View>
     </>
   );
-
 }
 
 export default withFormik({
@@ -101,28 +97,24 @@ export default withFormik({
     Cultura_forrageira: "",
     Producao: "",
     Densidade: "",
-    Porcentagem_materia_seca: "",
+    Porcentagem_materia_seca: ""
   }),
 
-  validationSchema: Yup.object().shape(
-    {
+  validationSchema: Yup.object().shape({
+    Cultura_forrageira: Yup.string("Erro").required("Não esqueça de preencher"),
 
-      Cultura_forrageira: Yup.string("Erro").required("Não esqueça de preencher"),
+    Producao: Yup.number("Precisa conter apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
 
-      Producao: Yup.number(
-        "Precisa conter apenas numeros"
-      ).required("Não esqueça de preencher"),
+    Densidade: Yup.number("Precisa conter apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
 
-      Densidade: Yup.number(
-        "Precisa conter apenas numeros"
-      ).required("Não esqueça de preencher"),
+    Porcentagem_materia_seca: Yup.number(
+      "Precisa conter apenas numeros"
+    ).required("Não esqueça de preencher")
+  }),
 
-      Porcentagem_materia_seca: Yup.number(
-        "Precisa conter apenas numeros"
-      ).required("Não esqueça de preencher"),
-
-    }
-  ),
-
-  handleSubmit: (values, { props }) => { }
+  handleSubmit: (values, { props }) => {}
 })(livestock);

@@ -66,7 +66,6 @@ export default function property(props) {
             const {
               Contato,
               Foto,
-              Hectares,
               Proprietario,
               Nome_da_Propriedade
             } = data.usersData;
@@ -93,24 +92,24 @@ export default function property(props) {
                       />
                     </>
                   ) : (
-                      <>
-                        <Icon
-                          name="close-circle-outline"
-                          color={"#F34336"}
-                          size={35}
-                          style={styles.icon}
-                          onPress={() =>
-                            changeDelete(Nome_da_Propriedade, data.id)
-                          }
-                        />
-                        <Icon
-                          name="image-off"
-                          color={"rgba(0,0,0,0.4)"}
-                          size={35}
-                          style={styles.iconNoPhoto}
-                        />
-                      </>
-                    )}
+                    <>
+                      <Icon
+                        name="close-circle-outline"
+                        color={"#F34336"}
+                        size={35}
+                        style={styles.icon}
+                        onPress={() =>
+                          changeDelete(Nome_da_Propriedade, data.id)
+                        }
+                      />
+                      <Icon
+                        name="image-off"
+                        color={"rgba(0,0,0,0.4)"}
+                        size={35}
+                        style={styles.iconNoPhoto}
+                      />
+                    </>
+                  )}
                 </View>
                 <Text style={styles.title}>{Nome_da_Propriedade}</Text>
                 <Text style={styles.text}>{Proprietario}</Text>

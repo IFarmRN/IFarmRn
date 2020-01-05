@@ -53,7 +53,8 @@ const stackNavigator = createStackNavigator(
     }
   },
   {
-    initialRouteName: "Livestock"
+    /*     initialRouteName: "Livestock"
+     */
   }
 );
 
