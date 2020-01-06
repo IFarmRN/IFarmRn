@@ -26,7 +26,7 @@ export default class home extends Component {
   };
 
   agriculture = () => {
-    alert("Em desenvolvimento");
+    this.props.navigation.navigate("AgroNavigator");
   };
 
   render() {
@@ -48,6 +48,7 @@ export default class home extends Component {
             onPress={this.listOfPropertyes}
           />
           <Button name="Confinamento" onPress={this.livestock} />
+
           <Button name="Agricultura" onPress={this.agriculture} />
         </ScrollView>
       </LinearGradient>

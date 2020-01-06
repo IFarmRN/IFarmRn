@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { View, ScrollView, TouchableOpacity, Text, Dimensions } from "react-native";
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Text,
+  Dimensions
+} from "react-native";
 import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
 import { Color } from "../../constants/routes";
@@ -13,29 +19,17 @@ function livestock(props) {
   const { setFieldValue, values, handleSubmit } = props;
 
   useEffect(() => {
-    fromValues = props.navigation.getParam("values") || null;
+    const fromValues = props.navigation.getParam("values") || null;
+
     if (fromValues != null) {
-      Object.keys(fromValues).map(function (key, index) {
+      Object.keys(fromValues).map(function(key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
   }, []);
 
-  buttonSubmitted = async () => {
+  buttonSubmitted = () => {
     handleSubmit();
-
-    const boll = Object.entries(values).find(([item, value]) => {
-      return value == "erro";
-    });
-    console.log(boll);
-    if (boll == undefined) {
-      props.navigation.dispatch({
-        key: 'Livestock2',
-        type: 'ReplaceCurrentScreen',
-        routeName: 'Livestock2',
-        params: { values: values },
-      });
-    }
   };
 
   return (
@@ -76,7 +70,13 @@ function livestock(props) {
             keyboardType="numeric"
             props={props}
           />
-          <View style={{ alignItems: "center", justifyContent: "center", width: Dimensions.get("screen").width }}>
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+              width: Dimensions.get("screen").width
+            }}
+          >
             <View style={styles.buttonView}>
               <TouchableOpacity
                 onPress={() => {
@@ -89,10 +89,10 @@ function livestock(props) {
               <TouchableOpacity
                 onPress={() => {
                   props.navigation.dispatch({
-                    key: 'Livestock',
-                    type: 'ReplaceCurrentScreen',
-                    routeName: 'Livestock',
-                    params: { values: values },
+                    key: "Livestock",
+                    type: "ReplaceCurrentScreen",
+                    routeName: "Livestock",
+                    params: { values: values }
                   });
                 }}
                 style={[styles.button, { marginRight: 0 }]}
@@ -136,7 +136,12 @@ export default withFormik({
     ).required("Não esqueça de preencher")
   }),
 
-  handleSubmit: (values, { props }) => { }
+  handleSubmit: (values, { props }) => {
+    props.navigation.dispatch({
+      key: "Livestock2",
+      type: "ReplaceCurrentScreen",
+      routeName: "Livestock2",
+      params: { values: values }
+    });
+  }
 })(livestock);
-
-

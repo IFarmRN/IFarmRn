@@ -12,6 +12,17 @@ import Loading from "./src/pages/loading/loading";
 import { store, persistor } from "./src/store";
 import "./src/configs/statusBarConfig";
 
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "tomato",
+    accent: "yellow"
+  }
+};
+
 export default class App extends React.Component {
   constructor() {
     super();
@@ -48,7 +59,9 @@ export default class App extends React.Component {
         />
         <Provider store={store}>
           <PersistGate loading={<Loading />} persistor={persistor}>
-            <Router />
+            <PaperProvider theme={theme}>
+              <Router />
+            </PaperProvider>
           </PersistGate>
         </Provider>
         {SplashScreen.hide()}

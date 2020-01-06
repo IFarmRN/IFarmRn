@@ -13,7 +13,7 @@ class registerOptions extends React.Component {
             onPress={() => this.props.navigation.goBack()}
             style={styles.button}
           >
-            <Ionicons name="left" size={32} color="green" />
+            <Ionicons name={"left"} size={32} color="green" />
           </TouchableOpacity>
           <Text style={styles.text}> Cadastro </Text>
         </View>
