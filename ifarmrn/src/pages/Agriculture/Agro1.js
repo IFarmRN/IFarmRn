@@ -6,7 +6,7 @@ import styles from "./styles";
 function Index(props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}></Text>
+      <Text style={styles.text}>{global.currentScreenIndex}</Text>
     </View>
   );
 }

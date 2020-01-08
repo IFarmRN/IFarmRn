@@ -3,11 +3,16 @@ import { createSwitchNavigator } from "react-navigation";
 import stackNavigator from "./stackNavigator";
 import AgroNavigator from "./AgroNavigation/agroDrawerNavigator";
 
-const switchNavigator = createSwitchNavigator({
-  AgroNavigator: {
-    screen: AgroNavigator
+const switchNavigator = createSwitchNavigator(
+  {
+    AgroNavigator: {
+      screen: AgroNavigator
+    },
+    stackNavigator
   },
-  stackNavigator
-});
+  {
+    initialRouteName: "AgroNavigator"
+  }
+);
 
 export default switchNavigator;

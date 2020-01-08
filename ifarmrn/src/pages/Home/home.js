@@ -10,7 +10,6 @@ import Button from "../../components/Button";
 export default class home extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
   }
 
   propertyRegistration = () => {
@@ -27,6 +26,7 @@ export default class home extends Component {
 
   agriculture = () => {
     this.props.navigation.navigate("AgroNavigator");
+    global.currentScreenIndex = 0;
   };
 
   render() {

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -9,72 +9,115 @@ import {
 
 import Icon from "@expo/vector-icons/FontAwesome";
 
+import styles from "./styles";
+import { Color } from "../../../constants/routes";
+
 const menuData = [
-  { icon: "home", name: "Home", screenName: "Home", key: 1 },
-  { icon: "users", name: "About", screenName: "About", key: 2 },
+  {
+    icon: "home",
+    name: "Home",
+    screenName: "Agro1"
+  },
+  {
+    icon: "users",
+    name: "About",
+    screenName: "Agro2"
+  },
   {
     icon: "id-card",
     name: "Contact",
-    screenName: "Contact",
-    key: 3
+    screenName: "Agro3"
   }
 ];
 
-class DrawerMenu extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <FlatList
-          data={menuData}
-          renderItem={({ item }) => (
-            <DrawerItem
-              navigation={this.props.navigation}
-              screenName={item.screenName}
-              icon={item.icon}
-              name={item.name}
-              key={item.key}
-            />
-          )}
+function DrawerMenu(props) {
+  return (
+    <View style={styles.container}>
+      <Menu />
+      <Section Title={"Rotas"} />
+
+      {menuData.map((item, index) => (
+        <DrawerItem
+          key={index}
+          navigate={props.navigation.navigate}
+          screenName={item.screenName}
+          icon={item.icon}
+          name={item.name}
+          KEY={index}
+        />
+      ))}
+
+      <Section Title="Home" />
+      <View style={{ flex: 1 }}>
+        <DrawerItem
+          screenName={"Home"}
+          navigate={props.navigation.navigate}
+          icon={"home"}
+          name={"Home"}
+          KEY={12}
         />
       </View>
-    );
-  }
+    </View>
+  );
 }
 
-const DrawerItem = ({ navigation, icon, name, screenName }) => (
-  <TouchableOpacity
-    style={styles.menuItem}
-    onPress={() =>
-      navigation.navigate(`${screenName}`, { isStatusBarHidden: false })
-    }
-  >
-    <Icon name={icon} size={25} color="#333" style={{ margin: 15 }} />
-    <Text style={styles.menuItemText}>{name}</Text>
-  </TouchableOpacity>
+const Menu = () => (
+  <View style={styles.drawerHeader}>
+    <Text style={styles.drawerTitle}>IFarm</Text>
+  </View>
 );
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "rgba(255,255,255,0.43)",
-    paddingTop: 70
-  },
-  menuItem: {
-    flexDirection: "row"
-  },
-  menuItemText: {
-    fontSize: 15,
-    fontWeight: "300",
-    margin: 15
-  },
-  menuItem: {
-    flexDirection: "row"
-  },
-  menuItemText: {
-    fontSize: 15,
-    fontWeight: "300",
-    margin: 15
-  }
-});
+const Section = ({ Title }) => (
+  <>
+    <Line />
+  </>
+);
+
+const Line = () => <View style={styles.line} />;
+
+function DrawerItem({ navigate, KEY, icon, name, screenName }) {
+  buttonPressed = () => {
+    global.currentScreenIndex = KEY;
+
+    navigate(screenName);
+  };
+
+  return (
+    <TouchableOpacity
+      style={[
+        {
+          backgroundColor:
+            global.currentScreenIndex == KEY ? Color.grayDark : Color.gray,
+          margin: 5,
+          borderRadius: 10
+        },
+        styles.menuItem
+      ]}
+      onPress={buttonPressed}
+    >
+      <Icon
+        name={icon}
+        size={25}
+        color={
+          global.currentScreenIndex == KEY ? Color.green : Color.defaultColor
+        }
+        style={{ margin: 15 }}
+      />
+      <Text
+        style={[
+          styles.menuItemText,
+          {
+            color:
+              global.currentScreenIndex === KEY
+                ? Color.green
+                : Color.defaultColor
+          }
+        ]}
+      >
+        {name}
+      </Text>
+    </TouchableOpacity>
+  );
+}
 
 export default DrawerMenu;
