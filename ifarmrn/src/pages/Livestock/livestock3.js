@@ -19,8 +19,7 @@ function livestock(props) {
   const { setFieldValue, values, handleSubmit } = props;
 
   useEffect(() => {
-    const fromValues = props.navigation.getParam("values") || null;
-
+    fromValues = props.navigation.getParam("values") || null;
     if (fromValues != null) {
       Object.keys(fromValues).map(function (key, index) {
         setFieldValue(key, fromValues[key]);
@@ -28,80 +27,67 @@ function livestock(props) {
     }
   }, []);
 
-  buttonSubmitted = () => {
-    handleSubmit();
-  };
+  useEffect(() => {
+    if (values["Velocidade_de_deslocamento"] !== "" && values["Abertura_da_colhedora"] !== "") {
+      let a = parseFloat(values["Abertura_da_colhedora"]);
+      let v = parseFloat(values["Velocidade_de_deslocamento"]);
+      let p = parseFloat(values["Producao"]);
+
+      setFieldValue("Producao_maquina", (((a * v) / 10) * p).toFixed(2));
+    }
+  }, [values["Abertura_da_colhedora"], values["Velocidade_de_deslocamento"]]);
 
   useEffect(() => {
-    switch (values["Cultura_forrageira"]) {
-      case "Milho":
-        setFieldValue("Producao", "40");
-        setFieldValue("Densidade", "650");
-        setFieldValue("Porcentagem_materia_seca", "35");
-        break;
-      case "Sorgo Forrageiro":
-        setFieldValue("Producao", "55");
-        setFieldValue("Densidade", "600");
-        setFieldValue("Porcentagem_materia_seca", "33");
-        break;
-      case "Capim Elefante":
-        setFieldValue("Producao", "70");
-        setFieldValue("Densidade", "420");
-        setFieldValue("Porcentagem_materia_seca", "");
-        break;
-      default:
-        setFieldValue("Producao", "");
-        setFieldValue("Densidade", "");
-        setFieldValue("Porcentagem_materia_seca", "");
-        break;
+    if (values["Producao_maquina"] !== "" && values["Horas_diaria_trabalho"] !== "") {
+      let h = parseFloat(values["Horas_diaria_trabalho"]);
+      let q = parseFloat(values["Quantia_total_massa_verde_ton"]);
+      let p = parseFloat(values["Producao_maquina"]);
+      let d = (((q / p) * 1.15) / h).toFixed(1);
+      setFieldValue("Dias_de_trabalho", d);
     }
-  }, [values["Cultura_forrageira"]])
+  }, [values["Horas_diaria_trabalho"]]);
+
+  buttonSubmitted = async () => {
+    handleSubmit();
+  };
 
   return (
     <>
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
-          <Text style={styles.title}>Dados da cultura forrageira</Text>
+          <Text style={styles.title}>Colhedora</Text>
 
-          <DropdownList
-            value={values["Cultura_forrageira"]}
-            title="Cultura forrageira"
-            name="Cultura_forrageira"
-            data={[
-              { value: "Milho" },
-              { value: "Sorgo Forrageiro" },
-              { value: "Capim Elefante" },
-              { value: "Mombamça" },
-              { value: "Tanzânia" },
-              { value: "Branquiária" },
-              { value: "Cana-de-açucar" }
-            ]}
-            props={props}
-          />
           <Input
-            value={values["Producao"]}
-            name="Producao"
-            title="Produção (ton/ha)"
+            value={values["Abertura_da_colhedora"]}
+            name="Abertura_da_colhedora"
+            title="Abertura da colhedora"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
           <Input
-            value={values["Densidade"]}
-            name="Densidade"
-            title="Densidade (Kg/m³)"
+            value={values["Velocidade_de_deslocamento"]}
+            name="Velocidade_de_deslocamento"
+            title="Velocidade de deslocamento da colhedora (Km/h)"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
+          <Text
+            style={styles.title}
+          >{`Produção da maquina (ton/h): ${values["Producao_maquina"]}`}</Text>
           <Input
-            value={values["Porcentagem_materia_seca"]}
-            name="Porcentagem_materia_seca"
-            title="% de matéria seca"
+            value={values["Horas_diaria_trabalho"]}
+            name="Horas_diaria_trabalho"
+            title="Horas de trabalho diario (h)"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
+          <Text
+            style={styles.title}
+          >{`Dias de trabalho: ${values["Dias_de_trabalho"]}`}</Text>
+
           <View
             style={{
               alignItems: "center",
@@ -121,9 +107,9 @@ function livestock(props) {
               <TouchableOpacity
                 onPress={() => {
                   props.navigation.dispatch({
-                    key: "Livestock",
+                    key: "Livestock2",
                     type: "ReplaceCurrentScreen",
-                    routeName: "Livestock",
+                    routeName: "Livestock2",
                     params: { values: values }
                   });
                 }}
@@ -141,33 +127,30 @@ function livestock(props) {
 
 export default withFormik({
   mapPropsToValues: () => ({
-    Cultura_forrageira: "",
-    Producao: "",
-    Densidade: "",
-    Porcentagem_materia_seca: ""
+    Abertura_da_colhedora: "",
+    Producao_maquina: "",
+    Velocidade_de_deslocamento: "",
+    Horas_diaria_trabalho: "",
+    Dias_de_trabalho: "",
   }),
 
   validationSchema: Yup.object().shape({
-    Cultura_forrageira: Yup.string("Erro").required("Não esqueça de preencher"),
-
-    Producao: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
+    Abertura_da_colhedora: Yup.string("Use apenas numeros e ponto no lugar de virgula").required(
       "Não esqueça de preencher"
     ),
-
-    Densidade: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
+    Velocidade_de_deslocamento: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
       "Não esqueça de preencher"
     ),
-
-    Porcentagem_materia_seca: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher")
+    Horas_diaria_trabalho: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
+      "Não esqueça de preencher"
+    ),
   }),
 
   handleSubmit: (values, { props }) => {
     props.navigation.dispatch({
-      key: "Livestock2",
+      key: "Livestock4",
       type: "ReplaceCurrentScreen",
-      routeName: "Livestock2",
+      routeName: "Livestock4",
       params: { values: values }
     });
   }

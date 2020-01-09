@@ -21,9 +21,9 @@ function DropdownList(props) {
             textColor={Color.green}
             label={label}
             data={props.data}
-            onChangeText={async value => {
+            onChangeText={value => {
               setTextValue(value);
-              await props.props.setFieldValue(props.name, value);
+              props.props.setFieldValue(props.name, value);
             }}
           />
         </View>

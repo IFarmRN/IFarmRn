@@ -8,6 +8,8 @@ const switchNavigator = createSwitchNavigator({
     screen: AgroNavigator
   },
   stackNavigator
+}, {
+  initialRouteName: "stackNavigator"
 });
 
 export default switchNavigator;

@@ -10,6 +10,10 @@ import Loading from "../pages/loading/loading";
 import Livestock from "../pages/Livestock/livestock";
 import Livestock1 from "../pages/Livestock/livestock1";
 import Livestock2 from "../pages/Livestock/livestock2";
+import Livestock3 from "../pages/Livestock/livestock3";
+import Livestock4 from "../pages/Livestock/livestock4";
+import Livestock5 from "../pages/Livestock/livestock5";
+import Livestock6 from "../pages/Livestock/livestock6";
 
 import LivestockHeader from "./HeaderLivestock";
 import RegisterHeader from "./HeaderRegister";
@@ -59,7 +63,33 @@ const stackNavigator = createStackNavigator({
     navigationOptions: {
       header: () => <LivestockHeader />
     }
+  },
+  Livestock3: {
+    screen: Livestock3,
+    navigationOptions: {
+      header: () => <LivestockHeader />
+    }
+  },
+  Livestock4: {
+    screen: Livestock4,
+    navigationOptions: {
+      header: () => <LivestockHeader />
+    }
+  },
+  Livestock5: {
+    screen: Livestock5,
+    navigationOptions: {
+      header: () => <LivestockHeader />
+    }
+  },
+  Livestock6: {
+    screen: Livestock6,
+    navigationOptions: {
+      header: () => <LivestockHeader />
+    }
   }
+}, {
+  // initialRouteName: "Livestock3"
 });
 
 const prevGetStateForActionHomeStack = stackNavigator.router.getStateForAction;

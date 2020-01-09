@@ -19,8 +19,7 @@ function livestock(props) {
   const { setFieldValue, values, handleSubmit } = props;
 
   useEffect(() => {
-    const fromValues = props.navigation.getParam("values") || null;
-
+    fromValues = props.navigation.getParam("values") || null;
     if (fromValues != null) {
       Object.keys(fromValues).map(function (key, index) {
         setFieldValue(key, fromValues[key]);
@@ -28,80 +27,80 @@ function livestock(props) {
     }
   }, []);
 
-  buttonSubmitted = () => {
-    handleSubmit();
-  };
+  useEffect(() => {
+    let q = parseFloat(values["Quantia_total_massa_verde_ton"]);
+    let d = parseFloat(values["Densidade"]);
+    let s = parseFloat(values["Quantidade_silo"]);
+    let v = (((q * 1000) / d) / s).toFixed(2);
+
+    if (!isNaN(v)) {
+      setFieldValue("Volume_silo", v);
+    }
+  }, [values["Quantidade_silo"]]);
 
   useEffect(() => {
-    switch (values["Cultura_forrageira"]) {
-      case "Milho":
-        setFieldValue("Producao", "40");
-        setFieldValue("Densidade", "650");
-        setFieldValue("Porcentagem_materia_seca", "35");
-        break;
-      case "Sorgo Forrageiro":
-        setFieldValue("Producao", "55");
-        setFieldValue("Densidade", "600");
-        setFieldValue("Porcentagem_materia_seca", "33");
-        break;
-      case "Capim Elefante":
-        setFieldValue("Producao", "70");
-        setFieldValue("Densidade", "420");
-        setFieldValue("Porcentagem_materia_seca", "");
-        break;
-      default:
-        setFieldValue("Producao", "");
-        setFieldValue("Densidade", "");
-        setFieldValue("Porcentagem_materia_seca", "");
-        break;
+    let v = parseFloat(values["Volume_silo"]);
+    let b2 = parseFloat(values["Base_maior"]);
+    let b1 = parseFloat(values["Base_menor"]);
+    let a = parseFloat(values["Altura"]);
+    let aa = (((b1 + b2) * a) / 2);
+    let c = (v / aa).toFixed(2);
+    if (!isNaN(c) && !isNaN(aa)) {
+      setFieldValue("Comprimento", c)
+      setFieldValue("Area", aa.toFixed(2));
     }
-  }, [values["Cultura_forrageira"]])
+
+  }, [values["Volume_silo"], values["Base_maior"], values["Base_menor"], values["Altura"]])
+
+  buttonSubmitted = async () => {
+    handleSubmit();
+  };
 
   return (
     <>
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
-          <Text style={styles.title}>Dados da cultura forrageira</Text>
+          <Text style={styles.title}>Colhedora</Text>
 
-          <DropdownList
-            value={values["Cultura_forrageira"]}
-            title="Cultura forrageira"
-            name="Cultura_forrageira"
-            data={[
-              { value: "Milho" },
-              { value: "Sorgo Forrageiro" },
-              { value: "Capim Elefante" },
-              { value: "Mombamça" },
-              { value: "Tanzânia" },
-              { value: "Branquiária" },
-              { value: "Cana-de-açucar" }
-            ]}
+          <Input
+            value={values["Quantidade_silo"]}
+            name="Quantidade_silo"
+            title="Quantidade de silo"
+            iconName="calculator"
+            keyboardType="numeric"
             props={props}
           />
+
           <Input
-            value={values["Producao"]}
-            name="Producao"
-            title="Produção (ton/ha)"
+            value={values["Base_maior"]}
+            name="Base_maior"
+            title="Base maior (m)"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
           <Input
-            value={values["Densidade"]}
-            name="Densidade"
-            title="Densidade (Kg/m³)"
+            value={values["Base_menor"]}
+            name="Base_menor"
+            title="Base menor (m)"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
           <Input
-            value={values["Porcentagem_materia_seca"]}
-            name="Porcentagem_materia_seca"
-            title="% de matéria seca"
+            value={values["Altura"]}
+            name="Altura"
+            title="Altura (m)"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
+          <Text
+            style={styles.title}
+          >{`Volume da silagem (m³): ${values["Volume_silo"]}`}</Text>
+          <Text
+            style={styles.title}
+          >{`Comprimento (m): ${values["Comprimento"]}`}</Text>
           <View
             style={{
               alignItems: "center",
@@ -121,9 +120,9 @@ function livestock(props) {
               <TouchableOpacity
                 onPress={() => {
                   props.navigation.dispatch({
-                    key: "Livestock",
+                    key: "Livestock3",
                     type: "ReplaceCurrentScreen",
-                    routeName: "Livestock",
+                    routeName: "Livestock3",
                     params: { values: values }
                   });
                 }}
@@ -141,33 +140,35 @@ function livestock(props) {
 
 export default withFormik({
   mapPropsToValues: () => ({
-    Cultura_forrageira: "",
-    Producao: "",
-    Densidade: "",
-    Porcentagem_materia_seca: ""
+    Quantidade_silo: "",
+    Base_maior: "",
+    Base_menor: "",
+    Altura: "",
+    Area: "",
+    Volume_silo: "",
+    Comprimento: "",
   }),
 
   validationSchema: Yup.object().shape({
-    Cultura_forrageira: Yup.string("Erro").required("Não esqueça de preencher"),
-
-    Producao: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
+    Quantidade_silo: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
       "Não esqueça de preencher"
     ),
-
-    Densidade: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
+    Base_maior: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
       "Não esqueça de preencher"
     ),
-
-    Porcentagem_materia_seca: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher")
+    Base_menor: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
+      "Não esqueça de preencher"
+    ),
+    Altura: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
+      "Não esqueça de preencher"
+    ),
   }),
 
   handleSubmit: (values, { props }) => {
     props.navigation.dispatch({
-      key: "Livestock2",
+      key: "Livestock5",
       type: "ReplaceCurrentScreen",
-      routeName: "Livestock2",
+      routeName: "Livestock5",
       params: { values: values }
     });
   }
