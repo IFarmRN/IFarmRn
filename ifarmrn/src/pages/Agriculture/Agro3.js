@@ -1,17 +1,14 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 
-export default class Agro3 extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+import styles from "./styles";
 
-  render() {
-    return (
-      <View>
-        <Text> Agro3 </Text>
-      </View>
-    );
-  }
+function Index(props) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>{global.currentScreenIndex}</Text>
+    </View>
+  );
 }
+
+export default Index;
