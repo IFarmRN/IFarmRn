@@ -7,15 +7,8 @@ import Property from "../pages/Property/property";
 import Register from "../pages/Register/register";
 import Loading from "../pages/loading/loading";
 
-import Livestock from "../pages/Livestock/livestock";
-import Livestock1 from "../pages/Livestock/livestock1";
-import Livestock2 from "../pages/Livestock/livestock2";
-
-import LivestockHeader from "./HeaderLivestock";
 import RegisterHeader from "./HeaderRegister";
 import PropertyHeader from "./HeaderProperty";
-
-import AgroNavigator from "./AgroNavigation/agroDrawerNavigator";
 
 const stackNavigator = createStackNavigator({
   Home: {
@@ -41,27 +34,9 @@ const stackNavigator = createStackNavigator({
     navigationOptions: {
       header: () => <PropertyHeader />
     }
-  },
-  Livestock: {
-    screen: Livestock,
-    navigationOptions: {
-      header: () => <LivestockHeader />
-    }
-  },
-  Livestock1: {
-    screen: Livestock1,
-    navigationOptions: {
-      header: () => <LivestockHeader />
-    }
-  },
-  Livestock2: {
-    screen: Livestock2,
-    navigationOptions: {
-      header: () => <LivestockHeader />
-    }
   }
 });
-
+/*
 const prevGetStateForActionHomeStack = stackNavigator.router.getStateForAction;
 stackNavigator.router.getStateForAction = (action, state) => {
   if (state && action.type === "ReplaceCurrentScreen") {
@@ -75,5 +50,5 @@ stackNavigator.router.getStateForAction = (action, state) => {
   }
   return prevGetStateForActionHomeStack(action, state);
 };
-
+ */
 export default stackNavigator;

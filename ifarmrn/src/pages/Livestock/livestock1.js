@@ -87,14 +87,9 @@ function livestock(props) {
                 <Text style={styles.buttonText}>Próximo</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
-                  props.navigation.dispatch({
-                    key: "Livestock",
-                    type: "ReplaceCurrentScreen",
-                    routeName: "Livestock",
-                    params: { values: values }
-                  });
-                }}
+                onPress={() =>
+                  props.navigation.navigate("Livestock2", { values })
+                }
                 style={[styles.button, { marginRight: 0 }]}
               >
                 <Text style={styles.buttonText}>Anterior</Text>
@@ -137,11 +132,6 @@ export default withFormik({
   }),
 
   handleSubmit: (values, { props }) => {
-    props.navigation.dispatch({
-      key: "Livestock2",
-      type: "ReplaceCurrentScreen",
-      routeName: "Livestock2",
-      params: { values: values }
-    });
+    props.navigation.navigate("Livestock2", { values });
   }
 })(livestock);

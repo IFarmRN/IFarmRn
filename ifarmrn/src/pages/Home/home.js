@@ -21,7 +21,8 @@ export default class home extends Component {
   };
 
   livestock = () => {
-    this.props.navigation.navigate("Livestock", { id: null });
+    this.props.navigation.navigate("LivestockNavigator", { id: null });
+    global.currentScreenIndex = 0;
   };
 
   agriculture = () => {

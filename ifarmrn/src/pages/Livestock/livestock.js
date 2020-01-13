@@ -119,11 +119,6 @@ export default withFormik({
   }),
 
   handleSubmit: (values, { props }) => {
-    props.navigation.dispatch({
-      key: "Livestock1",
-      type: "ReplaceCurrentScreen",
-      routeName: "Livestock1",
-      params: { values: values }
-    });
+    props.navigation.navigate("Livestock1", { values });
   }
 })(livestock);
