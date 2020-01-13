@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
@@ -7,6 +7,7 @@ import {
   Dimensions
 } from "react-native";
 import Input from "../../components/Input/Input";
+import DropdownList from "../../components/Dropdown/Dropdown";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -14,59 +15,146 @@ import * as Yup from "yup";
 import styles from "./styles";
 
 function livestock(props) {
-  const { setFieldValue } = props;
+  const { setFieldValue, values } = props;
+
+  const [dataPeso, setDataPeso] = useState([]);
+  const [count, setCount] = useState(0);
 
   buttonSubmitted = async () => {
     props.handleSubmit();
   };
 
   useEffect(() => {
-    fromValues = props.navigation.getParam("values") || null;
+    const fromValues = props.navigation.getParam("values") || null;
+
     if (fromValues != null) {
-      Object.keys(fromValues).map(function(key, index) {
+      Object.keys(fromValues).map(function (key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
   }, []);
+
+  useEffect(() => {
+    dataPeso.forEach(element => {
+      if (element["value"] === values["Ganho_de_peso"])
+        setFieldValue("Consumo_diario_porcentagem", element["consumo"]);
+    });
+  }, [values["Ganho_de_peso"]])
+
+
+  useEffect(() => {
+    let peso = values["Peso_vivo"];
+
+    console.log(count);
+    if (count < 2) {
+      setCount(count + 1);
+    } else {
+      setFieldValue("Ganho_de_peso", "");
+      setFieldValue("Consumo_diario_porcentagem", "");
+    }
+
+
+    switch (peso) {
+      case 250:
+        setDataPeso([
+          { value: 0, consumo: 1.8 },
+          { value: 500, consumo: 2.5 },
+          { value: 750, consumo: 2.6 },
+          { value: 1000, consumo: 2.6 },
+        ]);
+        break;
+      case 300:
+        setDataPeso([
+          { value: 0, consumo: 1.7 },
+          { value: 500, consumo: 2.3 },
+          { value: 750, consumo: 2.5 },
+          { value: 1000, consumo: 2.5 },
+        ]);
+        break;
+      case 350:
+        setDataPeso([
+          { value: 0, consumo: 1.6 },
+          { value: 500, consumo: 2.3 },
+          { value: 750, consumo: 2.4 },
+          { value: 1000, consumo: 2.4 },
+          { value: 1200, consumo: 2.4 }
+        ]);
+        break;
+      case 400:
+        setDataPeso([
+          { value: 0, consumo: 1.6 },
+          { value: 500, consumo: 2.3 },
+          { value: 750, consumo: 2.3 },
+          { value: 1000, consumo: 2.3 },
+          { value: 1300, consumo: 2.3 }
+        ]);
+        break;
+      case 450:
+        setDataPeso([
+          { value: 0, consumo: 1.5 },
+          { value: 750, consumo: 2.2 },
+          { value: 1000, consumo: 2.3 },
+          { value: 1300, consumo: 2.2 }
+        ]);
+        break;
+      case 500:
+        setDataPeso([
+          { value: 0, consumo: 1.5 },
+          { value: 750, consumo: 2.2 },
+          { value: 1000, consumo: 2.2 },
+          { value: 1300, consumo: 2.2 },
+          { value: 1400, consumo: 2.1 }
+        ]);
+        break;
+      default:
+        setDataPeso([{ value: "Escolha um peso primeiro" }]);
+        break;
+    }
+
+  }, [values["Peso_vivo"]]);
 
   return (
     <>
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
           <Text style={styles.title}>Caracteristicas do confinamento</Text>
+          <Text style={styles.text}>Utilize ponto no lugar da virgula</Text>
           <Input
+            value={values["Numero_de_cabeças"]}
             name="Numero_de_cabeças"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
           <Input
+            value={values["Numero_de_dias_para_tratar"]}
             name="Numero_de_dias_para_tratar"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
-          <Input
+          <DropdownList
+            value={values["Peso_vivo"]}
             name="Peso_vivo"
             title="Peso vivo (Kg)"
-            iconName="calculator"
-            keyboardType="numeric"
+            data={[
+              { value: 250 },
+              { value: 300 },
+              { value: 350 },
+              { value: 400 },
+              { value: 450 },
+              { value: 500 }
+            ]}
             props={props}
           />
-          <Input
+          <DropdownList
+            value={values["Ganho_de_peso"]}
+            title="Ganho de peso"
             name="Ganho_de_peso"
-            title="Ganho de Peso (g/dia)"
-            iconName="calculator"
-            keyboardType="numeric"
+            data={dataPeso}
             props={props}
           />
-          <Input
-            name="Consumo_diario_porcentagem"
-            title="Consumo diário em % do peso"
-            iconName="calculator"
-            keyboardType="numeric"
-            props={props}
-          />
+          <Text style={styles.title}>{`Porcentagem de comsumo diario: ${values["Consumo_diario_porcentagem"]}`}</Text>
           <View
             style={{
               alignItems: "center",
@@ -101,20 +189,20 @@ export default withFormik({
   }),
 
   validationSchema: Yup.object().shape({
-    Numero_de_cabeças: Yup.number("Precisa conter apenas numeros").required(
+    Numero_de_cabeças: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
       "Não esqueça de preencher"
     ),
     Numero_de_dias_para_tratar: Yup.number(
-      "Precisa conter apenas numeros"
+      "Use apenas numeros e ponto no lugar de virgula"
     ).required("Não esqueça de preencher"),
-    Peso_vivo: Yup.number("Precisa conter apenas numeros").required(
+    Peso_vivo: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
       "Não esqueça de preencher"
     ),
-    Ganho_de_peso: Yup.number("Precisa conter apenas numeros").required(
+    Ganho_de_peso: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
       "Não esqueça de preencher"
     ),
     Consumo_diario_porcentagem: Yup.number(
-      "Precisa conter apenas numeros"
+      "Use apenas numeros e ponto no lugar de virgula"
     ).required("Não esqueça de preencher")
   }),
 

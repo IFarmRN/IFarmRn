@@ -16,7 +16,6 @@ function Input(props) {
     setTextValue(props.value);
   }, [props.value]);
 
-  setValue = async () => setTextValue(props.value);
 
   return (
     <View pointerEvents={props.editable ? "none" : "auto"}>
@@ -26,9 +25,9 @@ function Input(props) {
         labelStyle={styles.label}
         style={styles.styleGeneral}
         inputStyle={styles.inputStyle}
-        onChangeText={async text => {
+        onChangeText={ text => {
           setTextValue(text);
-          await props.props.setFieldValue(props.name, text);
+          props.props.setFieldValue(props.name, text);
         }}
         value={textValue}
         autoCompleteType={"off"}

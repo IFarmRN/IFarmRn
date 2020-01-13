@@ -40,7 +40,6 @@ function Register(props) {
     }
   }, []);
 
-  useEffect(() => {}, []);
 
   setData = () => {
     const New = state.filter(value => {

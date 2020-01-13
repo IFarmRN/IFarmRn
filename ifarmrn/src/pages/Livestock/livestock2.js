@@ -21,30 +21,53 @@ function livestock(props) {
   useEffect(() => {
     fromValues = props.navigation.getParam("values") || null;
     if (fromValues != null) {
-      Object.keys(fromValues).map(function(key, index) {
+      Object.keys(fromValues).map(function (key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
   }, []);
 
   useEffect(() => {
+    p1 = 0, p2 = 0;
     switch (values["Performance_produtiva_animal"]) {
       case "Alta performance produtiva":
         setFieldValue("Porcentagem_concentrado", 40);
         setFieldValue("Porcentagem_volumoso", 60);
+        p1 = 40;
+        p2 = 60;
         break;
       case "Média performance produtiva":
         setFieldValue("Porcentagem_concentrado", 50);
         setFieldValue("Porcentagem_volumoso", 50);
+        p1 = 50;
+        p2 = 50;
         break;
       case "Baixa performance produtiva":
         setFieldValue("Porcentagem_concentrado", 30);
         setFieldValue("Porcentagem_volumoso", 70);
+        p1 = 30;
+        p2 = 70;
         break;
     }
+    let c1 = parseFloat(values["Peso_vivo"]) * parseFloat(values["Consumo_diario_porcentagem"]) * 0.01;
+    let c2 = c1 * p2 * 0.01;
+    let c3 = c2 / (parseFloat(values["Porcentagem_materia_seca"]) * 0.01);
+    let c4 =
+      parseFloat(values["Numero_de_cabeças"]) *
+      parseFloat(values["Numero_de_dias_para_tratar"]) *
+      c3 *
+      1.1 *
+      0.001;
+    let c5 = c4 / parseFloat(values["Producao"]);
+
+    setFieldValue("Consumo_med_massa_seca_por_cabeça_dia", c1.toFixed(2));
+    setFieldValue("Consumo_med_massa_seca_de_silagem_por_cabeça_dia", c2.toFixed(2));
+    setFieldValue("Consumo_med_massa_verde_por_cabeça_dia", c3.toFixed(2));
+    setFieldValue("Quantia_total_massa_verde_ton", c4.toFixed(2));
+    setFieldValue("Area_plantada", c5.toFixed(2));
   }, [values["Performance_produtiva_animal"]]);
 
-  buttonSubmitted = async () => {
+  buttonSubmitted = () => {
     handleSubmit();
   };
 
@@ -66,10 +89,10 @@ function livestock(props) {
           />
           <Text
             style={styles.title}
-          >{`Volumoso(%): ${values["Porcentagem_volumoso"]}`}</Text>
+          >{`Volumoso (%): ${values["Porcentagem_volumoso"]}`}</Text>
           <Text
             style={styles.title}
-          >{`Concentrado(%): ${values["Porcentagem_concentrado"]}`}</Text>
+          >{`Concentrado (%): ${values["Porcentagem_concentrado"]}`}</Text>
           <View
             style={{
               alignItems: "center",
@@ -109,24 +132,9 @@ function livestock(props) {
 
 export default withFormik({
   mapPropsToValues: () => ({
-    Performance_produtiva_animal: ""
-    /*     Numero_de_cabeças: "",
-    Numero_de_dias_para_tratar: "",
-    Peso_vivo: "",
-    Ganho_de_peso: "",
-    Consumo_diario_porcentagem: "",
-    Cultura_forrageira: "",
-    Producao: "",
-    Densidade: "",
-    Porcentagem_materia_seca: "",
-    Porcentagem_volumoso: "",
-    Porcentagem_concentrado: "",
     Performance_produtiva_animal: "",
-    Consumo_med_massa_seca_por_cabeça_dia: "",
-    Consumo_med_massa_seca_de_silagem_por_cabeça_dia: "",
-    Consumo_med_massa_verde_por_cabeça_dia: "",
-    Quantia_total_massa_verde_ton: "",
-    Area_plantada: "", */
+    Porcentagem_concentrado: "",
+    Porcentagem_volumoso: "",
   }),
 
   validationSchema: Yup.object().shape({
@@ -136,27 +144,12 @@ export default withFormik({
   }),
 
   handleSubmit: (values, { props }) => {
-    let c1 = values["Peso_vivo"] * values["Consumo_diario_porcentagem"] * 0.01;
-    let c2 = c1 * values["Porcentagem_volumoso"] * 0.01;
-    let c3 = c2 / (values["Porcentagem_materia_seca"] * 0.01);
-    let c4 =
-      values["Numero_de_cabeças"] *
-      values["Numero_de_dias_para_tratar"] *
-      c3 *
-      1.1 *
-      0.001;
-    let c5 = c4 / values["Producao"];
+    props.navigation.dispatch({
+      key: "Livestock3",
+      type: "ReplaceCurrentScreen",
+      routeName: "Livestock3",
+      params: { values: values }
+    });
 
-    setFieldValue("Consumo_med_massa_seca_por_cabeça_dia", c1);
-    setFieldValue("Consumo_med_massa_seca_de_silagem_por_cabeça_dia", c2);
-    setFieldValue("Consumo_med_massa_verde_por_cabeça_dia", c3);
-    setFieldValue("Quantia_total_massa_verde_ton", c4);
-    setFieldValue("Area_plantada", c5);
-
-    console.log("novo values: ");
-    setTimeout(function() {
-      console.log(values);
-    }, 2000);
-    //props.navigation.navigate("Livestock1", [values]);
   }
 })(livestock);
