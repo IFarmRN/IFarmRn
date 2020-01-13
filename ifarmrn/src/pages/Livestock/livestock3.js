@@ -9,7 +9,6 @@ import {
 import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
 import { Color } from "../../constants/routes";
-import LivestockHeader from "../../routes/HeaderLivestock/index";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -21,14 +20,17 @@ function livestock(props) {
   useEffect(() => {
     fromValues = props.navigation.getParam("values") || null;
     if (fromValues != null) {
-      Object.keys(fromValues).map(function (key, index) {
+      Object.keys(fromValues).map(function(key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
   }, []);
 
   useEffect(() => {
-    if (values["Velocidade_de_deslocamento"] !== "" && values["Abertura_da_colhedora"] !== "") {
+    if (
+      values["Velocidade_de_deslocamento"] !== "" &&
+      values["Abertura_da_colhedora"] !== ""
+    ) {
       let a = parseFloat(values["Abertura_da_colhedora"]);
       let v = parseFloat(values["Velocidade_de_deslocamento"]);
       let p = parseFloat(values["Producao"]);
@@ -38,7 +40,10 @@ function livestock(props) {
   }, [values["Abertura_da_colhedora"], values["Velocidade_de_deslocamento"]]);
 
   useEffect(() => {
-    if (values["Producao_maquina"] !== "" && values["Horas_diaria_trabalho"] !== "") {
+    if (
+      values["Producao_maquina"] !== "" &&
+      values["Horas_diaria_trabalho"] !== ""
+    ) {
       let h = parseFloat(values["Horas_diaria_trabalho"]);
       let q = parseFloat(values["Quantia_total_massa_verde_ton"]);
       let p = parseFloat(values["Producao_maquina"]);
@@ -131,19 +136,19 @@ export default withFormik({
     Producao_maquina: "",
     Velocidade_de_deslocamento: "",
     Horas_diaria_trabalho: "",
-    Dias_de_trabalho: "",
+    Dias_de_trabalho: ""
   }),
 
   validationSchema: Yup.object().shape({
-    Abertura_da_colhedora: Yup.string("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
-    Velocidade_de_deslocamento: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
-    Horas_diaria_trabalho: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
+    Abertura_da_colhedora: Yup.string(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
+    Velocidade_de_deslocamento: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
+    Horas_diaria_trabalho: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher")
   }),
 
   handleSubmit: (values, { props }) => {

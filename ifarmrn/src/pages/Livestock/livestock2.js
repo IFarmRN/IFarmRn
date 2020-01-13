@@ -9,7 +9,6 @@ import {
 import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
 import { Color } from "../../constants/routes";
-import LivestockHeader from "../../routes/HeaderLivestock/index";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -21,14 +20,14 @@ function livestock(props) {
   useEffect(() => {
     fromValues = props.navigation.getParam("values") || null;
     if (fromValues != null) {
-      Object.keys(fromValues).map(function (key, index) {
+      Object.keys(fromValues).map(function(key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
   }, []);
 
   useEffect(() => {
-    p1 = 0, p2 = 0;
+    (p1 = 0), (p2 = 0);
     switch (values["Performance_produtiva_animal"]) {
       case "Alta performance produtiva":
         setFieldValue("Porcentagem_concentrado", 40);
@@ -49,7 +48,10 @@ function livestock(props) {
         p2 = 70;
         break;
     }
-    let c1 = parseFloat(values["Peso_vivo"]) * parseFloat(values["Consumo_diario_porcentagem"]) * 0.01;
+    let c1 =
+      parseFloat(values["Peso_vivo"]) *
+      parseFloat(values["Consumo_diario_porcentagem"]) *
+      0.01;
     let c2 = c1 * p2 * 0.01;
     let c3 = c2 / (parseFloat(values["Porcentagem_materia_seca"]) * 0.01);
     let c4 =
@@ -61,7 +63,10 @@ function livestock(props) {
     let c5 = c4 / parseFloat(values["Producao"]);
 
     setFieldValue("Consumo_med_massa_seca_por_cabeça_dia", c1.toFixed(2));
-    setFieldValue("Consumo_med_massa_seca_de_silagem_por_cabeça_dia", c2.toFixed(2));
+    setFieldValue(
+      "Consumo_med_massa_seca_de_silagem_por_cabeça_dia",
+      c2.toFixed(2)
+    );
     setFieldValue("Consumo_med_massa_verde_por_cabeça_dia", c3.toFixed(2));
     setFieldValue("Quantia_total_massa_verde_ton", c4.toFixed(2));
     setFieldValue("Area_plantada", c5.toFixed(2));
@@ -134,7 +139,7 @@ export default withFormik({
   mapPropsToValues: () => ({
     Performance_produtiva_animal: "",
     Porcentagem_concentrado: "",
-    Porcentagem_volumoso: "",
+    Porcentagem_volumoso: ""
   }),
 
   validationSchema: Yup.object().shape({
@@ -150,6 +155,5 @@ export default withFormik({
       routeName: "Livestock3",
       params: { values: values }
     });
-
   }
 })(livestock);

@@ -9,7 +9,6 @@ import {
 import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
 import { Color } from "../../constants/routes";
-import LivestockHeader from "../../routes/HeaderLivestock/index";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -19,10 +18,9 @@ function livestock(props) {
   const { setFieldValue, values, handleSubmit } = props;
 
   useEffect(() => {
-
     fromValues = props.navigation.getParam("values") || null;
     if (fromValues != null) {
-      Object.keys(fromValues).map(function (key, index) {
+      Object.keys(fromValues).map(function(key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
@@ -33,20 +31,20 @@ function livestock(props) {
     let p = parseFloat(values["Producao_maquina"]);
     let d = parseFloat(values["Densidade"]);
 
-    let t = ((c / (p * 1000 / d)) * 60).toFixed(2);
+    let t = ((c / ((p * 1000) / d)) * 60).toFixed(2);
 
-    if (!isNaN(t))
-      setFieldValue("Tempo_enchimento_caçamba", t);
-
+    if (!isNaN(t)) setFieldValue("Tempo_enchimento_caçamba", t);
   }, [values["Capacidade_caminhao"]]);
 
   useEffect(() => {
-
-    if (values["Velocidade_caminhao"] !== "" && values["Distancia_silo"] !== "") {
+    if (
+      values["Velocidade_caminhao"] !== "" &&
+      values["Distancia_silo"] !== ""
+    ) {
       let v = parseFloat(values["Velocidade_caminhao"]);
       let d = parseFloat(values["Distancia_silo"]);
       let e = parseFloat(values["Tempo_enchimento_caçamba"]);
-      let t = (2 * ((d / v) * 60) + 10);
+      let t = 2 * ((d / v) * 60) + 10;
 
       setFieldValue("Tempo_percurso", t.toFixed(2));
       setFieldValue("Quantidade_caminhoes", (t / e).toFixed(0));
@@ -140,7 +138,7 @@ export default withFormik({
     Velocidade_caminhao: "",
     Distancia_silo: "",
     Tempo_percurso: "",
-    Quantidade_caminhoes: "",
+    Quantidade_caminhoes: ""
 
     /*
     Capacidade_caminhao: "",
@@ -186,15 +184,15 @@ export default withFormik({
   }),
 
   validationSchema: Yup.object().shape({
-    Capacidade_caminhao: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
-    Velocidade_caminhao: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
-    Distancia_silo: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
+    Capacidade_caminhao: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
+    Velocidade_caminhao: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
+    Distancia_silo: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher")
   }),
 
   handleSubmit: (values, { props }) => {

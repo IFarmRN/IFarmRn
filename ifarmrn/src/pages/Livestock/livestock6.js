@@ -9,7 +9,6 @@ import {
 import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
 import { Color } from "../../constants/routes";
-import LivestockHeader from "../../routes/HeaderLivestock/index";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -19,10 +18,9 @@ function livestock(props) {
   const { setFieldValue, values, handleSubmit } = props;
 
   useEffect(() => {
-
     fromValues = props.navigation.getParam("values") || null;
     if (fromValues != null) {
-      Object.keys(fromValues).map(function (key, index) {
+      Object.keys(fromValues).map(function(key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
@@ -31,13 +29,15 @@ function livestock(props) {
   useEffect(() => {
     console.log("entrou no useEffect");
     if (values["Capacidade_vagao"] !== "") {
-      let m = parseFloat(values["Consumo_med_massa_seca_de_silagem_por_cabeça_dia"]);
+      let m = parseFloat(
+        values["Consumo_med_massa_seca_de_silagem_por_cabeça_dia"]
+      );
       let n = parseFloat(values["Numero_de_cabeças"]);
       let d = parseFloat(values["Densidade"]);
       let c = parseFloat(values["Capacidade_vagao"]);
       let a = parseFloat(values["Area"]);
 
-      let nv = ((m * n / d) / c).toFixed(0);
+      let nv = ((m * n) / d / c).toFixed(0);
       let fd = (((m / d) * n) / a).toFixed(2);
 
       setFieldValue("Numero_viagens", nv);
@@ -112,7 +112,7 @@ export default withFormik({
   mapPropsToValues: () => ({
     Fatia_diaria: "",
     Capacidade_vagao: "",
-    Numero_viagens: "",
+    Numero_viagens: ""
 
     /*
     Fatia_diaria: "",
@@ -162,15 +162,15 @@ export default withFormik({
   }),
 
   validationSchema: Yup.object().shape({
-    Capacidade_caminhao: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
-    Velocidade_caminhao: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
-    Distancia_silo: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
+    Capacidade_caminhao: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
+    Velocidade_caminhao: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
+    Distancia_silo: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher")
   }),
 
   handleSubmit: (values, { props }) => {

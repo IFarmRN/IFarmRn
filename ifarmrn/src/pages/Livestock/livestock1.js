@@ -9,7 +9,6 @@ import {
 import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
 import { Color } from "../../constants/routes";
-import LivestockHeader from "../../routes/HeaderLivestock/index";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -22,7 +21,7 @@ function livestock(props) {
     const fromValues = props.navigation.getParam("values") || null;
 
     if (fromValues != null) {
-      Object.keys(fromValues).map(function (key, index) {
+      Object.keys(fromValues).map(function(key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
@@ -55,7 +54,7 @@ function livestock(props) {
         setFieldValue("Porcentagem_materia_seca", "");
         break;
     }
-  }, [values["Cultura_forrageira"]])
+  }, [values["Cultura_forrageira"]]);
 
   return (
     <>
@@ -145,13 +144,13 @@ export default withFormik({
   validationSchema: Yup.object().shape({
     Cultura_forrageira: Yup.string("Erro").required("Não esqueça de preencher"),
 
-    Producao: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
+    Producao: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
 
-    Densidade: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
+    Densidade: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
 
     Porcentagem_materia_seca: Yup.number(
       "Use apenas numeros e ponto no lugar de virgula"

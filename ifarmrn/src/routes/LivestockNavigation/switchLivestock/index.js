@@ -28,6 +28,21 @@ const menuData = [
     icon: "pie-chart",
     name: "Performace",
     screenName: "Livestock3"
+  },
+  {
+    icon: "tractor",
+    name: "Colhedora",
+    screenName: "Livestock4"
+  },
+  {
+    icon: "pie-chart",
+    name: "Performace",
+    screenName: "Livestock5"
+  },
+  {
+    icon: "pie-chart",
+    name: "Performace",
+    screenName: "Livestock6"
   }
 ];
 
@@ -90,7 +105,7 @@ function DrawerItem({ navigate, KEY, icon, name, screenName }) {
       ]}
       onPress={buttonPressed}
     >
-      {KEY == 0 ? (
+      {KEY == 0 || KEY == 3 ? (
         <Icon2
           name={icon}
           size={35}

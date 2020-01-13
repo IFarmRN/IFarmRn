@@ -9,7 +9,6 @@ import {
 import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
 import { Color } from "../../constants/routes";
-import LivestockHeader from "../../routes/HeaderLivestock/index";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -21,7 +20,7 @@ function livestock(props) {
   useEffect(() => {
     fromValues = props.navigation.getParam("values") || null;
     if (fromValues != null) {
-      Object.keys(fromValues).map(function (key, index) {
+      Object.keys(fromValues).map(function(key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
@@ -31,7 +30,7 @@ function livestock(props) {
     let q = parseFloat(values["Quantia_total_massa_verde_ton"]);
     let d = parseFloat(values["Densidade"]);
     let s = parseFloat(values["Quantidade_silo"]);
-    let v = (((q * 1000) / d) / s).toFixed(2);
+    let v = ((q * 1000) / d / s).toFixed(2);
 
     if (!isNaN(v)) {
       setFieldValue("Volume_silo", v);
@@ -43,14 +42,18 @@ function livestock(props) {
     let b2 = parseFloat(values["Base_maior"]);
     let b1 = parseFloat(values["Base_menor"]);
     let a = parseFloat(values["Altura"]);
-    let aa = (((b1 + b2) * a) / 2);
+    let aa = ((b1 + b2) * a) / 2;
     let c = (v / aa).toFixed(2);
     if (!isNaN(c) && !isNaN(aa)) {
-      setFieldValue("Comprimento", c)
+      setFieldValue("Comprimento", c);
       setFieldValue("Area", aa.toFixed(2));
     }
-
-  }, [values["Volume_silo"], values["Base_maior"], values["Base_menor"], values["Altura"]])
+  }, [
+    values["Volume_silo"],
+    values["Base_maior"],
+    values["Base_menor"],
+    values["Altura"]
+  ]);
 
   buttonSubmitted = async () => {
     handleSubmit();
@@ -146,22 +149,22 @@ export default withFormik({
     Altura: "",
     Area: "",
     Volume_silo: "",
-    Comprimento: "",
+    Comprimento: ""
   }),
 
   validationSchema: Yup.object().shape({
-    Quantidade_silo: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
-    Base_maior: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
-    Base_menor: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
-    Altura: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
+    Quantidade_silo: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
+    Base_maior: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
+    Base_menor: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
+    Altura: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher")
   }),
 
   handleSubmit: (values, { props }) => {
