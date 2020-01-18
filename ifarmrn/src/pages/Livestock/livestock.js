@@ -28,7 +28,7 @@ function livestock(props) {
     const fromValues = props.navigation.getParam("values") || null;
 
     if (fromValues != null) {
-      Object.keys(fromValues).map(function (key, index) {
+      Object.keys(fromValues).map(function(key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
@@ -39,8 +39,7 @@ function livestock(props) {
       if (element["value"] === values["Ganho_de_peso"])
         setFieldValue("Consumo_diario_porcentagem", element["consumo"]);
     });
-  }, [values["Ganho_de_peso"]])
-
+  }, [values["Ganho_de_peso"]]);
 
   useEffect(() => {
     let peso = values["Peso_vivo"];
@@ -53,14 +52,13 @@ function livestock(props) {
       setFieldValue("Consumo_diario_porcentagem", "");
     }
 
-
     switch (peso) {
       case 250:
         setDataPeso([
           { value: 0, consumo: 1.8 },
           { value: 500, consumo: 2.5 },
           { value: 750, consumo: 2.6 },
-          { value: 1000, consumo: 2.6 },
+          { value: 1000, consumo: 2.6 }
         ]);
         break;
       case 300:
@@ -68,7 +66,7 @@ function livestock(props) {
           { value: 0, consumo: 1.7 },
           { value: 500, consumo: 2.3 },
           { value: 750, consumo: 2.5 },
-          { value: 1000, consumo: 2.5 },
+          { value: 1000, consumo: 2.5 }
         ]);
         break;
       case 350:
@@ -110,7 +108,6 @@ function livestock(props) {
         setDataPeso([{ value: "Escolha um peso primeiro" }]);
         break;
     }
-
   }, [values["Peso_vivo"]]);
 
   return (
@@ -154,7 +151,9 @@ function livestock(props) {
             data={dataPeso}
             props={props}
           />
-          <Text style={styles.title}>{`Porcentagem de comsumo diario: ${values["Consumo_diario_porcentagem"]}`}</Text>
+          <Text
+            style={styles.title}
+          >{`Porcentagem de comsumo diario: ${values["Consumo_diario_porcentagem"]}`}</Text>
           <View
             style={{
               alignItems: "center",
@@ -189,18 +188,18 @@ export default withFormik({
   }),
 
   validationSchema: Yup.object().shape({
-    Numero_de_cabeças: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
+    Numero_de_cabeças: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
     Numero_de_dias_para_tratar: Yup.number(
       "Use apenas numeros e ponto no lugar de virgula"
     ).required("Não esqueça de preencher"),
-    Peso_vivo: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
-    Ganho_de_peso: Yup.number("Use apenas numeros e ponto no lugar de virgula").required(
-      "Não esqueça de preencher"
-    ),
+    Peso_vivo: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
+    Ganho_de_peso: Yup.number(
+      "Use apenas numeros e ponto no lugar de virgula"
+    ).required("Não esqueça de preencher"),
     Consumo_diario_porcentagem: Yup.number(
       "Use apenas numeros e ponto no lugar de virgula"
     ).required("Não esqueça de preencher")
