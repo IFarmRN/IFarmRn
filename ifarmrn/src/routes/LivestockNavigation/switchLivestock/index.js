@@ -1,11 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  FlatList
-} from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 import Icon from "@expo/vector-icons/FontAwesome";
 import Icon2 from "@expo/vector-icons/MaterialCommunityIcons";
@@ -35,14 +29,19 @@ const menuData = [
     screenName: "Livestock4"
   },
   {
-    icon: "pie-chart",
-    name: "Performace",
+    icon: "dropbox",
+    name: "Armazenamento",
     screenName: "Livestock5"
   },
   {
-    icon: "pie-chart",
-    name: "Performace",
+    icon: "truck",
+    name: "Transporte",
     screenName: "Livestock6"
+  },
+  {
+    icon: "washing-machine",
+    name: "Distribuição de Massa",
+    screenName: "Livestock7"
   }
 ];
 
@@ -88,8 +87,6 @@ const Line = () => <View style={styles.line} />;
 function DrawerItem({ navigate, KEY, icon, name, screenName }) {
   buttonPressed = () => {
     global.currentScreenIndex = KEY;
-
-    navigate(screenName);
   };
 
   return (
@@ -105,7 +102,7 @@ function DrawerItem({ navigate, KEY, icon, name, screenName }) {
       ]}
       onPress={buttonPressed}
     >
-      {KEY == 0 || KEY == 3 ? (
+      {KEY == 0 || KEY == 3 || KEY == 6 ? (
         <Icon2
           name={icon}
           size={35}

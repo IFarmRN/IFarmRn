@@ -7,8 +7,6 @@ import {
   Dimensions
 } from "react-native";
 import Input from "../../components/Input/Input";
-import DropdownList from "../../components/Dropdown/Dropdown";
-import { Color } from "../../constants/routes";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -78,9 +76,6 @@ function livestock(props) {
             keyboardType="numeric"
             props={props}
           />
-          <Text
-            style={styles.title}
-          >{`Produção da maquina (ton/h): ${values["Producao_maquina"]}`}</Text>
           <Input
             value={values["Horas_diaria_trabalho"]}
             name="Horas_diaria_trabalho"
@@ -92,6 +87,9 @@ function livestock(props) {
           <Text
             style={styles.title}
           >{`Dias de trabalho: ${values["Dias_de_trabalho"]}`}</Text>
+         <Text
+            style={styles.title}
+          >{`Produção da maquina (ton/h): ${values["Producao_maquina"]}`}</Text>
 
           <View
             style={{

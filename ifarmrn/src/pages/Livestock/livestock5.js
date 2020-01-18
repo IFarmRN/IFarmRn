@@ -69,9 +69,6 @@ function livestock(props) {
             keyboardType="numeric"
             props={props}
           />
-          <Text
-            style={styles.title}
-          >{`Tempo de enchimento da caçamba: ${values["Tempo_enchimento_caçamba"]}`}</Text>
           <Input
             value={values["Velocidade_caminhao"]}
             name="Velocidade_caminhao"
@@ -88,12 +85,18 @@ function livestock(props) {
             keyboardType="numeric"
             props={props}
           />
+
+          <Text
+            style={styles.title}
+          >{`Tempo de enchimento da caçamba: ${values["Tempo_enchimento_caçamba"]}`}</Text>
+
           <Text
             style={styles.title}
           >{`Tempo de percurso (min): ${values["Tempo_percurso"]}`}</Text>
           <Text
             style={styles.title}
           >{`Quantidade de caminhões: ${values["Quantidade_caminhoes"]}`}</Text>
+
           <View
             style={{
               alignItems: "center",

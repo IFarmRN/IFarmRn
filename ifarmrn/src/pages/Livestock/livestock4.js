@@ -7,8 +7,6 @@ import {
   Dimensions
 } from "react-native";
 import Input from "../../components/Input/Input";
-import DropdownList from "../../components/Dropdown/Dropdown";
-import { Color } from "../../constants/routes";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -63,7 +61,7 @@ function livestock(props) {
     <>
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
-          <Text style={styles.title}>Colhedora</Text>
+          <Text style={styles.title}>Armazenamento</Text>
 
           <Input
             value={values["Quantidade_silo"]}

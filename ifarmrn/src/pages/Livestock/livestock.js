@@ -14,11 +14,19 @@ import * as Yup from "yup";
 
 import styles from "./styles";
 
+console.log(global.currentScreenIndex);
+
 function livestock(props) {
   const { setFieldValue, values } = props;
 
   const [dataPeso, setDataPeso] = useState([]);
   const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (global.exitLivestock1) {
+      console.log("ae");
+    }
+  }, [global.exitLivestock1]);
 
   buttonSubmitted = async () => {
     props.handleSubmit();
@@ -115,7 +123,6 @@ function livestock(props) {
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
           <Text style={styles.title}>Caracteristicas do confinamento</Text>
-          <Text style={styles.text}>Utilize ponto no lugar da virgula</Text>
           <Input
             value={values["Numero_de_cabeças"]}
             name="Numero_de_cabeças"

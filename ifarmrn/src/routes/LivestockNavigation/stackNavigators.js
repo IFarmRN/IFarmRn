@@ -67,7 +67,7 @@ const NavigatorLivestock6 = createStackNavigator({
 });
 
 const NavigatorLivestock7 = createStackNavigator({
-  Livestock6: {
+  Livestock7: {
     screen: Livestock7,
     navigationOptions: {
       header: () => <LivestockHeader />
