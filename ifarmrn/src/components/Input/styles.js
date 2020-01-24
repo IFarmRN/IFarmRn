@@ -1,7 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { Color } from "../../constants/routes";
 const width = Dimensions.get("screen").width;
-const height = Dimensions.get("screen").height;
 
 const styles = StyleSheet.create({
   container: {

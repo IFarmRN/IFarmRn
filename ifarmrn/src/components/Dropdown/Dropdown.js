@@ -3,6 +3,7 @@ import { View, Dimensions, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Color } from "../../constants/routes";
 import styles from "./styles";
+const width = Dimensions.get("screen").width;
 
 function DropdownList(props) {
   const [textValue, setTextValue] = useState("");
@@ -27,7 +28,8 @@ function DropdownList(props) {
             baseColor={Color.greenLight}
             pickerStyle={styles.itemPicker}
             containerStyle={{
-              width: Dimensions.get("screen").width * 0.85 - 40
+              width: width * 0.85,
+              paddingLeft: 14
             }}
             textColor={Color.green}
             label={label}
@@ -39,11 +41,14 @@ function DropdownList(props) {
           />
         </View>
       </View>
-      <Text style={styles.textError}>
-        {props.props.touched[props.name] && props.props.errors[props.name]}
-      </Text>
 
-      <Text style={styles.textAviso}>Obrigatorio</Text>
+      <View style={styles.textView}>
+        <Text style={styles.textError}>
+          {props.props.touched[props.name] && props.props.errors[props.name]}
+        </Text>
+
+        <Text style={styles.textAviso}>Obrigatorio</Text>
+      </View>
     </View>
   );
 }

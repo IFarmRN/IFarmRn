@@ -1,17 +1,10 @@
 import { StyleSheet, Dimensions } from "react-native";
 import { Color } from "../../constants/routes";
+const width = Dimensions.get("screen").width;
 
 const styles = StyleSheet.create({
-  text: {
-    justifyContent: "center",
-    textAlign: "center",
-    color: Color.green,
-    marginBottom: 10,
-    fontSize: 16
-  },
   textError: {
     color: "red",
-    marginHorizontal: Dimensions.get("screen").width * 0.09,
     fontSize: 13,
     marginBottom: 10
   },
@@ -19,12 +12,18 @@ const styles = StyleSheet.create({
     color: Color.greenLight,
     fontSize: 13
   },
+  textView: {
+    flexDirection: "row",
+    marginHorizontal: width * 0.075,
+    marginBottom: 10,
+    justifyContent: "space-between"
+  },
+
   picker: {
-    marginHorizontal: 20,
-    paddingHorizontal: 20,
     backgroundColor: "#ffffff",
     borderRadius: 20,
-    padding: 5,
+    marginVertical: 12,
+
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -35,9 +34,7 @@ const styles = StyleSheet.create({
     elevation: 3
   },
   itemPicker: {
-    backgroundColor: "#ffffff",
-    borderRadius: 20,
-    padding: 5
+    borderRadius: 20
   }
 });
 
