@@ -51,7 +51,7 @@ function livestock(props) {
 
           <Input
             value={values["Abertura_da_colhedora"]}
-            name="Abertura_da_colhedora"
+            name="Abertura_da_colhedora (m)"
             title="Abertura da colhedora"
             iconName="calculator"
             keyboardType="numeric"

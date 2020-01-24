@@ -51,7 +51,7 @@ function livestock(props) {
           <Input
             value={values["Quantidade_silo"]}
             name="Quantidade_silo"
-            title="Quantidade de silo"
+            title="Quantidade de silos"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
