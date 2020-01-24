@@ -15,19 +15,13 @@ import * as Yup from "yup";
 
 import styles from "./styles";
 function livestock(props) {
-  const { setFieldValue, values, handleSubmit } = props;
+  const { setFieldValue, handleSubmit, errors, values } = props;
 
   useEffect(() => {
-    fromValues = props.navigation.getParam("values") || null;
-    if (fromValues != null) {
-      Object.keys(fromValues).map(function(key, index) {
-        setFieldValue(key, fromValues[key]);
-      });
-    }
-  }, []);
+    global.KEY = 6;
+  });
 
   useEffect(() => {
-    console.log("entrou no useEffect");
     if (values["Capacidade_vagao"] !== "") {
       let m = parseFloat(
         values["Consumo_med_massa_seca_de_silagem_por_cabeça_dia"]
@@ -45,8 +39,34 @@ function livestock(props) {
     }
   }, [values["Capacidade_vagao"]]);
 
-  buttonSubmitted = async () => {
+  global.buttonSubmitted6 = async screenName => {
+    const valueArray = Object.entries(values);
+    const params = props.navigation.getParam("values") || null;
+
+    const empty = valueArray.find(([item, value]) => {
+      return value != "";
+    });
+
+    //check if the values are empty
+    if (empty == undefined) {
+      await props.navigation.navigate(screenName);
+
+      const KEY = screenName.slice(
+        screenName.indexOf("k") + 1,
+        screenName.length
+      );
+
+      global.KEY = parseInt(KEY) - 1;
+      return;
+    }
+
     handleSubmit();
+
+    if (Object.keys(errors).length == 0) {
+      const newValues = { ...params, ...values };
+
+      console.log(newValues);
+    }
   };
 
   return (
@@ -81,7 +101,7 @@ function livestock(props) {
             <View style={styles.buttonView}>
               <TouchableOpacity
                 onPress={() => {
-                  buttonSubmitted();
+                  global.buttonSubmitted6();
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
@@ -89,12 +109,7 @@ function livestock(props) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  props.navigation.dispatch({
-                    key: "Livestock5",
-                    type: "ReplaceCurrentScreen",
-                    routeName: "Livestock5",
-                    params: { values: values }
-                  });
+                  global.buttonSubmitted6("Livestock6");
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
@@ -113,55 +128,9 @@ export default withFormik({
     Fatia_diaria: "",
     Capacidade_vagao: "",
     Numero_viagens: ""
-
-    /*
-    Fatia_diaria: "",
-    Capacidade_vagao: "",
-    Numero_viagens: "",
-
-    Capacidade_caminhao: "",
-    Tempo_enchimento_caçamba: "",
-    Velocidade_caminhao: "",
-    Distancia_silo: "",
-    Tempo_percurso: "",
-    Quantidade_caminhoes: "",
-
-    Quantidade_silo: "",
-    Base_maior: "",
-    Base_menor: "",
-    Altura: "",
-    Volume_silo: "",
-    Comprimento: "",
-
-    Abertura_da_colhedora: "",
-    Velocidade_de_deslocamento: "",
-    Producao_maquina: "",
-    Horas_diaria_trabalho: "",
-    Dias_de_trabalho: "",
-
-    Cultura_forrageira: "",
-    Producao: "",
-    Densidade: "",
-    Porcentagem_materia_seca: "",
-
-    Porcentagem_volumoso: "",
-    Porcentagem_concentrado: "",
-    Performance_produtiva_animal: "",
-    Consumo_med_massa_seca_por_cabeça_dia: "",
-    Consumo_med_massa_seca_de_silagem_por_cabeça_dia: "",
-    Consumo_med_massa_verde_por_cabeça_dia: "",
-    Quantia_total_massa_verde_ton: "",
-    Area_plantada: "",
-
-    Numero_de_cabeças: "",
-    Numero_de_dias_para_tratar: "",
-    Peso_vivo: "",
-    Ganho_de_peso: "",
-    Consumo_diario_porcentagem: "",
-    */
   }),
 
-  validationSchema: Yup.object().shape({
+  /*   validationSchema: Yup.object().shape({
     Capacidade_caminhao: Yup.number(
       "Use apenas numeros e ponto no lugar de virgula"
     ).required("Não esqueça de preencher"),
@@ -171,10 +140,7 @@ export default withFormik({
     Distancia_silo: Yup.number(
       "Use apenas numeros e ponto no lugar de virgula"
     ).required("Não esqueça de preencher")
-  }),
+  }), */
 
-  handleSubmit: (values, { props }) => {
-    console.log(values);
-    alert("agora temos que fazer o pdf");
-  }
+  handleSubmit: () => {}
 })(livestock);

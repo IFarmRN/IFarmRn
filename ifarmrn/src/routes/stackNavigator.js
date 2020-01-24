@@ -8,6 +8,7 @@ import Register from "../pages/Register/register";
 import Loading from "../pages/loading/loading";
 
 import PropertyHeader from "./HeaderProperty";
+import RegisterHeader from "./HeaderRegister";
 
 const stackNavigator = createStackNavigator({
   Home: {

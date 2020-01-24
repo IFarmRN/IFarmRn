@@ -13,48 +13,49 @@ import * as Yup from "yup";
 
 import styles from "./styles";
 function livestock(props) {
-  const { setFieldValue, values, handleSubmit } = props;
+  const { values, handleSubmit, errors } = props;
 
   useEffect(() => {
-    fromValues = props.navigation.getParam("values") || null;
-    if (fromValues != null) {
-      Object.keys(fromValues).map(function(key, index) {
-        setFieldValue(key, fromValues[key]);
-      });
+    global.KEY = 4;
+  });
+
+  global.buttonSubmitted4 = async screenName => {
+    const valueArray = Object.entries(values);
+    const params = props.navigation.getParam("values") || null;
+
+    const empty = valueArray.find(([item, value]) => {
+      return value != "";
+    });
+
+    //check if the values are empty
+    if (empty == undefined) {
+      await props.navigation.navigate(screenName);
+
+      const KEY = screenName.slice(
+        screenName.indexOf("k") + 1,
+        screenName.length
+      );
+
+      global.KEY = parseInt(KEY) - 1;
+      return;
     }
-  }, []);
 
-  useEffect(() => {
-    let q = parseFloat(values["Quantia_total_massa_verde_ton"]);
-    let d = parseFloat(values["Densidade"]);
-    let s = parseFloat(values["Quantidade_silo"]);
-    let v = ((q * 1000) / d / s).toFixed(2);
-
-    if (!isNaN(v)) {
-      setFieldValue("Volume_silo", v);
-    }
-  }, [values["Quantidade_silo"]]);
-
-  useEffect(() => {
-    let v = parseFloat(values["Volume_silo"]);
-    let b2 = parseFloat(values["Base_maior"]);
-    let b1 = parseFloat(values["Base_menor"]);
-    let a = parseFloat(values["Altura"]);
-    let aa = ((b1 + b2) * a) / 2;
-    let c = (v / aa).toFixed(2);
-    if (!isNaN(c) && !isNaN(aa)) {
-      setFieldValue("Comprimento", c);
-      setFieldValue("Area", aa.toFixed(2));
-    }
-  }, [
-    values["Volume_silo"],
-    values["Base_maior"],
-    values["Base_menor"],
-    values["Altura"]
-  ]);
-
-  buttonSubmitted = async () => {
     handleSubmit();
+
+    if (Object.keys(errors).length == 0) {
+      const newValues = { ...params, ...values };
+
+      await props.navigation.navigate(screenName, {
+        values: newValues
+      });
+      const KEY = screenName.slice(
+        screenName.indexOf("k") + 1,
+        screenName.length
+      );
+
+      global.KEY = parseInt(KEY) - 1;
+      return;
+    }
   };
 
   return (
@@ -96,12 +97,7 @@ function livestock(props) {
             keyboardType="numeric"
             props={props}
           />
-          <Text
-            style={styles.title}
-          >{`Volume da silagem (m³): ${values["Volume_silo"]}`}</Text>
-          <Text
-            style={styles.title}
-          >{`Comprimento (m): ${values["Comprimento"]}`}</Text>
+
           <View
             style={{
               alignItems: "center",
@@ -112,7 +108,7 @@ function livestock(props) {
             <View style={styles.buttonView}>
               <TouchableOpacity
                 onPress={() => {
-                  buttonSubmitted();
+                  global.buttonSubmitted4("Livestock6");
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
@@ -120,12 +116,7 @@ function livestock(props) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  props.navigation.dispatch({
-                    key: "Livestock3",
-                    type: "ReplaceCurrentScreen",
-                    routeName: "Livestock3",
-                    params: { values: values }
-                  });
+                  global.buttonSubmitted4("Livestock4");
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
@@ -151,26 +142,19 @@ export default withFormik({
   }),
 
   validationSchema: Yup.object().shape({
-    Quantidade_silo: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-    Base_maior: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-    Base_menor: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-    Altura: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher")
+    Quantidade_silo: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Base_maior: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Base_menor: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Altura: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    )
   }),
 
-  handleSubmit: (values, { props }) => {
-    props.navigation.dispatch({
-      key: "Livestock5",
-      type: "ReplaceCurrentScreen",
-      routeName: "Livestock5",
-      params: { values: values }
-    });
-  }
+  handleSubmit: () => {}
 })(livestock);

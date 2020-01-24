@@ -14,25 +14,57 @@ import * as Yup from "yup";
 
 import styles from "./styles";
 
-console.log(global.currentScreenIndex);
-
 function livestock(props) {
-  const { setFieldValue, values } = props;
+  const { setFieldValue, values, errors, handleSubmit } = props;
 
   const [dataPeso, setDataPeso] = useState([]);
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (global.exitLivestock1) {
-      console.log("ae");
-    }
-  }, [global.exitLivestock1]);
+    global.KEY = 0;
+  });
 
-  buttonSubmitted = async () => {
-    props.handleSubmit();
+  global.buttonSubmitted0 = async screenName => {
+    const valueArray = Object.entries(values);
+    const params = props.navigation.getParam("values") || null;
+
+    const empty = valueArray.find(([item, value]) => {
+      return value != "";
+    });
+
+    //check if the values are empty
+    if (empty == undefined) {
+      await props.navigation.navigate(screenName);
+
+      const KEY = screenName.slice(
+        screenName.indexOf("k") + 1,
+        screenName.length
+      );
+
+      global.KEY = parseInt(KEY) - 1;
+      return;
+    }
+
+    handleSubmit();
+
+    if (Object.keys(errors).length == 0) {
+      const newValues = { ...params, ...values };
+
+      await props.navigation.navigate(screenName, {
+        values: newValues
+      });
+
+      const KEY = screenName.slice(
+        screenName.indexOf("k") + 1,
+        screenName.length
+      );
+
+      global.KEY = parseInt(KEY) - 1;
+      return;
+    }
   };
 
-  useEffect(() => {
+  /*    useEffect(() => {
     const fromValues = props.navigation.getParam("values") || null;
 
     if (fromValues != null) {
@@ -40,19 +72,19 @@ function livestock(props) {
         setFieldValue(key, fromValues[key]);
       });
     }
-  }, []);
+  }, []); */
 
   useEffect(() => {
     dataPeso.forEach(element => {
       if (element["value"] === values["Ganho_de_peso"])
         setFieldValue("Consumo_diario_porcentagem", element["consumo"]);
     });
+    setFieldValue("Ganho_de_peso", values["Ganho_de_peso"]);
   }, [values["Ganho_de_peso"]]);
 
   useEffect(() => {
     let peso = values["Peso_vivo"];
 
-    console.log(count);
     if (count < 2) {
       setCount(count + 1);
     } else {
@@ -63,7 +95,7 @@ function livestock(props) {
     switch (peso) {
       case 250:
         setDataPeso([
-          { value: 0, consumo: 1.8 },
+          { value: 0.0, consumo: 1.8 },
           { value: 500, consumo: 2.5 },
           { value: 750, consumo: 2.6 },
           { value: 1000, consumo: 2.6 }
@@ -71,7 +103,7 @@ function livestock(props) {
         break;
       case 300:
         setDataPeso([
-          { value: 0, consumo: 1.7 },
+          { value: 0.0, consumo: 1.7 },
           { value: 500, consumo: 2.3 },
           { value: 750, consumo: 2.5 },
           { value: 1000, consumo: 2.5 }
@@ -79,7 +111,7 @@ function livestock(props) {
         break;
       case 350:
         setDataPeso([
-          { value: 0, consumo: 1.6 },
+          { value: 0.0, consumo: 1.6 },
           { value: 500, consumo: 2.3 },
           { value: 750, consumo: 2.4 },
           { value: 1000, consumo: 2.4 },
@@ -88,7 +120,7 @@ function livestock(props) {
         break;
       case 400:
         setDataPeso([
-          { value: 0, consumo: 1.6 },
+          { value: 0.0, consumo: 1.6 },
           { value: 500, consumo: 2.3 },
           { value: 750, consumo: 2.3 },
           { value: 1000, consumo: 2.3 },
@@ -97,7 +129,7 @@ function livestock(props) {
         break;
       case 450:
         setDataPeso([
-          { value: 0, consumo: 1.5 },
+          { value: 0.0, consumo: 1.5 },
           { value: 750, consumo: 2.2 },
           { value: 1000, consumo: 2.3 },
           { value: 1300, consumo: 2.2 }
@@ -105,7 +137,7 @@ function livestock(props) {
         break;
       case 500:
         setDataPeso([
-          { value: 0, consumo: 1.5 },
+          { value: 0.0, consumo: 1.5 },
           { value: 750, consumo: 2.2 },
           { value: 1000, consumo: 2.2 },
           { value: 1300, consumo: 2.2 },
@@ -171,7 +203,7 @@ function livestock(props) {
             <View style={styles.buttonView}>
               <TouchableOpacity
                 onPress={() => {
-                  buttonSubmitted();
+                  global.buttonSubmitted0("Livestock2");
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
@@ -195,24 +227,18 @@ export default withFormik({
   }),
 
   validationSchema: Yup.object().shape({
-    Numero_de_cabeças: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-    Numero_de_dias_para_tratar: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-    Peso_vivo: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-    Ganho_de_peso: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-    Consumo_diario_porcentagem: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher")
+    Numero_de_cabeças: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Numero_de_dias_para_tratar: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Peso_vivo: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Ganho_de_peso: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    )
   }),
-
-  handleSubmit: (values, { props }) => {
-    props.navigation.navigate("Livestock1", { values });
-  }
+  handleSubmit: () => {}
 })(livestock);

@@ -7,52 +7,55 @@ import {
   Dimensions
 } from "react-native";
 import Input from "../../components/Input/Input";
-import DropdownList from "../../components/Dropdown/Dropdown";
-import { Color } from "../../constants/routes";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
 
 import styles from "./styles";
 function livestock(props) {
-  const { setFieldValue, values, handleSubmit } = props;
+  const { setFieldValue, values, handleSubmit, errors } = props;
 
   useEffect(() => {
-    fromValues = props.navigation.getParam("values") || null;
-    if (fromValues != null) {
-      Object.keys(fromValues).map(function(key, index) {
-        setFieldValue(key, fromValues[key]);
-      });
+    global.KEY = 5;
+  });
+
+  global.buttonSubmitted5 = async screenName => {
+    const valueArray = Object.entries(values);
+    const params = props.navigation.getParam("values") || null;
+
+    const empty = valueArray.find(([item, value]) => {
+      return value != "";
+    });
+
+    //check if the values are empty
+    if (empty == undefined) {
+      await props.navigation.navigate(screenName);
+      const KEY = screenName.slice(
+        screenName.indexOf("k") + 1,
+        screenName.length
+      );
+
+      global.KEY = parseInt(KEY) - 1;
+      return;
     }
-  }, []);
 
-  useEffect(() => {
-    let c = parseFloat(values["Capacidade_caminhao"]);
-    let p = parseFloat(values["Producao_maquina"]);
-    let d = parseFloat(values["Densidade"]);
-
-    let t = ((c / ((p * 1000) / d)) * 60).toFixed(2);
-
-    if (!isNaN(t)) setFieldValue("Tempo_enchimento_caçamba", t);
-  }, [values["Capacidade_caminhao"]]);
-
-  useEffect(() => {
-    if (
-      values["Velocidade_caminhao"] !== "" &&
-      values["Distancia_silo"] !== ""
-    ) {
-      let v = parseFloat(values["Velocidade_caminhao"]);
-      let d = parseFloat(values["Distancia_silo"]);
-      let e = parseFloat(values["Tempo_enchimento_caçamba"]);
-      let t = 2 * ((d / v) * 60) + 10;
-
-      setFieldValue("Tempo_percurso", t.toFixed(2));
-      setFieldValue("Quantidade_caminhoes", (t / e).toFixed(0));
-    }
-  }, [values["Velocidade_caminhao"], values["Distancia_silo"]]);
-
-  buttonSubmitted = async () => {
     handleSubmit();
+
+    if (Object.keys(errors).length == 0) {
+      const newValues = { ...params, ...values };
+      console.log(newValues);
+
+      await props.navigation.navigate(screenName, {
+        values: newValues
+      });
+      const KEY = screenName.slice(
+        screenName.indexOf("k") + 1,
+        screenName.length
+      );
+
+      global.KEY = parseInt(KEY) - 1;
+      return;
+    }
   };
 
   return (
@@ -86,17 +89,6 @@ function livestock(props) {
             props={props}
           />
 
-          <Text
-            style={styles.title}
-          >{`Tempo de enchimento da caçamba: ${values["Tempo_enchimento_caçamba"]}`}</Text>
-
-          <Text
-            style={styles.title}
-          >{`Tempo de percurso (min): ${values["Tempo_percurso"]}`}</Text>
-          <Text
-            style={styles.title}
-          >{`Quantidade de caminhões: ${values["Quantidade_caminhoes"]}`}</Text>
-
           <View
             style={{
               alignItems: "center",
@@ -107,7 +99,7 @@ function livestock(props) {
             <View style={styles.buttonView}>
               <TouchableOpacity
                 onPress={() => {
-                  buttonSubmitted();
+                  global.buttonSubmitted5("Livestock7");
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
@@ -115,12 +107,7 @@ function livestock(props) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  props.navigation.dispatch({
-                    key: "Livestock4",
-                    type: "ReplaceCurrentScreen",
-                    routeName: "Livestock4",
-                    params: { values: values }
-                  });
+                  global.buttonSubmitted5("Livestock5");
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
@@ -137,12 +124,8 @@ function livestock(props) {
 export default withFormik({
   mapPropsToValues: () => ({
     Capacidade_caminhao: "",
-    Tempo_enchimento_caçamba: "",
     Velocidade_caminhao: "",
-    Distancia_silo: "",
-    Tempo_percurso: "",
-    Quantidade_caminhoes: ""
-
+    Distancia_silo: ""
     /*
     Capacidade_caminhao: "",
     Tempo_enchimento_caçamba: "",
@@ -187,23 +170,16 @@ export default withFormik({
   }),
 
   validationSchema: Yup.object().shape({
-    Capacidade_caminhao: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-    Velocidade_caminhao: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-    Distancia_silo: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher")
+    Capacidade_caminhao: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Velocidade_caminhao: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Distancia_silo: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    )
   }),
 
-  handleSubmit: (values, { props }) => {
-    props.navigation.dispatch({
-      key: "Livestock6",
-      type: "ReplaceCurrentScreen",
-      routeName: "Livestock6",
-      params: { values: values }
-    });
-  }
+  handleSubmit: () => {}
 })(livestock);

@@ -16,7 +16,6 @@ function Input(props) {
     setTextValue(props.value);
   }, [props.value]);
 
-
   return (
     <View pointerEvents={props.editable ? "none" : "auto"}>
       <Fumi
@@ -25,7 +24,7 @@ function Input(props) {
         labelStyle={styles.label}
         style={styles.styleGeneral}
         inputStyle={styles.inputStyle}
-        onChangeText={ text => {
+        onChangeText={text => {
           setTextValue(text);
           props.props.setFieldValue(props.name, text);
         }}

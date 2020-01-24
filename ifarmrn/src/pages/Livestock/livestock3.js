@@ -13,45 +13,49 @@ import * as Yup from "yup";
 
 import styles from "./styles";
 function livestock(props) {
-  const { setFieldValue, values, handleSubmit } = props;
+  const { setFieldValue, values, handleSubmit, errors } = props;
 
   useEffect(() => {
-    fromValues = props.navigation.getParam("values") || null;
-    if (fromValues != null) {
-      Object.keys(fromValues).map(function(key, index) {
-        setFieldValue(key, fromValues[key]);
-      });
+    global.KEY = 3;
+  });
+
+  global.buttonSubmitted3 = async screenName => {
+    const valueArray = Object.entries(values);
+    const params = props.navigation.getParam("values") || null;
+
+    const empty = valueArray.find(([item, value]) => {
+      return value != "";
+    });
+
+    //check if the values are empty
+    if (empty == undefined) {
+      await props.navigation.navigate(screenName);
+
+      const KEY = screenName.slice(
+        screenName.indexOf("k") + 1,
+        screenName.length
+      );
+
+      global.KEY = parseInt(KEY) - 1;
+      return;
     }
-  }, []);
 
-  useEffect(() => {
-    if (
-      values["Velocidade_de_deslocamento"] !== "" &&
-      values["Abertura_da_colhedora"] !== ""
-    ) {
-      let a = parseFloat(values["Abertura_da_colhedora"]);
-      let v = parseFloat(values["Velocidade_de_deslocamento"]);
-      let p = parseFloat(values["Producao"]);
-
-      setFieldValue("Producao_maquina", (((a * v) / 10) * p).toFixed(2));
-    }
-  }, [values["Abertura_da_colhedora"], values["Velocidade_de_deslocamento"]]);
-
-  useEffect(() => {
-    if (
-      values["Producao_maquina"] !== "" &&
-      values["Horas_diaria_trabalho"] !== ""
-    ) {
-      let h = parseFloat(values["Horas_diaria_trabalho"]);
-      let q = parseFloat(values["Quantia_total_massa_verde_ton"]);
-      let p = parseFloat(values["Producao_maquina"]);
-      let d = (((q / p) * 1.15) / h).toFixed(1);
-      setFieldValue("Dias_de_trabalho", d);
-    }
-  }, [values["Horas_diaria_trabalho"]]);
-
-  buttonSubmitted = async () => {
     handleSubmit();
+
+    if (Object.keys(errors).length == 0) {
+      const newValues = { ...params, ...values };
+
+      await props.navigation.navigate(screenName, {
+        values: newValues
+      });
+      const KEY = screenName.slice(
+        screenName.indexOf("k") + 1,
+        screenName.length
+      );
+
+      global.KEY = parseInt(KEY) - 1;
+      return;
+    }
   };
 
   return (
@@ -71,7 +75,7 @@ function livestock(props) {
           <Input
             value={values["Velocidade_de_deslocamento"]}
             name="Velocidade_de_deslocamento"
-            title="Velocidade de deslocamento da colhedora (Km/h)"
+            title="Velocidade da colhedora (Km/h)"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
@@ -84,12 +88,6 @@ function livestock(props) {
             keyboardType="numeric"
             props={props}
           />
-          <Text
-            style={styles.title}
-          >{`Dias de trabalho: ${values["Dias_de_trabalho"]}`}</Text>
-         <Text
-            style={styles.title}
-          >{`Produção da maquina (ton/h): ${values["Producao_maquina"]}`}</Text>
 
           <View
             style={{
@@ -101,7 +99,7 @@ function livestock(props) {
             <View style={styles.buttonView}>
               <TouchableOpacity
                 onPress={() => {
-                  buttonSubmitted();
+                  global.buttonSubmitted3("Livestock5");
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
@@ -109,12 +107,7 @@ function livestock(props) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  props.navigation.dispatch({
-                    key: "Livestock2",
-                    type: "ReplaceCurrentScreen",
-                    routeName: "Livestock2",
-                    params: { values: values }
-                  });
+                  global.buttonSubmitted3("Livestock3");
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
@@ -131,30 +124,21 @@ function livestock(props) {
 export default withFormik({
   mapPropsToValues: () => ({
     Abertura_da_colhedora: "",
-    Producao_maquina: "",
     Velocidade_de_deslocamento: "",
-    Horas_diaria_trabalho: "",
-    Dias_de_trabalho: ""
+    Horas_diaria_trabalho: ""
   }),
 
   validationSchema: Yup.object().shape({
-    Abertura_da_colhedora: Yup.string(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-    Velocidade_de_deslocamento: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-    Horas_diaria_trabalho: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher")
+    Abertura_da_colhedora: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Velocidade_de_deslocamento: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Horas_diaria_trabalho: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    )
   }),
 
-  handleSubmit: (values, { props }) => {
-    props.navigation.dispatch({
-      key: "Livestock4",
-      type: "ReplaceCurrentScreen",
-      routeName: "Livestock4",
-      params: { values: values }
-    });
-  }
+  handleSubmit: () => {}
 })(livestock);

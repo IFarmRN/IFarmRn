@@ -6,8 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
-  Animated,
-  Easing
+  Animated
 } from "react-native";
 
 import { useSelector, useDispatch } from "react-redux";

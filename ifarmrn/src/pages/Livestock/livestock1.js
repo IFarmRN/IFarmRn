@@ -14,21 +14,54 @@ import { withFormik } from "formik";
 import * as Yup from "yup";
 
 import styles from "./styles";
+
 function livestock(props) {
-  const { setFieldValue, values, handleSubmit } = props;
+  const { setFieldValue, values, handleSubmit, errors } = props;
 
   useEffect(() => {
-    const fromValues = props.navigation.getParam("values") || null;
-
-    if (fromValues != null) {
-      Object.keys(fromValues).map(function(key, index) {
-        setFieldValue(key, fromValues[key]);
-      });
-    }
+    global.KEY = 1;
   }, []);
 
-  buttonSubmitted = () => {
+  useEffect(() => {
+    global.KEY = 1;
+  });
+
+  global.buttonSubmitted1 = async screenName => {
+    const valueArray = Object.entries(values);
+    const params = props.navigation.getParam("values") || null;
+
+    const empty = valueArray.find(([item, value]) => {
+      return value != "";
+    });
+
+    //check if the values are empty
+    if (empty == undefined) {
+      await props.navigation.navigate(screenName);
+      const KEY = screenName.slice(
+        screenName.indexOf("k") + 1,
+        screenName.length
+      );
+
+      global.KEY = parseInt(KEY) - 1;
+      return;
+    }
+
     handleSubmit();
+
+    if (Object.keys(errors).length == 0) {
+      const newValues = { ...params, ...values };
+
+      await props.navigation.navigate(screenName, {
+        values: newValues
+      });
+      const KEY = screenName.slice(
+        screenName.indexOf("k") + 1,
+        screenName.length
+      );
+
+      global.KEY = parseInt(KEY) - 1;
+      return;
+    }
   };
 
   useEffect(() => {
@@ -111,16 +144,14 @@ function livestock(props) {
             <View style={styles.buttonView}>
               <TouchableOpacity
                 onPress={() => {
-                  buttonSubmitted();
+                  global.buttonSubmitted1("Livestock3");
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
                 <Text style={styles.buttonText}>Próximo</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() =>
-                  props.navigation.navigate("Livestock2", { values })
-                }
+                onPress={() => global.buttonSubmitted1("Livestock1")}
                 style={[styles.button, { marginRight: 0 }]}
               >
                 <Text style={styles.buttonText}>Anterior</Text>
@@ -142,22 +173,19 @@ export default withFormik({
   }),
 
   validationSchema: Yup.object().shape({
-    Cultura_forrageira: Yup.string("Erro").required("Não esqueça de preencher"),
-
-    Producao: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-
-    Densidade: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher"),
-
-    Porcentagem_materia_seca: Yup.number(
-      "Use apenas numeros e ponto no lugar de virgula"
-    ).required("Não esqueça de preencher")
+    Cultura_forrageira: Yup.string("Use apenas caracteres").required(
+      "Não esqueça de preencher"
+    ),
+    Producao: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Densidade: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Porcentagem_materia_seca: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    )
   }),
 
-  handleSubmit: (values, { props }) => {
-    props.navigation.navigate("Livestock2", { values });
-  }
+  handleSubmit: () => {}
 })(livestock);

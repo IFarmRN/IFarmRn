@@ -54,7 +54,7 @@ function DrawerMenu(props) {
       {menuData.map((item, index) => (
         <DrawerItem
           key={index}
-          navigate={props.navigation.navigate}
+          navigation={props.navigation}
           screenName={item.screenName}
           icon={item.icon}
           name={item.name}
@@ -66,7 +66,7 @@ function DrawerMenu(props) {
       <View style={{ flex: 1 }}>
         <DrawerItem
           screenName={"Home"}
-          navigate={props.navigation.navigate}
+          navigation={props.navigation}
           icon={"home"}
           name={"Home"}
           KEY={12}
@@ -84,17 +84,65 @@ const Menu = () => (
 
 const Line = () => <View style={styles.line} />;
 
-function DrawerItem({ navigate, KEY, icon, name, screenName }) {
-  buttonPressed = () => {
-    global.currentScreenIndex = KEY;
+function DrawerItem({ navigation, KEY, icon, name, screenName }) {
+  actualScreen = () => {
+    const pathAndParams =
+      navigation.router.getPathAndParamsForState(navigation.state) || {};
+    let activePath = pathAndParams.path;
+    activePath = activePath.slice(
+      activePath.indexOf("k") + 1,
+      activePath.lenght
+    );
+
+    activePath = Number(parseInt(activePath));
+    return activePath - 1;
+  };
+
+  buttonPressed = async () => {
+    global.KEY = KEY;
+
+    const currentScreen = actualScreen();
+
+    switch (currentScreen) {
+      case 0:
+        global.buttonSubmitted0(screenName);
+        break;
+
+      case 1:
+        global.buttonSubmitted1(screenName);
+        break;
+
+      case 2:
+        global.buttonSubmitted2(screenName);
+        break;
+
+      case 3:
+        global.buttonSubmitted3(screenName);
+        break;
+
+      case 4:
+        global.buttonSubmitted4(screenName);
+        break;
+
+      case 5:
+        global.buttonSubmitted5(screenName);
+        break;
+
+      case 6:
+        global.buttonSubmitted6(screenName);
+        break;
+
+      default:
+        return;
+        break;
+    }
   };
 
   return (
     <TouchableOpacity
       style={[
         {
-          backgroundColor:
-            global.currentScreenIndex == KEY ? Color.grayDark : Color.gray,
+          backgroundColor: global.KEY == KEY ? Color.grayDark : Color.gray,
           margin: 5,
           borderRadius: 10
         },
@@ -106,18 +154,14 @@ function DrawerItem({ navigate, KEY, icon, name, screenName }) {
         <Icon2
           name={icon}
           size={35}
-          color={
-            global.currentScreenIndex == KEY ? Color.green : Color.defaultColor
-          }
+          color={global.KEY == KEY ? Color.green : Color.defaultColor}
           style={{ margin: 7 }}
         />
       ) : (
         <Icon
           name={icon}
           size={25}
-          color={
-            global.currentScreenIndex == KEY ? Color.green : Color.defaultColor
-          }
+          color={global.KEY == KEY ? Color.green : Color.defaultColor}
           style={{ margin: 15 }}
         />
       )}
@@ -125,10 +169,7 @@ function DrawerItem({ navigate, KEY, icon, name, screenName }) {
         style={[
           styles.menuItemText,
           {
-            color:
-              global.currentScreenIndex === KEY
-                ? Color.green
-                : Color.defaultColor
+            color: global.KEY === KEY ? Color.green : Color.defaultColor
           }
         ]}
       >

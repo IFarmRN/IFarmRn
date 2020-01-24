@@ -22,12 +22,12 @@ export default class home extends Component {
 
   livestock = () => {
     this.props.navigation.navigate("LivestockNavigator", { id: null });
-    global.currentScreenIndex = 0;
+    global.x.a = 0;
   };
 
   agriculture = () => {
     this.props.navigation.navigate("AgroNavigator");
-    global.currentScreenIndex = 0;
+    global.x.a = 0;
   };
 
   render() {

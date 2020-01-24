@@ -10,10 +10,8 @@ import {
 } from "react-native";
 import { Color } from "../../../constants/routes";
 
-import Input from "../../../components/Input/Input";
 import * as Permissions from "expo-permissions";
 import * as ImagePicker from "expo-image-picker";
-import * as FileSystem from "expo-file-system";
 import styles from "./styles";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
