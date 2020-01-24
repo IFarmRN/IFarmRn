@@ -28,6 +28,7 @@ function livestock(props) {
     //check if the values are empty
     if (empty == undefined) {
       await props.navigation.navigate(screenName);
+      return;
     }
     handleSubmit();
 
