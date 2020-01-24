@@ -25,6 +25,7 @@ function Input(props) {
         style={styles.styleGeneral}
         inputStyle={styles.inputStyle}
         onChangeText={text => {
+          text = text.replace(",", ".");
           setTextValue(text);
           props.props.setFieldValue(props.name, text);
         }}

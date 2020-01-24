@@ -7,6 +7,8 @@ import {
   Dimensions
 } from "react-native";
 import Input from "../../components/Input/Input";
+import DropdownList from "../../components/Dropdown/Dropdown";
+import { Color } from "../../constants/routes";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -15,11 +17,7 @@ import styles from "./styles";
 function livestock(props) {
   const { setFieldValue, values, handleSubmit, errors } = props;
 
-  useEffect(() => {
-    global.KEY = 3;
-  });
-
-  global.buttonSubmitted3 = async screenName => {
+  global.buttonSubmitted2 = async (screenName, key) => {
     const valueArray = Object.entries(values);
     const params = props.navigation.getParam("values") || null;
 
@@ -27,16 +25,11 @@ function livestock(props) {
       return value != "";
     });
 
+    global.KEY = key;
+
     //check if the values are empty
     if (empty == undefined) {
       await props.navigation.navigate(screenName);
-
-      const KEY = screenName.slice(
-        screenName.indexOf("k") + 1,
-        screenName.length
-      );
-
-      global.KEY = parseInt(KEY) - 1;
       return;
     }
 
@@ -44,51 +37,63 @@ function livestock(props) {
 
     if (Object.keys(errors).length == 0) {
       const newValues = { ...params, ...values };
+      console.log(newValues);
 
-      await props.navigation.navigate(screenName, {
-        values: newValues
-      });
       const KEY = screenName.slice(
         screenName.indexOf("k") + 1,
         screenName.length
       );
 
       global.KEY = parseInt(KEY) - 1;
+      await props.navigation.navigate(screenName, {
+        values: newValues
+      });
       return;
     }
   };
+
+  useEffect(() => {
+    switch (values["Performance_produtiva_animal"]) {
+      case "Alta performance produtiva":
+        setFieldValue("Percentagem_concentrado", 40);
+        setFieldValue("Percentagem_volumoso", 60);
+
+        break;
+      case "Média performance produtiva":
+        setFieldValue("Percentagem_concentrado", 50);
+        setFieldValue("Percentagem_volumoso", 50);
+
+        break;
+      case "Baixa performance produtiva":
+        setFieldValue("Percentagem_concentrado", 30);
+        setFieldValue("Percentagem_volumoso", 70);
+
+        break;
+    }
+  }, [values["Performance_produtiva_animal"]]);
 
   return (
     <>
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
-          <Text style={styles.title}>Colhedora</Text>
-
-          <Input
-            value={values["Abertura_da_colhedora"]}
-            name="Abertura_da_colhedora"
-            title="Abertura da colhedora"
-            iconName="calculator"
-            keyboardType="numeric"
+          <Text style={styles.title}>Performance produtiva do animal</Text>
+          <DropdownList
+            value={values["Performance_produtiva_animal"]}
+            title="Performance produtiva animal"
+            name="Performance_produtiva_animal"
+            data={[
+              { value: "Alta performance produtiva" },
+              { value: "Média performance produtiva" },
+              { value: "Baixa performance produtiva" }
+            ]}
             props={props}
           />
-          <Input
-            value={values["Velocidade_de_deslocamento"]}
-            name="Velocidade_de_deslocamento"
-            title="Velocidade da colhedora (Km/h)"
-            iconName="calculator"
-            keyboardType="numeric"
-            props={props}
-          />
-          <Input
-            value={values["Horas_diaria_trabalho"]}
-            name="Horas_diaria_trabalho"
-            title="Horas de trabalho diario (h)"
-            iconName="calculator"
-            keyboardType="numeric"
-            props={props}
-          />
-
+          <Text
+            style={styles.title}
+          >{`Volumoso (%): ${values["Percentagem_volumoso"]}`}</Text>
+          <Text
+            style={styles.title}
+          >{`Concentrado (%): ${values["Percentagem_concentrado"]}`}</Text>
           <View
             style={{
               alignItems: "center",
@@ -99,16 +104,14 @@ function livestock(props) {
             <View style={styles.buttonView}>
               <TouchableOpacity
                 onPress={() => {
-                  global.buttonSubmitted3("Livestock5");
+                  global.buttonSubmitted2("Livestock4", 3);
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
                 <Text style={styles.buttonText}>Próximo</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
-                  global.buttonSubmitted3("Livestock3");
-                }}
+                onPress={() => global.buttonSubmitted2("Livestock2", 1)}
                 style={[styles.button, { marginRight: 0 }]}
               >
                 <Text style={styles.buttonText}>Anterior</Text>
@@ -123,19 +126,12 @@ function livestock(props) {
 
 export default withFormik({
   mapPropsToValues: () => ({
-    Abertura_da_colhedora: "",
-    Velocidade_de_deslocamento: "",
-    Horas_diaria_trabalho: ""
+    Performance_produtiva_animal: "",
+    Percentagem_concentrado: "",
+    Percentagem_volumoso: ""
   }),
-
   validationSchema: Yup.object().shape({
-    Abertura_da_colhedora: Yup.number("Use apenas numeros").required(
-      "Não esqueça de preencher"
-    ),
-    Velocidade_de_deslocamento: Yup.number("Use apenas numeros").required(
-      "Não esqueça de preencher"
-    ),
-    Horas_diaria_trabalho: Yup.number("Use apenas numeros").required(
+    Performance_produtiva_animal: Yup.string().required(
       "Não esqueça de preencher"
     )
   }),

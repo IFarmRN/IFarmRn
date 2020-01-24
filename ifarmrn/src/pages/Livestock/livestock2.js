@@ -8,36 +8,26 @@ import {
 } from "react-native";
 import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
-import { Color } from "../../constants/routes";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
 
 import styles from "./styles";
+
 function livestock(props) {
   const { setFieldValue, values, handleSubmit, errors } = props;
 
-  useEffect(() => {
-    global.KEY = 2;
-  });
-
-  global.buttonSubmitted2 = async screenName => {
+  global.buttonSubmitted1 = async (screenName, key) => {
     const valueArray = Object.entries(values);
     const params = props.navigation.getParam("values") || null;
 
     const empty = valueArray.find(([item, value]) => {
       return value != "";
     });
-
+    global.KEY = key;
     //check if the values are empty
     if (empty == undefined) {
       await props.navigation.navigate(screenName);
-      const KEY = screenName.slice(
-        screenName.indexOf("k") + 1,
-        screenName.length
-      );
-
-      global.KEY = parseInt(KEY) - 1;
       return;
     }
 
@@ -46,61 +36,85 @@ function livestock(props) {
     if (Object.keys(errors).length == 0) {
       const newValues = { ...params, ...values };
 
+      console.log(newValues);
+
       await props.navigation.navigate(screenName, {
         values: newValues
       });
-      const KEY = screenName.slice(
-        screenName.indexOf("k") + 1,
-        screenName.length
-      );
-
-      global.KEY = parseInt(KEY) - 1;
       return;
     }
   };
 
   useEffect(() => {
-    switch (values["Performance_produtiva_animal"]) {
-      case "Alta performance produtiva":
-        setFieldValue("Percentagem_concentrado", 40);
-        setFieldValue("Percentagem_volumoso", 60);
-
+    switch (values["Cultura_forrageira"]) {
+      case "Milho":
+        setFieldValue("Producao", "40");
+        setFieldValue("Densidade", "650");
+        setFieldValue("Porcentagem_materia_seca", "35");
         break;
-      case "Média performance produtiva":
-        setFieldValue("Percentagem_concentrado", 50);
-        setFieldValue("Percentagem_volumoso", 50);
-
+      case "Sorgo Forrageiro":
+        setFieldValue("Producao", "55");
+        setFieldValue("Densidade", "600");
+        setFieldValue("Porcentagem_materia_seca", "33");
         break;
-      case "Baixa performance produtiva":
-        setFieldValue("Percentagem_concentrado", 30);
-        setFieldValue("Percentagem_volumoso", 70);
-
+      case "Capim Elefante":
+        setFieldValue("Producao", "70");
+        setFieldValue("Densidade", "420");
+        setFieldValue("Porcentagem_materia_seca", "");
+        break;
+      default:
+        setFieldValue("Producao", "");
+        setFieldValue("Densidade", "");
+        setFieldValue("Porcentagem_materia_seca", "");
         break;
     }
-  }, [values["Performance_produtiva_animal"]]);
+  }, [values["Cultura_forrageira"]]);
 
   return (
     <>
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
-          <Text style={styles.title}>Performance produtiva do animal</Text>
+          <Text style={styles.title}>Dados da cultura forrageira</Text>
+
           <DropdownList
-            value={values["Performance_produtiva_animal"]}
-            title="Performance produtiva animal"
-            name="Performance_produtiva_animal"
+            value={values["Cultura_forrageira"]}
+            title="Cultura forrageira"
+            name="Cultura_forrageira"
             data={[
-              { value: "Alta performance produtiva" },
-              { value: "Média performance produtiva" },
-              { value: "Baixa performance produtiva" }
+              { value: "Milho" },
+              { value: "Sorgo Forrageiro" },
+              { value: "Capim Elefante" },
+              { value: "Mombamça" },
+              { value: "Tanzânia" },
+              { value: "Branquiária" },
+              { value: "Cana-de-açucar" }
             ]}
             props={props}
           />
-          <Text
-            style={styles.title}
-          >{`Volumoso (%): ${values["Percentagem_volumoso"]}`}</Text>
-          <Text
-            style={styles.title}
-          >{`Concentrado (%): ${values["Percentagem_concentrado"]}`}</Text>
+          <Input
+            value={values["Producao"]}
+            name="Producao"
+            title="Produção (ton/ha)"
+            iconName="calculator"
+            keyboardType="numeric"
+            props={props}
+          />
+          <Input
+            value={values["Densidade"]}
+            name="Densidade"
+            title="Densidade (Kg/m³)"
+            iconName="calculator"
+            keyboardType="numeric"
+            props={props}
+          />
+          <Input
+            value={values["Porcentagem_materia_seca"]}
+            name="Porcentagem_materia_seca"
+            title="% de matéria seca"
+            iconName="calculator"
+            keyboardType="numeric"
+            props={props}
+          />
           <View
             style={{
               alignItems: "center",
@@ -111,14 +125,14 @@ function livestock(props) {
             <View style={styles.buttonView}>
               <TouchableOpacity
                 onPress={() => {
-                  global.buttonSubmitted2("Livestock4");
+                  global.buttonSubmitted1("Livestock3", 2);
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
                 <Text style={styles.buttonText}>Próximo</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => global.buttonSubmitted2("Livestock2")}
+                onPress={() => global.buttonSubmitted1("Livestock1", 0)}
                 style={[styles.button, { marginRight: 0 }]}
               >
                 <Text style={styles.buttonText}>Anterior</Text>
@@ -133,12 +147,23 @@ function livestock(props) {
 
 export default withFormik({
   mapPropsToValues: () => ({
-    Performance_produtiva_animal: "",
-    Percentagem_concentrado: "",
-    Percentagem_volumoso: ""
+    Cultura_forrageira: "",
+    Producao: "",
+    Densidade: "",
+    Porcentagem_materia_seca: ""
   }),
+
   validationSchema: Yup.object().shape({
-    Performance_produtiva_animal: Yup.string().required(
+    Cultura_forrageira: Yup.string("Use apenas caracteres").required(
+      "Não esqueça de preencher"
+    ),
+    Producao: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Densidade: Yup.number("Use apenas numeros").required(
+      "Não esqueça de preencher"
+    ),
+    Porcentagem_materia_seca: Yup.number("Use apenas numeros").required(
       "Não esqueça de preencher"
     )
   }),

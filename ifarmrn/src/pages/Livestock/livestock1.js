@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
-import { Color } from "../../constants/routes";
 
 import { withFormik } from "formik";
 import * as Yup from "yup";
@@ -16,33 +15,23 @@ import * as Yup from "yup";
 import styles from "./styles";
 
 function livestock(props) {
-  const { setFieldValue, values, handleSubmit, errors } = props;
+  const { setFieldValue, values, errors, handleSubmit } = props;
 
-  useEffect(() => {
-    global.KEY = 1;
-  }, []);
+  const [dataPeso, setDataPeso] = useState([]);
+  const [count, setCount] = useState(0);
 
-  useEffect(() => {
-    global.KEY = 1;
-  });
-
-  global.buttonSubmitted1 = async screenName => {
+  global.buttonSubmitted0 = async (screenName, key) => {
     const valueArray = Object.entries(values);
     const params = props.navigation.getParam("values") || null;
 
     const empty = valueArray.find(([item, value]) => {
       return value != "";
     });
-
+    global.KEY = key;
     //check if the values are empty
     if (empty == undefined) {
       await props.navigation.navigate(screenName);
-      const KEY = screenName.slice(
-        screenName.indexOf("k") + 1,
-        screenName.length
-      );
 
-      global.KEY = parseInt(KEY) - 1;
       return;
     }
 
@@ -51,89 +40,143 @@ function livestock(props) {
     if (Object.keys(errors).length == 0) {
       const newValues = { ...params, ...values };
 
+      console.log(newValues);
       await props.navigation.navigate(screenName, {
         values: newValues
       });
-      const KEY = screenName.slice(
-        screenName.indexOf("k") + 1,
-        screenName.length
-      );
-
-      global.KEY = parseInt(KEY) - 1;
       return;
     }
   };
 
+  /*    useEffect(() => {
+    const fromValues = props.navigation.getParam("values") || null;
+
+    if (fromValues != null) {
+      Object.keys(fromValues).map(function(key, index) {
+        setFieldValue(key, fromValues[key]);
+      });
+    }
+  }, []); */
+
   useEffect(() => {
-    switch (values["Cultura_forrageira"]) {
-      case "Milho":
-        setFieldValue("Producao", "40");
-        setFieldValue("Densidade", "650");
-        setFieldValue("Porcentagem_materia_seca", "35");
+    dataPeso.forEach(element => {
+      if (element["value"] === values["Ganho_de_peso"])
+        setFieldValue("Consumo_diario_porcentagem", element["consumo"]);
+    });
+    setFieldValue("Ganho_de_peso", values["Ganho_de_peso"]);
+  }, [values["Ganho_de_peso"]]);
+
+  useEffect(() => {
+    let peso = values["Peso_vivo"];
+
+    if (count < 2) {
+      setCount(count + 1);
+    } else {
+      setFieldValue("Ganho_de_peso", "");
+      setFieldValue("Consumo_diario_porcentagem", "");
+    }
+
+    switch (peso) {
+      case 250:
+        setDataPeso([
+          { value: 0.0, consumo: 1.8 },
+          { value: 500, consumo: 2.5 },
+          { value: 750, consumo: 2.6 },
+          { value: 1000, consumo: 2.6 }
+        ]);
         break;
-      case "Sorgo Forrageiro":
-        setFieldValue("Producao", "55");
-        setFieldValue("Densidade", "600");
-        setFieldValue("Porcentagem_materia_seca", "33");
+      case 300:
+        setDataPeso([
+          { value: 0.0, consumo: 1.7 },
+          { value: 500, consumo: 2.3 },
+          { value: 750, consumo: 2.5 },
+          { value: 1000, consumo: 2.5 }
+        ]);
         break;
-      case "Capim Elefante":
-        setFieldValue("Producao", "70");
-        setFieldValue("Densidade", "420");
-        setFieldValue("Porcentagem_materia_seca", "");
+      case 350:
+        setDataPeso([
+          { value: 0.0, consumo: 1.6 },
+          { value: 500, consumo: 2.3 },
+          { value: 750, consumo: 2.4 },
+          { value: 1000, consumo: 2.4 },
+          { value: 1200, consumo: 2.4 }
+        ]);
+        break;
+      case 400:
+        setDataPeso([
+          { value: 0.0, consumo: 1.6 },
+          { value: 500, consumo: 2.3 },
+          { value: 750, consumo: 2.3 },
+          { value: 1000, consumo: 2.3 },
+          { value: 1300, consumo: 2.3 }
+        ]);
+        break;
+      case 450:
+        setDataPeso([
+          { value: 0.0, consumo: 1.5 },
+          { value: 750, consumo: 2.2 },
+          { value: 1000, consumo: 2.3 },
+          { value: 1300, consumo: 2.2 }
+        ]);
+        break;
+      case 500:
+        setDataPeso([
+          { value: 0.0, consumo: 1.5 },
+          { value: 750, consumo: 2.2 },
+          { value: 1000, consumo: 2.2 },
+          { value: 1300, consumo: 2.2 },
+          { value: 1400, consumo: 2.1 }
+        ]);
         break;
       default:
-        setFieldValue("Producao", "");
-        setFieldValue("Densidade", "");
-        setFieldValue("Porcentagem_materia_seca", "");
+        setDataPeso([{ value: "Escolha um peso primeiro" }]);
         break;
     }
-  }, [values["Cultura_forrageira"]]);
+  }, [values["Peso_vivo"]]);
 
   return (
     <>
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
-          <Text style={styles.title}>Dados da cultura forrageira</Text>
-
+          <Text style={styles.title}>Caracteristicas do confinamento</Text>
+          <Input
+            value={values["Numero_de_cabeças"]}
+            name="Numero_de_cabeças"
+            iconName="calculator"
+            keyboardType="numeric"
+            props={props}
+          />
+          <Input
+            value={values["Numero_de_dias_para_tratar"]}
+            name="Numero_de_dias_para_tratar"
+            iconName="calculator"
+            keyboardType="numeric"
+            props={props}
+          />
           <DropdownList
-            value={values["Cultura_forrageira"]}
-            title="Cultura forrageira"
-            name="Cultura_forrageira"
+            value={values["Peso_vivo"]}
+            name="Peso_vivo"
+            title="Peso vivo (Kg)"
             data={[
-              { value: "Milho" },
-              { value: "Sorgo Forrageiro" },
-              { value: "Capim Elefante" },
-              { value: "Mombamça" },
-              { value: "Tanzânia" },
-              { value: "Branquiária" },
-              { value: "Cana-de-açucar" }
+              { value: 250 },
+              { value: 300 },
+              { value: 350 },
+              { value: 400 },
+              { value: 450 },
+              { value: 500 }
             ]}
             props={props}
           />
-          <Input
-            value={values["Producao"]}
-            name="Producao"
-            title="Produção (ton/ha)"
-            iconName="calculator"
-            keyboardType="numeric"
+          <DropdownList
+            value={values["Ganho_de_peso"]}
+            title="Ganho de peso"
+            name="Ganho_de_peso"
+            data={dataPeso}
             props={props}
           />
-          <Input
-            value={values["Densidade"]}
-            name="Densidade"
-            title="Densidade (Kg/m³)"
-            iconName="calculator"
-            keyboardType="numeric"
-            props={props}
-          />
-          <Input
-            value={values["Porcentagem_materia_seca"]}
-            name="Porcentagem_materia_seca"
-            title="% de matéria seca"
-            iconName="calculator"
-            keyboardType="numeric"
-            props={props}
-          />
+          <Text
+            style={styles.title}
+          >{`Porcentagem de comsumo diario: ${values["Consumo_diario_porcentagem"]}`}</Text>
           <View
             style={{
               alignItems: "center",
@@ -144,17 +187,11 @@ function livestock(props) {
             <View style={styles.buttonView}>
               <TouchableOpacity
                 onPress={() => {
-                  global.buttonSubmitted1("Livestock3");
+                  global.buttonSubmitted0("Livestock2", 1);
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
                 <Text style={styles.buttonText}>Próximo</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => global.buttonSubmitted1("Livestock1")}
-                style={[styles.button, { marginRight: 0 }]}
-              >
-                <Text style={styles.buttonText}>Anterior</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -166,26 +203,26 @@ function livestock(props) {
 
 export default withFormik({
   mapPropsToValues: () => ({
-    Cultura_forrageira: "",
-    Producao: "",
-    Densidade: "",
-    Porcentagem_materia_seca: ""
+    Numero_de_cabeças: "",
+    Numero_de_dias_para_tratar: "",
+    Peso_vivo: "",
+    Ganho_de_peso: "",
+    Consumo_diario_porcentagem: ""
   }),
 
   validationSchema: Yup.object().shape({
-    Cultura_forrageira: Yup.string("Use apenas caracteres").required(
+    Numero_de_cabeças: Yup.number("Use apenas numeros").required(
       "Não esqueça de preencher"
     ),
-    Producao: Yup.number("Use apenas numeros").required(
+    Numero_de_dias_para_tratar: Yup.number("Use apenas numeros").required(
       "Não esqueça de preencher"
     ),
-    Densidade: Yup.number("Use apenas numeros").required(
+    Peso_vivo: Yup.number("Use apenas numeros").required(
       "Não esqueça de preencher"
     ),
-    Porcentagem_materia_seca: Yup.number("Use apenas numeros").required(
+    Ganho_de_peso: Yup.number("Use apenas numeros").required(
       "Não esqueça de preencher"
     )
   }),
-
   handleSubmit: () => {}
 })(livestock);

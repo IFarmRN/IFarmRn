@@ -2,13 +2,13 @@ import { createStackNavigator } from "react-navigation-stack";
 
 import React from "react";
 
-import Livestock1 from "../../pages/Livestock/livestock";
-import Livestock2 from "../../pages/Livestock/livestock1";
-import Livestock3 from "../../pages/Livestock/livestock2";
-import Livestock4 from "../../pages/Livestock/livestock3";
-import Livestock5 from "../../pages/Livestock/livestock4";
-import Livestock6 from "../../pages/Livestock/livestock5";
-import Livestock7 from "../../pages/Livestock/livestock6";
+import Livestock1 from "../../pages/Livestock/livestock1";
+import Livestock2 from "../../pages/Livestock/livestock2";
+import Livestock3 from "../../pages/Livestock/livestock3";
+import Livestock4 from "../../pages/Livestock/livestock4";
+import Livestock5 from "../../pages/Livestock/livestock5";
+import Livestock6 from "../../pages/Livestock/livestock6";
+import Livestock7 from "../../pages/Livestock/livestock7";
 
 import LivestockHeader from "./HeaderLivestock";
 

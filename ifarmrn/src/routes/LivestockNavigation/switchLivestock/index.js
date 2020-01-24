@@ -46,6 +46,12 @@ const menuData = [
 ];
 
 function DrawerMenu(props) {
+  const [boolean, setBoolean] = useState(false);
+  useEffect(() => {
+    setBoolean(!boolean);
+    console.log("useeffect");
+    console.log(global.KEY);
+  }, [global.KEY]);
   return (
     <View style={styles.container}>
       <Menu />
@@ -99,37 +105,35 @@ function DrawerItem({ navigation, KEY, icon, name, screenName }) {
   };
 
   buttonPressed = async () => {
-    global.KEY = KEY;
-
     const currentScreen = actualScreen();
 
     switch (currentScreen) {
       case 0:
-        global.buttonSubmitted0(screenName);
+        global.buttonSubmitted0(screenName, KEY);
         break;
 
       case 1:
-        global.buttonSubmitted1(screenName);
+        global.buttonSubmitted1(screenName, KEY);
         break;
 
       case 2:
-        global.buttonSubmitted2(screenName);
+        global.buttonSubmitted2(screenName, KEY);
         break;
 
       case 3:
-        global.buttonSubmitted3(screenName);
+        global.buttonSubmitted3(screenName, KEY);
         break;
 
       case 4:
-        global.buttonSubmitted4(screenName);
+        global.buttonSubmitted4(screenName, KEY);
         break;
 
       case 5:
-        global.buttonSubmitted5(screenName);
+        global.buttonSubmitted5(screenName, KEY);
         break;
 
       case 6:
-        global.buttonSubmitted6(screenName);
+        global.buttonSubmitted6(screenName, KEY);
         break;
 
       default:
@@ -142,7 +146,7 @@ function DrawerItem({ navigation, KEY, icon, name, screenName }) {
     <TouchableOpacity
       style={[
         {
-          backgroundColor: global.KEY == KEY ? Color.grayDark : Color.gray,
+          backgroundColor: global.KEY === KEY ? Color.grayDark : Color.gray,
           margin: 5,
           borderRadius: 10
         },

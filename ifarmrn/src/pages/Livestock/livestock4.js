@@ -13,13 +13,9 @@ import * as Yup from "yup";
 
 import styles from "./styles";
 function livestock(props) {
-  const { values, handleSubmit, errors } = props;
+  const { setFieldValue, values, handleSubmit, errors } = props;
 
-  useEffect(() => {
-    global.KEY = 4;
-  });
-
-  global.buttonSubmitted4 = async screenName => {
+  global.buttonSubmitted3 = async (screenName, key) => {
     const valueArray = Object.entries(values);
     const params = props.navigation.getParam("values") || null;
 
@@ -27,33 +23,21 @@ function livestock(props) {
       return value != "";
     });
 
+    global.KEY = key;
+
     //check if the values are empty
     if (empty == undefined) {
       await props.navigation.navigate(screenName);
-
-      const KEY = screenName.slice(
-        screenName.indexOf("k") + 1,
-        screenName.length
-      );
-
-      global.KEY = parseInt(KEY) - 1;
-      return;
     }
-
     handleSubmit();
 
     if (Object.keys(errors).length == 0) {
       const newValues = { ...params, ...values };
-
+      console.log(newValues);
       await props.navigation.navigate(screenName, {
         values: newValues
       });
-      const KEY = screenName.slice(
-        screenName.indexOf("k") + 1,
-        screenName.length
-      );
 
-      global.KEY = parseInt(KEY) - 1;
       return;
     }
   };
@@ -62,37 +46,28 @@ function livestock(props) {
     <>
       <View style={styles.container}>
         <ScrollView style={{ flex: 1 }}>
-          <Text style={styles.title}>Armazenamento</Text>
+          <Text style={styles.title}>Colhedora</Text>
 
           <Input
-            value={values["Quantidade_silo"]}
-            name="Quantidade_silo"
-            title="Quantidade de silo"
-            iconName="calculator"
-            keyboardType="numeric"
-            props={props}
-          />
-
-          <Input
-            value={values["Base_maior"]}
-            name="Base_maior"
-            title="Base maior (m)"
+            value={values["Abertura_da_colhedora"]}
+            name="Abertura_da_colhedora"
+            title="Abertura da colhedora"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
           <Input
-            value={values["Base_menor"]}
-            name="Base_menor"
-            title="Base menor (m)"
+            value={values["Velocidade_de_deslocamento"]}
+            name="Velocidade_de_deslocamento"
+            title="Velocidade da colhedora (Km/h)"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
           />
           <Input
-            value={values["Altura"]}
-            name="Altura"
-            title="Altura (m)"
+            value={values["Horas_diaria_trabalho"]}
+            name="Horas_diaria_trabalho"
+            title="Horas de trabalho diario (h)"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
@@ -108,7 +83,7 @@ function livestock(props) {
             <View style={styles.buttonView}>
               <TouchableOpacity
                 onPress={() => {
-                  global.buttonSubmitted4("Livestock6");
+                  global.buttonSubmitted3("Livestock5", 4);
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
@@ -116,7 +91,7 @@ function livestock(props) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  global.buttonSubmitted4("Livestock4");
+                  global.buttonSubmitted3("Livestock3", 2);
                 }}
                 style={[styles.button, { marginRight: 0 }]}
               >
@@ -132,26 +107,19 @@ function livestock(props) {
 
 export default withFormik({
   mapPropsToValues: () => ({
-    Quantidade_silo: "",
-    Base_maior: "",
-    Base_menor: "",
-    Altura: "",
-    Area: "",
-    Volume_silo: "",
-    Comprimento: ""
+    Abertura_da_colhedora: "",
+    Velocidade_de_deslocamento: "",
+    Horas_diaria_trabalho: ""
   }),
 
   validationSchema: Yup.object().shape({
-    Quantidade_silo: Yup.number("Use apenas numeros").required(
+    Abertura_da_colhedora: Yup.number("Use apenas numeros").required(
       "Não esqueça de preencher"
     ),
-    Base_maior: Yup.number("Use apenas numeros").required(
+    Velocidade_de_deslocamento: Yup.number("Use apenas numeros").required(
       "Não esqueça de preencher"
     ),
-    Base_menor: Yup.number("Use apenas numeros").required(
-      "Não esqueça de preencher"
-    ),
-    Altura: Yup.number("Use apenas numeros").required(
+    Horas_diaria_trabalho: Yup.number("Use apenas numeros").required(
       "Não esqueça de preencher"
     )
   }),
