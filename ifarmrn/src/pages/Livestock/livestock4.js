@@ -16,6 +16,7 @@ function livestock(props) {
   const { setFieldValue, values, handleSubmit, errors } = props;
 
   global.buttonSubmitted3 = async (screenName, key) => {
+    console.log("entruo no submitted");
     const valueArray = Object.entries(values);
     const params = props.navigation.getParam("values") || null;
 
@@ -23,16 +24,17 @@ function livestock(props) {
       return value != "";
     });
 
-    global.KEY = key;
 
     //check if the values are empty
     if (empty == undefined) {
+      global.KEY = key;
       await props.navigation.navigate(screenName);
       return;
     }
     handleSubmit();
-
+    console.log(errors);
     if (Object.keys(errors).length == 0) {
+      global.KEY = key;
       const newValues = { ...params, ...values };
       console.log(newValues);
       await props.navigation.navigate(screenName, {
@@ -51,8 +53,8 @@ function livestock(props) {
 
           <Input
             value={values["Abertura_da_colhedora"]}
-            name="Abertura_da_colhedora (m)"
-            title="Abertura da colhedora"
+            name="Abertura_da_colhedora"
+            title="Abertura da colhedora (m)"
             iconName="calculator"
             keyboardType="numeric"
             props={props}
@@ -125,5 +127,5 @@ export default withFormik({
     )
   }),
 
-  handleSubmit: () => {}
+  handleSubmit: () => { }
 })(livestock);

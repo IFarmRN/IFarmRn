@@ -1,11 +1,12 @@
 import React, { Component, useEffect, useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, ListView } from "react-native";
 
 import Icon from "@expo/vector-icons/FontAwesome";
 import Icon2 from "@expo/vector-icons/MaterialCommunityIcons";
 
 import styles from "./styles";
 import { Color } from "../../../constants/routes";
+import { ScrollView } from "react-native-gesture-handler";
 
 const menuData = [
   {
@@ -54,30 +55,32 @@ function DrawerMenu(props) {
   }, [global.KEY]);
   return (
     <View style={styles.container}>
-      <Menu />
-      <Line Title={"Rotas"} />
+      <ScrollView>
+        <Menu />
+        <Line Title={"Rotas"} />
 
-      {menuData.map((item, index) => (
-        <DrawerItem
-          key={index}
-          navigation={props.navigation}
-          screenName={item.screenName}
-          icon={item.icon}
-          name={item.name}
-          KEY={index}
-        />
-      ))}
+        {menuData.map((item, index) => (
+          <DrawerItem
+            key={index}
+            navigation={props.navigation}
+            screenName={item.screenName}
+            icon={item.icon}
+            name={item.name}
+            KEY={index}
+          />
+        ))}
 
-      <Line />
-      <View style={{ flex: 1 }}>
-        <DrawerItem
-          screenName={"Home"}
-          navigation={props.navigation}
-          icon={"home"}
-          name={"Home"}
-          KEY={12}
-        />
-      </View>
+        <Line />
+        <View style={{ flex: 1 }}>
+          <DrawerItem
+            screenName={"Home"}
+            navigation={props.navigation}
+            icon={"home"}
+            name={"Home"}
+            KEY={12}
+          />
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -162,13 +165,13 @@ function DrawerItem({ navigation, KEY, icon, name, screenName }) {
           style={{ margin: 7 }}
         />
       ) : (
-        <Icon
-          name={icon}
-          size={25}
-          color={global.KEY == KEY ? Color.green : Color.defaultColor}
-          style={{ margin: 15 }}
-        />
-      )}
+          <Icon
+            name={icon}
+            size={25}
+            color={global.KEY == KEY ? Color.green : Color.defaultColor}
+            style={{ margin: 15 }}
+          />
+        )}
       <Text
         style={[
           styles.menuItemText,
