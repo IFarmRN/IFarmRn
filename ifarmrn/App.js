@@ -14,25 +14,6 @@ import "./src/configs/statusBarConfig";
 
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
-global.x = {
-  aInternal: 0,
-
-  aListener: function(val) {},
-
-  set a(val) {
-    this.aInternal = val;
-    this.aListener(val);
-  },
-
-  get a() {
-    return this.aInternal;
-  },
-
-  registerListener: function(listener) {
-    this.aListener = listener;
-  }
-};
-
 const theme = {
   ...DefaultTheme,
   colors: {

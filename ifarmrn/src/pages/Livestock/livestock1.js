@@ -44,6 +44,7 @@ function livestock(props) {
       await props.navigation.navigate(screenName, {
         values: newValues
       });
+
       return;
     }
   };

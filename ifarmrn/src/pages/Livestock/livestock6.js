@@ -13,7 +13,7 @@ import * as Yup from "yup";
 
 import styles from "./styles";
 function livestock(props) {
-  const { setFieldValue, values, handleSubmit, errors } = props;
+  const { values, handleSubmit, errors } = props;
 
   global.buttonSubmitted5 = async (screenName, key) => {
     const valueArray = Object.entries(values);

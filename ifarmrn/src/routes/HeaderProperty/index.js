@@ -16,7 +16,10 @@ class registerOptions extends React.Component {
             >
               <Ionicons name="left" size={32} color="white" />
             </TouchableOpacity>
-            <Text style={styles.text}> Propriedades </Text>
+
+            <Text style={[styles.text, this.props.styleText]}>
+              {this.props.name || Propriedades}
+            </Text>
           </View>
         </View>
       </>
