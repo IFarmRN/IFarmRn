@@ -18,7 +18,7 @@ const AddUser = usersData => {
 
 const updateUser = (usersData, user) => {
   const { id, Date } = user;
-  const confinamento = user.confinamento || null;
+  const confinamento = user.confinamento || "null";
 
   return {
     type: "UPDATE_DATA",
