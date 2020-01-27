@@ -6,17 +6,34 @@ import styles from "./styles";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 import { Color } from "../../constants/routes";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { updateUserConfinamento } from "../../store/actions/userActions";
 
-function SelectionScreen() {
+function SelectionScreen(props) {
   const userData = useSelector(state => state.userData);
+  const dispatch = useDispatch();
+
+  const onSubmit = item => {
+    const params = props.navigation.getParam("values");
+
+    const ACTION_UPDATE = updateUserConfinamento(
+      item["usersData"],
+      item,
+      params
+    );
+
+    dispatch(ACTION_UPDATE);
+
+    props.navigation.navigate("Property");
+  };
 
   return (
     <ScrollView style={styles.container}>
       <ReactNativeItemSelect
         data={userData}
-        itemComponent={item => <ItemComponent item={item.usersData} />}
-        onSubmit={item => console.log(item)}
+        itemComponent={item => <ItemComponent item={item} />}
+        onSubmit={item => onSubmit(item)}
         styles={{
           activeItemBoxHighlight: {
             backgroundColor: "rgba(77,175,80,0.3)",
@@ -24,7 +41,7 @@ function SelectionScreen() {
           },
           btn: { backgroundColor: Color.greenDark }
         }}
-        btnTxt="Salvar"
+        submitBtnTitle="Salvar"
         countPerRow={1}
       />
     </ScrollView>
@@ -32,10 +49,10 @@ function SelectionScreen() {
 }
 
 const ItemComponent = item => {
-  const { Nome_da_Propriedade, Foto } = item["item"];
+  const { Nome_da_Propriedade, Foto } = item.item.usersData;
 
   return (
-    <View style={styles.viewItem}>
+    <TouchableOpacity style={styles.viewItem} onPress={() => {}}>
       {Foto == "" ? (
         <Icon
           name="image-off"
@@ -53,7 +70,7 @@ const ItemComponent = item => {
       <View style={styles.viewText}>
         <Text style={styles.text}>{Nome_da_Propriedade}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

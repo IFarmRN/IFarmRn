@@ -50,9 +50,9 @@ const stackNavigator = createStackNavigator(
         header: () => <PropertyHeader />
       }
     }
-  },
-  {
-    initialRouteName: "SelectionScreen"
   }
+  /* {
+    initialRouteName: "SelectionScreen"
+  } */
 );
 export default stackNavigator;

@@ -11,14 +11,18 @@ class registerOptions extends React.Component {
         <View style={styles.container}>
           <View style={styles.row}>
             <TouchableOpacity
-              onPress={() => this.props.navigation.goBack()}
+              onPress={() =>
+                this.props.name
+                  ? this.props.navigation.goBack()
+                  : this.props.navigation.navigate("Home")
+              }
               style={styles.button}
             >
               <Ionicons name="left" size={32} color="white" />
             </TouchableOpacity>
 
             <Text style={[styles.text, this.props.styleText]}>
-              {this.props.name || Propriedades}
+              {this.props.name || "Propriedades"}
             </Text>
           </View>
         </View>

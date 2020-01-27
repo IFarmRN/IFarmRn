@@ -14,6 +14,9 @@ import { withFormik } from "formik";
 import * as Yup from "yup";
 import * as Print from "expo-print";
 import styles from "./styles";
+
+var calculopronto = false;
+
 function livestock(props) {
   const { setFieldValue, handleSubmit, errors, values } = props;
 
@@ -37,23 +40,27 @@ function livestock(props) {
     if (Object.keys(errors).length == 0) {
       global.KEY = key;
       const newValues = { ...params, ...values };
-      console.log(newValues);
     }
   };
 
   useEffect(() => {
-    if (imprimir) {
-      imprimir = false;
-
-      const params = props.navigation.getParam("values") || null;
+    if (calculopronto) {
+      calculopronto = false;
+      //const params = props.navigation.getParam("values") || null;
+      const params = getValuesPronto();
       const newValues = { ...params, ...values };
+      /*
       let html = getHtml(newValues);
       Print.printAsync({ html: html, width: 595, height: 842 });
+      */
+
+      props.navigation.navigate("SelectionScreen", { values: newValues });
     }
   }, [values["calculopronto"]]);
 
   calc = () => {
-    const params = props.navigation.getParam("values") || null;
+    //const params = props.navigation.getParam("values") || null;
+    const params = getValuesPronto();
     const newValues = { ...params, ...values };
 
     var p1 = parseFloat(newValues["Percentagem_concentrado"]);
@@ -77,7 +84,6 @@ function livestock(props) {
     var c = parseFloat(newValues["Capacidade_caminhao"]);
     var cv = parseFloat(newValues["Capacidade_vagao"]);
 
-    //console.log("calculo var loaded");
     let c1 = Peso_vivo * Consumo_diario * 0.01;
     let c2 = c1 * p2 * 0.01;
     let c3 = c2 / (MateriaSeca * 0.01);
@@ -92,8 +98,6 @@ function livestock(props) {
     let tp = 2 * ((ds / vc) * 60) + 10;
     let nv = (c2 * n) / d / cv;
     let fd = ((c2 / d) * n) / a;
-
-    //console.log([c1, c2, c3, c4, pm, dt, vl, aa, ct, ec, tp, nv, fd])
 
     setFieldValue(
       "Numero_viagens",
@@ -132,7 +136,7 @@ function livestock(props) {
   };
 
   pdfCreate = () => {
-    imprimir = true;
+    calculopronto = true;
     calc();
   };
 

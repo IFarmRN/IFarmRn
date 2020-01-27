@@ -35,7 +35,7 @@ function livestock(props) {
     if (Object.keys(errors).length == 0) {
       global.KEY = key;
       const newValues = { ...params, ...values };
-      console.log(newValues);
+
       await props.navigation.navigate(screenName, {
         values: newValues
       });
@@ -141,5 +141,5 @@ export default withFormik({
     )
   }),
 
-  handleSubmit: () => { }
+  handleSubmit: () => {}
 })(livestock);

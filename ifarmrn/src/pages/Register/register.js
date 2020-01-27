@@ -40,7 +40,6 @@ function Register(props) {
     }
   }, []);
 
-
   setData = () => {
     const New = state.filter(value => {
       return value.id == id;
@@ -69,7 +68,7 @@ function Register(props) {
         setFieldValue("Localização", userData.Localização);
       },
       error => {
-        console.log(error);
+        throw Error(error);
       },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
     );

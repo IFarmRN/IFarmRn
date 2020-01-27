@@ -50,8 +50,6 @@ function DrawerMenu(props) {
   const [boolean, setBoolean] = useState(false);
   useEffect(() => {
     setBoolean(!boolean);
-    console.log("useeffect");
-    console.log(global.KEY);
   }, [global.KEY]);
   return (
     <View style={styles.container}>
@@ -165,13 +163,13 @@ function DrawerItem({ navigation, KEY, icon, name, screenName }) {
           style={{ margin: 7 }}
         />
       ) : (
-          <Icon
-            name={icon}
-            size={25}
-            color={global.KEY == KEY ? Color.green : Color.defaultColor}
-            style={{ margin: 15 }}
-          />
-        )}
+        <Icon
+          name={icon}
+          size={25}
+          color={global.KEY == KEY ? Color.green : Color.defaultColor}
+          style={{ margin: 15 }}
+        />
+      )}
       <Text
         style={[
           styles.menuItemText,

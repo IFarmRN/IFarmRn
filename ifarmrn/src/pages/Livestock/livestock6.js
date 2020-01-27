@@ -23,8 +23,6 @@ function livestock(props) {
       return value != "";
     });
 
-
-
     //check if the values are empty
     if (empty == undefined) {
       global.KEY = key;
@@ -38,7 +36,6 @@ function livestock(props) {
     if (Object.keys(errors).length == 0) {
       global.KEY = key;
       const newValues = { ...params, ...values };
-      console.log(newValues);
 
       const KEY = screenName.slice(
         screenName.indexOf("k") + 1,
@@ -176,5 +173,5 @@ export default withFormik({
     )
   }),
 
-  handleSubmit: () => { }
+  handleSubmit: () => {}
 })(livestock);

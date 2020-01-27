@@ -1,1 +1,9 @@
-{}
+{
+  "devToolsPort": 19002,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 13272,
+  "expoServerNgrokUrl": "https://xe-k2y.deividreinke.ifarmrn.exp.direct",
+  "packagerNgrokUrl": "https://packager.xe-k2y.deividreinke.ifarmrn.exp.direct",
+  "ngrokPid": 14800
+}
