@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 11224,
-  "expoServerNgrokUrl": "https://t9-b29.allantoledo.ifarmrn.exp.direct",
-  "packagerNgrokUrl": "https://packager.t9-b29.allantoledo.ifarmrn.exp.direct",
-  "ngrokPid": 6844
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }
