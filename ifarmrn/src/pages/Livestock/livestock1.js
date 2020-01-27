@@ -27,17 +27,18 @@ function livestock(props) {
     const empty = valueArray.find(([item, value]) => {
       return value != "";
     });
-    global.KEY = key;
+
     //check if the values are empty
     if (empty == undefined) {
+      global.KEY = key;
       await props.navigation.navigate(screenName);
-
       return;
     }
 
     handleSubmit();
 
     if (Object.keys(errors).length == 0) {
+      global.KEY = key;
       const newValues = { ...params, ...values };
 
       console.log(newValues);
@@ -49,15 +50,17 @@ function livestock(props) {
     }
   };
 
-  /*    useEffect(() => {
-    const fromValues = props.navigation.getParam("values") || null;
+  /*
+  useEffect(() => {
+    const fromValues = getValuesPronto();
 
     if (fromValues != null) {
-      Object.keys(fromValues).map(function(key, index) {
+      Object.keys(fromValues).map(function (key, index) {
         setFieldValue(key, fromValues[key]);
       });
     }
-  }, []); */
+  }, []);
+  */
 
   useEffect(() => {
     dataPeso.forEach(element => {
@@ -202,6 +205,8 @@ function livestock(props) {
   );
 }
 
+
+
 export default withFormik({
   mapPropsToValues: () => ({
     Numero_de_cabeças: "",
@@ -225,5 +230,5 @@ export default withFormik({
       "Não esqueça de preencher"
     )
   }),
-  handleSubmit: () => {}
+  handleSubmit: () => { }
 })(livestock);
