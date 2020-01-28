@@ -41,10 +41,10 @@ function livestock(props) {
       global.KEY = key;
       const newValues = { ...params, ...values };
 
-      console.log(newValues);
       await props.navigation.navigate(screenName, {
         values: newValues
       });
+
       return;
     }
   };
@@ -204,8 +204,6 @@ function livestock(props) {
   );
 }
 
-
-
 export default withFormik({
   mapPropsToValues: () => ({
     Numero_de_cabeças: "",
@@ -229,5 +227,5 @@ export default withFormik({
       "Não esqueça de preencher"
     )
   }),
-  handleSubmit: () => { }
+  handleSubmit: () => {}
 })(livestock);

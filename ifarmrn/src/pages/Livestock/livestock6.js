@@ -13,7 +13,7 @@ import * as Yup from "yup";
 
 import styles from "./styles";
 function livestock(props) {
-  const { setFieldValue, values, handleSubmit, errors } = props;
+  const { values, handleSubmit, errors } = props;
 
   global.buttonSubmitted5 = async (screenName, key) => {
     const valueArray = Object.entries(values);
@@ -22,8 +22,6 @@ function livestock(props) {
     const empty = valueArray.find(([item, value]) => {
       return value != "";
     });
-
-
 
     //check if the values are empty
     if (empty == undefined) {
@@ -38,7 +36,6 @@ function livestock(props) {
     if (Object.keys(errors).length == 0) {
       global.KEY = key;
       const newValues = { ...params, ...values };
-      console.log(newValues);
 
       const KEY = screenName.slice(
         screenName.indexOf("k") + 1,
@@ -176,5 +173,5 @@ export default withFormik({
     )
   }),
 
-  handleSubmit: () => { }
+  handleSubmit: () => {}
 })(livestock);

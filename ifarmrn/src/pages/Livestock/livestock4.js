@@ -16,14 +16,12 @@ function livestock(props) {
   const { setFieldValue, values, handleSubmit, errors } = props;
 
   global.buttonSubmitted3 = async (screenName, key) => {
-    console.log("entruo no submitted");
     const valueArray = Object.entries(values);
     const params = props.navigation.getParam("values") || null;
 
     const empty = valueArray.find(([item, value]) => {
       return value != "";
     });
-
 
     //check if the values are empty
     if (empty == undefined) {
@@ -32,11 +30,10 @@ function livestock(props) {
       return;
     }
     handleSubmit();
-    console.log(errors);
     if (Object.keys(errors).length == 0) {
       global.KEY = key;
       const newValues = { ...params, ...values };
-      console.log(newValues);
+
       await props.navigation.navigate(screenName, {
         values: newValues
       });
@@ -127,5 +124,5 @@ export default withFormik({
     )
   }),
 
-  handleSubmit: () => { }
+  handleSubmit: () => {}
 })(livestock);

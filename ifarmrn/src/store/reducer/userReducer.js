@@ -18,7 +18,9 @@ const userReducer = (state = [], actions) => {
         return item.id != actions.id;
       });
 
-      return [...newState, actions.payload];
+      const reloaded = [...newState, actions.payload];
+
+      return reloaded;
     }
 
     default:
