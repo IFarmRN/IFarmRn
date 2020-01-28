@@ -283,10 +283,9 @@ function getHtml(values) {
         <h1>IFARM</h1>
         <div class="line"></div>
         <h5 style="float: right">${values["calculo_date"]}</h5>
-        <h2>${values["Nome_da_Propriedade"]}</h2>
-        <h5>${values["Proprietario"]}</h5>
-        <h5>${values["Contato"]}</h5>
-        <h5>${values["Localização"]}</h5>
+        <h2>Fazenda: ${values["Nome_da_Propriedade"]}</h2>
+        <h5>Proprietario: ${values["Proprietario"]}</h5>
+        <h5>Contato: ${values["Contato"]}</h5>
         <div class="space"></div>
         <div style="float: left; width: 45%; border-right: 2px solid #dcf7e6; padding-right: 20">
           <h2>Caracteristicas do confinamento</h2>
@@ -370,6 +369,8 @@ function getHtml(values) {
           <h4>${values["Distancia_silo"]}</h4>
           <h3>Tempo de percurso (min):</h3>
           <h4>${values["Tempo_percurso"]}</h4>
+          <h3>Quantiade de caminhões:</h3>
+          <h4>${values["Quantidade_caminhoes"]}</h4>
           <div class="space"></div>
           <h2>Distribuição de massa seca</h2>
           <h3>Fatia retirada diária (m):</h3>

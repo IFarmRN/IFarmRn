@@ -4,7 +4,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
-  Dimensions
+  Dimensions,
+  Alert
 } from "react-native";
 import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
@@ -40,14 +41,18 @@ function livestock(props) {
     if (Object.keys(errors).length == 0) {
       global.KEY = key;
       const newValues = { ...params, ...values };
+      await props.navigation.navigate(screenName, {
+        values: newValues
+      });
+      return;
     }
   };
 
   useEffect(() => {
     if (calculopronto) {
       calculopronto = false;
-      //const params = props.navigation.getParam("values") || null;
-      const params = getValuesPronto();
+      const params = props.navigation.getParam("values") || null;
+      //const params = getValuesPronto();
       const newValues = { ...params, ...values };
       /*
       let html = getHtml(newValues);
@@ -59,8 +64,8 @@ function livestock(props) {
   }, [values["calculopronto"]]);
 
   calc = () => {
-    //const params = props.navigation.getParam("values") || null;
-    const params = getValuesPronto();
+    const params = props.navigation.getParam("values") || null;
+    //const params = getValuesPronto();
     const newValues = { ...params, ...values };
 
     var p1 = parseFloat(newValues["Percentagem_concentrado"]);
@@ -84,6 +89,18 @@ function livestock(props) {
     var c = parseFloat(newValues["Capacidade_caminhao"]);
     var cv = parseFloat(newValues["Capacidade_vagao"]);
 
+    var vars = [p1, p2, Peso_vivo, Consumo_diario, MateriaSeca, n, Dias_para_tratar, Producao, ab, vd, hdt, d, s, vc, b2, b1, a, c, cv];
+    var nan = false;
+    vars.forEach((item, index) => {
+      if (isNaN(item)) {
+        nan = true;
+      }
+    });
+
+    if (nan) {
+      return true;
+    }
+
     let c1 = Peso_vivo * Consumo_diario * 0.01;
     let c2 = c1 * p2 * 0.01;
     let c3 = c2 / (MateriaSeca * 0.01);
@@ -97,7 +114,7 @@ function livestock(props) {
     let ec = (c / ((pm * 1000) / d)) * 60;
     let tp = 2 * ((ds / vc) * 60) + 10;
     let nv = (c2 * n) / d / cv;
-    let fd = ((c2 / d) * n) / a;
+    let fd = ((c2 / d) * n) / aa;
 
     setFieldValue(
       "Numero_viagens",
@@ -134,11 +151,15 @@ function livestock(props) {
       (!(values["calculopronto"] == "true")).toString()
     );
     setFieldValue("calculo_date", new Date().toISOString().slice(0, 10));
+    return false;
   };
 
   pdfCreate = () => {
     calculopronto = true;
-    calc();
+    if (calc()) {
+      calculopronto = false;
+      alert("Preencha todos os campos anteriores.")
+    }
   };
 
   return (
