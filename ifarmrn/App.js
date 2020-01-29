@@ -1,18 +1,14 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-
-import * as Font from "expo-font";
 import { SplashScreen } from "expo";
+import * as Font from "expo-font";
+import React from "react";
 import DropdownAlert from "react-native-dropdownalert";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
-
-import Router from "./src/routes";
-import Loading from "./src/pages/loading/loading";
-import { store, persistor } from "./src/store";
 import "./src/configs/statusBarConfig";
-
-import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import Loading from "./src/pages/loading/loading";
+import Router from "./src/routes";
+import { persistor, store } from "./src/store";
 
 const theme = {
   ...DefaultTheme,
@@ -29,7 +25,7 @@ export default class App extends React.Component {
     this.state = { fontLoaded: false, isReady: false };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     SplashScreen.preventAutoHide(); // Instruct SplashScreen not to hide yet
     this.fontLoad();
   }

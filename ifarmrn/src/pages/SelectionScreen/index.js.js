@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Text, View, ImageBackground, ScrollView } from "react-native";
-import ReactNativeItemSelect from "react-native-item-select";
-import styles from "./styles";
-
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
-import { Color } from "../../constants/routes";
-
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
+import { ImageBackground, ScrollView, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { updateUserConfinamento } from "../../store/actions/userActions";
+import ReactNativeItemSelect from "react-native-item-select";
+import { useDispatch, useSelector } from "react-redux";
+import { Color } from "../../constants/routes";
+import { updateUser } from "../../store/actions/userActions";
+import styles from "./styles";
 
 function SelectionScreen(props) {
   const userData = useSelector(state => state.userData);
@@ -17,11 +15,7 @@ function SelectionScreen(props) {
   const onSubmit = item => {
     const params = props.navigation.getParam("values");
 
-    const ACTION_UPDATE = updateUserConfinamento(
-      item["usersData"],
-      item,
-      params
-    );
+    const ACTION_UPDATE = updateUser(item.usersData, item, params);
 
     dispatch(ACTION_UPDATE);
 

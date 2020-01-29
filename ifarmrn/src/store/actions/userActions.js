@@ -16,37 +16,17 @@ const AddUser = usersData => {
   };
 };
 
-const updateUser = (usersData, user) => {
+const updateUser = (usersData, user, confinamento) => {
   const { id, Date } = user;
-  const confinamento = user.confinamento || "null";
-
   return {
     type: "UPDATE_DATA",
     payload: {
       usersData,
-      confinamento,
+      confinamento: confinamento || user.confinamento || null,
       id,
       Date
     }
   };
 };
 
-const updateUserConfinamento = (usersData, user, confinamento) => {
-  const { id, Date } = user;
-
-  const data = {
-    type: "UPDATE_DATA",
-    payload: {
-      usersData,
-      confinamento,
-      id,
-      Date
-    }
-  };
-
-  console.log(data);
-
-  return data;
-};
-
-export { AddUser, updateUser, updateUserConfinamento };
+export { AddUser, updateUser };

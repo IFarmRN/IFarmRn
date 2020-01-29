@@ -1,7 +1,6 @@
-import { createStore, combineReducers } from "redux";
-import { persistReducer, persistStore } from "redux-persist";
 import { AsyncStorage } from "react-native";
-
+import { combineReducers, createStore } from "redux";
+import { persistReducer, persistStore } from "redux-persist";
 import userReducer from "./reducer/userReducer";
 
 const persistConfig = {

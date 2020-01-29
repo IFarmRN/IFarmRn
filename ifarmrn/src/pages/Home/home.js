@@ -1,57 +1,45 @@
-import React, { Component } from "react";
-import { View, Text, ImageBackground, ScrollView } from "react-native";
-
 import { LinearGradient } from "expo-linear-gradient";
-
-import styles from "./styles";
-import { StylesGeneral, Color } from "../../constants/routes";
+import React, { useEffect } from "react";
+import { ScrollView, Text, View } from "react-native";
 import Button from "../../components/Button";
+import { Color, StylesGeneral } from "../../constants/routes";
+import styles from "./styles";
 
-export default class home extends Component {
-  constructor(props) {
-    super(props);
-  }
-
+export default function home(props) {
   propertyRegistration = () => {
-    this.props.navigation.navigate("Register");
+    props.navigation.navigate("Register");
   };
 
   listOfPropertyes = () => {
-    this.props.navigation.navigate("Property");
+    props.navigation.navigate("Property");
   };
 
   livestock = () => {
-    this.props.navigation.navigate("LivestockNavigator", { id: null });
+    props.navigation.navigate("LivestockNavigator", { id: null });
     global.KEY = 0;
   };
 
   agriculture = () => {
-    this.props.navigation.navigate("AgroNavigator");
+    props.navigation.navigate("AgroNavigator");
   };
+  return (
+    <LinearGradient
+      colors={[Color.greenDark, Color.green, Color.greenLight]}
+      style={{ flex: 1 }}
+    >
+      <ScrollView style={{ flex: 1 }}>
+        <Text style={[StylesGeneral.text, styles.text]}>IFarm</Text>
+        <View style={{ marginBottom: 50 }} />
 
-  render() {
-    return (
-      <LinearGradient
-        colors={[Color.greenDark, Color.green, Color.greenLight]}
-        style={{ flex: 1 }}
-      >
-        <ScrollView style={{ flex: 1 }}>
-          <Text style={[StylesGeneral.text, styles.text]}>IFarm</Text>
-          <View style={{ marginBottom: 50 }} />
+        <Button
+          name="Cadastrar Propriedade"
+          onPress={this.propertyRegistration}
+        />
+        <Button name="Lista de Propriedades" onPress={this.listOfPropertyes} />
+        <Button name="Confinamento" onPress={this.livestock} />
 
-          <Button
-            name="Cadastrar Propriedade"
-            onPress={this.propertyRegistration}
-          />
-          <Button
-            name="Lista de Propriedades"
-            onPress={this.listOfPropertyes}
-          />
-          <Button name="Confinamento" onPress={this.livestock} />
-
-          <Button name="Agricultura" onPress={this.agriculture} />
-        </ScrollView>
-      </LinearGradient>
-    );
-  }
+        <Button name="Agricultura" onPress={this.agriculture} />
+      </ScrollView>
+    </LinearGradient>
+  );
 }

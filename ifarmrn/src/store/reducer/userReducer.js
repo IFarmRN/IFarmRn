@@ -15,7 +15,7 @@ const userReducer = (state = [], actions) => {
 
     case "UPDATE_DATA": {
       const newState = state.filter(item => {
-        return item.id != actions.id;
+        return item.id != actions.payload.id;
       });
 
       const reloaded = [...newState, actions.payload];
