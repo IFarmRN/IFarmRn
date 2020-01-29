@@ -113,24 +113,24 @@ export default function property(props) {
                       />
                     </>
                   ) : (
-                      <>
-                        <Icon
-                          name="close-circle-outline"
-                          color={"#F34336"}
-                          size={35}
-                          style={styles.icon}
-                          onPress={() =>
-                            changeDelete(Nome_da_Propriedade, data.id)
-                          }
-                        />
-                        <Icon
-                          name="image-off"
-                          color={"rgba(0,0,0,0.4)"}
-                          size={35}
-                          style={styles.iconNoPhoto}
-                        />
-                      </>
-                    )}
+                    <>
+                      <Icon
+                        name="close-circle-outline"
+                        color={"#F34336"}
+                        size={35}
+                        style={styles.icon}
+                        onPress={() =>
+                          changeDelete(Nome_da_Propriedade, data.id)
+                        }
+                      />
+                      <Icon
+                        name="image-off"
+                        color={"rgba(0,0,0,0.4)"}
+                        size={35}
+                        style={styles.iconNoPhoto}
+                      />
+                    </>
+                  )}
                 </View>
                 <Text style={styles.title}>{Nome_da_Propriedade}</Text>
                 <Text style={styles.text}>{Proprietario}</Text>
@@ -161,9 +161,12 @@ export default function property(props) {
 
                       Print.printAsync({ html: html, width: 595, height: 842 });
                     } else {
-                      Alert.alert("Calculo do confinamento ainda não foi feito");
+                      global.dropDownAlertRef.alertWithType(
+                        "error",
+                        "error",
+                        "Salve os dados na Tela de Confinamento para poder imprimir"
+                      );
                     }
-
                   }}
                 >
                   <Text style={styles.buttonText}>IMPRIMIR</Text>
