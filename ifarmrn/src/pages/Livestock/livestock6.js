@@ -26,7 +26,6 @@ function livestock(props) {
     //check if the values are empty
     if (empty == undefined) {
       global.KEY = key;
-
       await props.navigation.navigate(screenName);
       return;
     }
@@ -36,13 +35,6 @@ function livestock(props) {
     if (Object.keys(errors).length == 0) {
       global.KEY = key;
       const newValues = { ...params, ...values };
-
-      const KEY = screenName.slice(
-        screenName.indexOf("k") + 1,
-        screenName.length
-      );
-
-      global.KEY = parseInt(KEY) - 1;
       await props.navigation.navigate(screenName, {
         values: newValues
       });
@@ -173,5 +165,5 @@ export default withFormik({
     )
   }),
 
-  handleSubmit: () => {}
+  handleSubmit: () => { }
 })(livestock);
