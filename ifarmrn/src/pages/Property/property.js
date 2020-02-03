@@ -19,6 +19,7 @@ import styles from "./styles";
 
 export default function property(props) {
   const usersData = useSelector(state => state.userData);
+
   const dispatch = useDispatch();
 
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -142,35 +143,43 @@ export default function property(props) {
                   >{`${day}/${month}/${year}, ${time}`}</Text>
                 </View>
 
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() =>
-                    props.navigation.navigate("Register", { id: data.id })
-                  }
-                >
-                  <Text style={styles.buttonText}>EDITAR</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    values = data.confinamento || null;
-                    if (values != null) {
-                      values = { ...values, ...data.usersData };
-
-                      let html = getHtml(values);
-
-                      Print.printAsync({ html: html, width: 595, height: 842 });
-                    } else {
-                      global.dropDownAlertRef.alertWithType(
-                        "error",
-                        "error",
-                        "Salve os dados na Tela de Confinamento para poder imprimir"
-                      );
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={async () =>
+                      await props.navigation.navigate("Register", {
+                        id: data.id
+                      })
                     }
-                  }}
-                >
-                  <Text style={styles.buttonText}>IMPRIMIR</Text>
-                </TouchableOpacity>
+                  >
+                    <Text style={styles.buttonText}>EDITAR</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      values = data.confinamento || null;
+                      if (values != null) {
+                        values = { ...values, ...data.usersData };
+
+                        let html = getHtml(values);
+
+                        Print.printAsync({
+                          html: html,
+                          width: 595,
+                          height: 842
+                        });
+                      } else {
+                        global.dropDownAlertRef.alertWithType(
+                          "error",
+                          "error",
+                          "Salve os dados na Tela de Confinamento para poder imprimir"
+                        );
+                      }
+                    }}
+                  >
+                    <Text style={styles.buttonText}>IMPRIMIR</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             );
           })}

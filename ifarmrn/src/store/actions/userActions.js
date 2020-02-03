@@ -1,10 +1,11 @@
-const AddUser = usersData => {
+const AddUser = (usersData, confinamento) => {
   const date = new Date();
 
   return {
     type: "ADD_USER_DATA",
     payload: {
       usersData,
+      confinamento: confinamento || null,
       id: Date.now(),
       Date: {
         day: date.getDay(),
@@ -28,5 +29,4 @@ const updateUser = (usersData, user, confinamento) => {
     }
   };
 };
-
 export { AddUser, updateUser };

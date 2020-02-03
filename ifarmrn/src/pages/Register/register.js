@@ -7,14 +7,16 @@ import * as Yup from "yup";
 
 import styles from "./styles";
 import Input from "../../components/Input/Input";
-import Loading from "../loading/loading";
 import Modal from "./Modal/Modal";
 import { AddUser, updateUser } from "../../store/actions/userActions";
 
-var id = null;
-
 function Register(props) {
-  const { setFieldValue, values, handleSubmit } = props;
+  const {
+    setFieldValue,
+    values,
+    handleSubmit,
+    navigation: { getParam }
+  } = props;
 
   const [modalVisible, setModalVisible] = useState(false);
   const [userData, setUserData] = useState({});
@@ -25,11 +27,11 @@ function Register(props) {
     altitude: 0
   });
 
-  let state = useSelector(state => state.userData);
+  const state = useSelector(state => state.userData);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    id = props.navigation.getParam("id") || null;
+    const id = getParam("id") || null;
 
     if (id != null) {
       (async () => {
@@ -42,11 +44,12 @@ function Register(props) {
 
   setData = () => {
     const New = state.filter(value => {
-      return value.id == id;
+      return value.id == getParam("id");
     });
 
     setUserData(New[0].usersData);
     setAllUser(New[0]);
+    return New[0];
   };
 
   setAllFieldValue = () => {
@@ -74,22 +77,23 @@ function Register(props) {
     );
   };
 
-  buttonSubmitted = () => {
+  buttonSubmitted = async () => {
     handleSubmit();
 
     const boll = Object.entries(values).find(([item, value]) => {
       return value == "";
     });
 
-    if (boll == undefined || boll[0] == "Foto" || boll[0] == "Localização") {
-      if (id != null) {
-        const ACTION_UPDATE = updateUser(values, allUser);
+    if (boll == undefined || boll[0] == "Foto") {
+      if (getParam("id") != null) {
+        const ACTION_UPDATE = await updateUser(values, setData());
 
-        dispatch(ACTION_UPDATE);
+        await dispatch(ACTION_UPDATE);
       } else {
-        const user = AddUser(values);
+        const confinamento = props.navigation.getParam("confinamento") || null;
+        const user = AddUser(values, confinamento);
+
         dispatch(user);
-        props.navigation.goBack();
       }
 
       global.dropDownAlertRef.alertWithType(
@@ -170,16 +174,10 @@ function Register(props) {
       </TouchableOpacity>
 
       <View style={styles.buttonView}>
-        <TouchableOpacity
-          onPress={() => {
-            buttonSubmitted();
-          }}
-          style={styles.button}
-        >
+        <TouchableOpacity onPress={buttonSubmitted} style={styles.button}>
           <Text style={styles.buttonText}>Salvar</Text>
         </TouchableOpacity>
       </View>
-
       <Modal
         userImage={userData.Foto}
         changeModal={changeModal}
@@ -216,5 +214,5 @@ export default withFormik({
     Foto: Yup.string().nullable("Escolha uma imagem ")
   }),
 
-  handleSubmit: values => {}
+  handleSubmit: val => {}
 })(Register);

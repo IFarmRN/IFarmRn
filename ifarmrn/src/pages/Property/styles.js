@@ -85,10 +85,14 @@ const styles = StyleSheet.create({
     color: "#222",
     marginVertical: 12
   },
-
+  buttonRow: {
+    flexDirection: "row"
+  },
   button: {
+    flex: 1,
     padding: 10,
-    margin: 10,
+    marginVertical: 12,
+    marginHorizontal: 10,
     borderRadius: 20,
     borderWidth: 2,
     borderColor: Color.green,

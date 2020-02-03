@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
@@ -11,15 +11,29 @@ import Input from "../../components/Input/Input";
 import DropdownList from "../../components/Dropdown/Dropdown";
 import { Color } from "../../constants/routes";
 import ReactNativeItemSelect from "react-native-item-select";
+import { SCLAlert, SCLAlertButton } from "react-native-scl-alert";
 import { withFormik } from "formik";
 import * as Yup from "yup";
+import Icon from "@expo/vector-icons/Ionicons";
 import * as Print from "expo-print";
 import styles from "./styles";
+import { useSelector } from "react-redux";
 
 var calculopronto = false;
 
 function livestock(props) {
   const { setFieldValue, handleSubmit, errors, values } = props;
+  const [noProperty, setNoProperty] = useState(false);
+  const state = useSelector(state => state.userData);
+
+  changeNoPropertyValue = () => setNoProperty(!noProperty);
+
+  makeProperty = () => {
+    const params = props.navigation.getParam("values") || null;
+    const newValues = { ...params, ...values };
+
+    props.navigation.navigate("Register", { confinamento: newValues });
+  };
 
   global.buttonSubmitted6 = async (screenName, key) => {
     const valueArray = Object.entries(values);
@@ -52,12 +66,7 @@ function livestock(props) {
     if (calculopronto) {
       calculopronto = false;
       const params = props.navigation.getParam("values") || null;
-      //const params = getValuesPronto();
       const newValues = { ...params, ...values };
-      /*
-      let html = getHtml(newValues);
-      Print.printAsync({ html: html, width: 595, height: 842 });
-      */
 
       props.navigation.navigate("SelectionScreen", { values: newValues });
     }
@@ -65,7 +74,6 @@ function livestock(props) {
 
   calc = () => {
     const params = props.navigation.getParam("values") || null;
-    //const params = getValuesPronto();
     const newValues = { ...params, ...values };
 
     var p1 = parseFloat(newValues["Percentagem_concentrado"]);
@@ -89,7 +97,27 @@ function livestock(props) {
     var c = parseFloat(newValues["Capacidade_caminhao"]);
     var cv = parseFloat(newValues["Capacidade_vagao"]);
 
-    var vars = [p1, p2, Peso_vivo, Consumo_diario, MateriaSeca, n, Dias_para_tratar, Producao, ab, vd, hdt, d, s, vc, b2, b1, a, c, cv];
+    var vars = [
+      p1,
+      p2,
+      Peso_vivo,
+      Consumo_diario,
+      MateriaSeca,
+      n,
+      Dias_para_tratar,
+      Producao,
+      ab,
+      vd,
+      hdt,
+      d,
+      s,
+      vc,
+      b2,
+      b1,
+      a,
+      c,
+      cv
+    ];
     var nan = false;
     vars.forEach((item, index) => {
       if (isNaN(item)) {
@@ -156,18 +184,44 @@ function livestock(props) {
 
   pdfCreate = () => {
     calculopronto = true;
+    console.log(state.length);
+
     if (calc()) {
       calculopronto = false;
-      alert("Preencha todos os campos anteriores.")
+      return Alert.alert("Preencha todos os campos anteriores.");
+    }
+
+    if (state.length == 0) {
+      calculopronto = false;
+      setNoProperty(true);
+      return;
     }
   };
 
   return (
     <>
       <View style={styles.container}>
+        <SCLAlert
+          onRequestClose={changeNoPropertyValue}
+          show={noProperty}
+          title="Sem Propriedade"
+          theme="info"
+          subtitle="Você ainda nao tem uma propriedade, deseja criá-la?"
+          headerIconComponent={
+            <Icon name="ios-information" size={50} color="#fff" />
+          }
+        >
+          <SCLAlertButton theme="info" onPress={makeProperty}>
+            Criar Propriedade
+          </SCLAlertButton>
+
+          <SCLAlertButton theme="default" onPress={changeNoPropertyValue}>
+            Voltar
+          </SCLAlertButton>
+        </SCLAlert>
+
         <ScrollView style={{ flex: 1 }}>
           <Text style={styles.title}>Distribuição de massa verde</Text>
-
           <Input
             value={values["Capacidade_vagao"]}
             name="Capacidade_vagao"
@@ -185,12 +239,10 @@ function livestock(props) {
           >
             <View style={styles.buttonView}>
               <TouchableOpacity
-                onPress={() => {
-                  pdfCreate();
-                }}
+                onPress={pdfCreate}
                 style={[styles.button, { marginRight: 0 }]}
               >
-                <Text style={styles.buttonText}>Imprimir</Text>
+                <Text style={styles.buttonText}>Salvar</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
@@ -217,7 +269,7 @@ export default withFormik({
       "Não esqueça de preencher"
     )
   }),
-  handleSubmit: () => { }
+  handleSubmit: () => {}
 })(livestock);
 
 function getValuesPronto() {
